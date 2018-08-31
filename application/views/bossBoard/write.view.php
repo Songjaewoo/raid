@@ -11,7 +11,7 @@
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
-								<input type="text" class="form-control pull-right" id="kill-date-time">
+								<input type="text" class="form-control pull-right" id="kill-date-time" value="<?=date("Y-m-d")?>">
 							</div>
 						</div>
 						
@@ -142,7 +142,7 @@
 						</div>
 						
 						<div class="form-group">
-							<label>참여인원</label>
+							<label>참여인원 <span id="count-participant">0</span>명</label>
 							
 							<table class="table table-bordered table-striped">
 								<tbody id="participant-list">
@@ -159,6 +159,20 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-12" style="text-align: center;">
+				<button type="button" id="btn-write-boss-board" class="btn btn-primary btn-flat" style="width: 100px;">
+					등록
+				</button>
+				
+				<a href="/bossBoard">
+					<button type="button" class="btn btn-danger btn-flat" style="width: 100px;">
+						목록
+					</button>
+				</a>
+			</div>
+		</div>
 	</section>
 </div>
 
@@ -168,10 +182,10 @@ $("#btn-write-boss-board").on("click", function() {
 
 	var killDateTime = $("#kill-date-time").val();
 	var bossName = $("#select-boss option:selected").val();
-	var bossManageName = $("#select-boss-manager option:selected").val();
 	var etc = $("#etc").val();
 
-	var attachFile = $("#attach-file")[0].files[0];
+	var attachFile1 = $("#attach-file1")[0].files[0];
+	var attachFile2 = $("#attach-file2")[0].files[0];
 	
 	var participantList = [];
 	var participantObj;
@@ -193,13 +207,13 @@ $("#btn-write-boss-board").on("click", function() {
 	$(".boss-item").each(function(i, v) {
 		var memberId = $(this).data("id");
 		var nickname = $(this).data("nickname");
-		var itemName = $(this).data("itemname");
+		var itemId = $(this).data("itemid");
 		var price = $(this).data("price");
 
 		bossItemObj = {};
 		bossItemObj.memberId = memberId;
 		bossItemObj.nickname = nickname;
-		bossItemObj.itemName = itemName;
+		bossItemObj.itemId = itemId;
 		bossItemObj.price = price;
 
 		bossItemList.push(bossItemObj);
@@ -207,13 +221,13 @@ $("#btn-write-boss-board").on("click", function() {
 	
 	formData.append("killDateTime", killDateTime);
 	formData.append("bossName", bossName);
-	formData.append("bossManageName", bossManageName);
 	formData.append("etc", etc);
-	formData.append("attachFile", attachFile);
+	formData.append("attachFile1", attachFile1);
+	formData.append("attachFile2", attachFile2);
 	formData.append("participantList", JSON.stringify(participantList));
 	formData.append("bossItemList", JSON.stringify(bossItemList));
 
-	if (killDateTime != "") {
+	if (killDateTime == "") {
 		alert("잡은 날짜를 입력해 주세요.");
 		return;
 	}
@@ -260,9 +274,12 @@ $("#attach-file2").change(function() {
 });
 
 $("#select-boss").select2();
-$("#select-boss-manager").select2();
 $("#select-item-list").select2();
 $("#select-buyer-group-member").select2();
+
+$("#select-group-member").select2({
+	placeholder: "참여인원을 선택해주세요.",
+});
 
 $("#kill-date-time").datepicker({
 	autoclose: false,
@@ -346,6 +363,10 @@ $("#btn-add-member").on("click", function() {
 	});
 
 	$("#participant-list").append(html);
+	$("#select-group-member").val(null).trigger('change');
+
+	var participantCount = $(".participant-member").length;
+	$("#count-participant").text(participantCount);
 });
 
 $("#btn-add-item").on("click", function() {
@@ -377,6 +398,9 @@ $(document).on("click", ".btn-del-boss-item", function() {
 
 $(document).on("click", ".btn-del-participant", function() {
 	$(this).closest("tr").remove();
+	
+	var participantCount = $(".participant-member").length;
+	$("#count-participant").text(participantCount);
 });
 
 function readURL1(input) {

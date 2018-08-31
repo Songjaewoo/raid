@@ -22,6 +22,7 @@
 	<script src="/asset/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
+	<script src="/asset/plugins/jquery.validate.js"></script>
 	<script src="/asset/dist/js/adminlte.min.js"></script>
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

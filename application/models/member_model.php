@@ -31,6 +31,36 @@ class Member_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
+	function isExistMemberId($memberId) {
+		$sql = "
+			SELECT
+				m.memberId
+			FROM
+				member m
+			WHERE
+				memberId = ?
+		";
+		 
+		$resultQuery = $this->db->query($sql, array($memberId))->row_array();
+		 
+		return $resultQuery;
+	}
+	
+	function isExistMemberNickname($nickname) {
+		$sql = "
+			SELECT
+				m.nickname
+			FROM
+				member m
+			WHERE
+				nickname = ?
+		";
+			
+		$resultQuery = $this->db->query($sql, array($nickname))->row_array();
+			
+		return $resultQuery;
+	}
+	
 	function getMemberListByLevel($level) {
 	    $sql = "
 			SELECT
@@ -89,7 +119,7 @@ class Member_model extends CI_Model {
 				return $resultQuery;
 	}
 	
-	function insertMember($memberId, $nickname, $password, $groupNameId) {
+	function insertMember($memberId, $nickname, $className, $password, $groupNameId) {
 	    $salt = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
 	    $encryptPassword = crypt($password, $salt);
 	    
@@ -99,6 +129,7 @@ class Member_model extends CI_Model {
 			SET
 				memberId = ?,
 				nickname = ?,
+	    		className = ?,
 				password = ?,
 				createdDateTime = now(),
 				updatedDateTime = now(),
@@ -107,7 +138,7 @@ class Member_model extends CI_Model {
 				groupNameId = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($memberId, $nickname, $encryptPassword, $groupNameId));
+	    $resultQuery = $this->db->query($sql, array($memberId, $nickname, $className, $encryptPassword, $groupNameId));
 	    
 	    return $this->db->insert_id();
 	}

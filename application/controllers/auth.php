@@ -10,6 +10,7 @@ class Auth extends CI_Controller {
 		
 		$this->load->helper('alert_helper');
 		$this->load->helper('location_helper');
+		$this->load->helper('cookie');
 	}
 	
 	public function register() {
@@ -20,22 +21,32 @@ class Auth extends CI_Controller {
 		);
 		
 		$this->load->view("auth/register.view.php", $data);
-		
 	}
 	
 	public function register_submit() {
 		$memberId = $this->input->post("memberId");
 		$nickname = $this->input->post("nickname");
+		$className = $this->input->post("className");
 		$password = $this->input->post("password");
 		$passwordConfirm = $this->input->post("passwordConfirm");
 		$groupNameId = $this->input->post("groupNameId");
 		
-		if ($memberId != "" && $nickname != "" && $password != "" && $passwordConfirm != "" && $groupNameId != "") {
+		if ($memberId != "" && $nickname != "" && $className != "" && $password != "" && $passwordConfirm != "" && $groupNameId != "") {
+			$isExistMemberId = $this->member_model->isExistMemberId($memberId);
+			if ($isExistMemberId != null) {
+				alert("이미 존재하는 아이디 입니다.");
+			}
+			
+			$isExistMemberNickname = $this->member_model->isExistMemberNickname($nickname);
+			if ($isExistMemberNickname != null) {
+				alert("이미 존재하는 캐릭터명 입니다.");
+			}
+			
 			if ($password === $passwordConfirm) {
-				$result = $this->member_model->insertMember($memberId, $nickname, $password, $groupNameId);
+				$result = $this->member_model->insertMember($memberId, $nickname, $className, $password, $groupNameId);
 				alert("회원가입 완료.", "/auth/login");
 			} else {
-				alert("패스워드가 일치하지 않습니다.");
+				alert("비밀번호가 일치하지 않습니다.");
 			}
 		} else {
 			alert("모든 정보를 입력해 주세요.");
@@ -52,27 +63,31 @@ class Auth extends CI_Controller {
 		$memberId = $this->input->post("memberId");
 		$password = $this->input->post("password");
 		
-		$result = $this->member_model->getMemberDetailByMemberId($memberId);
-		$hashedPassword = $result['password'];
-		
-		if ($this->verify($password, $hashedPassword)) {
-			if ($result['approval'] == 1) {
-				$sessionData = array(
-					"id" => $result['id'],
-					"memberId" => $result['memberId'],
-					"nickname" => $result['nickname'],
-					"level" => $result['level'],
-					"groupName" => $result['groupName'],
-					"isLogin" => true,
-				);
-				$this->session->set_userdata($sessionData);
-				
-				locationHref("/");
+		if ($memberId != "" && $password != "") {
+			$result = $this->member_model->getMemberDetailByMemberId($memberId);
+			$hashedPassword = $result['password'];
+			
+			if ($this->verify($password, $hashedPassword)) {
+				if ($result['approval'] == 1) {
+					$sessionData = array(
+						"id" => $result['id'],
+						"memberId" => $result['memberId'],
+						"nickname" => $result['nickname'],
+						"level" => $result['level'],
+						"groupName" => $result['groupName'],
+						"isLogin" => true,
+					);
+					$this->session->set_userdata($sessionData);
+					
+					locationHref("/");
+				} else {
+					alert("관리자 승인 요청이 필요합니다.");
+				}
 			} else {
-				alert("관리자 승인 요청이 필요합니다.");
+				alert("아이디 또는 비밀번호를 다시 확인하세요.");
 			}
 		} else {
-			alert("아이디 또는 비밀번호를 다시 확인하세요.");
+			alert("아이디 또는 비밀번호를 입력해주세요.");
 		}
 	}
 	

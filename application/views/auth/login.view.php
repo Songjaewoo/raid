@@ -15,6 +15,7 @@
 
 	<script src="/asset/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="/asset/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/asset/plugins/jquery.validate.js"></script>
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,30 +27,78 @@
 <body class="hold-transition register-page">
 	<div class="login-box">
 		<div class="login-logo">
-			<a href="#"><b>Admin</b>LTE</a>
+<!-- 			<a href="#"><b>Admin</b>LTE</a> -->
 		</div>
 		<div class="login-box-body">
-			<form action="/auth/login_submit" method="post">
+			<form id="login-form" action="/auth/login_submit" method="post">
 				<div class="form-group has-feedback">
-					<input type="text" name="memberId" class="form-control" placeholder="ID" required="required">
+					<input type="text" id="memberId" name="memberId" class="form-control" placeholder="아이디">
 					<span class="glyphicon glyphicon-user form-control-feedback"></span>
 				</div>
+				
 				<div class="form-group has-feedback">
-					<input type="password" name="password" class="form-control" placeholder="Password" required="required">
+					<input type="password" name="password" class="form-control" placeholder="비밀번호">
 					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 				</div>
-				<div class="row">
-					<div class="col-xs-8">
-					</div>
-	
-					<div class="col-xs-4">
-						<button type="submit" class="btn btn-primary btn-block btn-flat">Log In</button>
-					</div>
+				
+<!-- 				<div class="form-group has-feedback"> -->
+<!-- 					<label> -->
+<!-- 						<input id="check-save-id" type="checkbox"> 아이디 저장 -->
+<!-- 					</label> -->
+<!-- 				</div> -->
+				
+				<div class="form-group has-feedback">
+					<button type="button" id="btn-login" class="btn btn-danger btn-block btn-flat">로그인</button>
+				</div>
+				
+				<div class="form-group has-feedback">
+					<a href="/auth/register">
+						<button type="button" class="btn btn-primary btn-block btn-flat">회원가입</button>
+					</a>
 				</div>
 			</form>
-		
-			<a href="/auth/register" class="text-center">Register a new membership</a>
 		</div>
 	</div>
+	
+	<script>
+	$(document).ready(function() {
+		$.validator.setDefaults({
+			onkeyup:false,
+	        onclick:false,
+	        onfocusout:false,
+		    showErrors:function(errorMap, errorList){
+		        if(this.numberOfInvalids()) {
+		            alert(errorList[0].message);
+		        }
+		    }
+		});
+	});
+
+	$("#btn-login").on("click", function() {
+		$("#login-form").validate({
+			ignore: [],
+	        rules: {
+	        	memberId: {
+	                required : true,
+	            },
+	            password: {
+	                required : true,
+	            },
+	        },
+	        messages : {
+	        	memberId: {
+	                required : "아이디를 입력해 주세요.",
+	            },
+	            password: {
+	                required : "비밀번호를 입력해 주세요.",
+	            },
+	        }
+	    });
+	
+		if ($("#login-form").valid()) {
+			$("#login-form").submit();
+		}
+	});
+	</script>
 </body>
 </html>
