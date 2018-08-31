@@ -13,6 +13,8 @@ class Group_model extends CI_Model {
 			name
 		FROM
 			groupName
+        ORDER BY
+            id ASC
 	";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();

@@ -27,16 +27,19 @@ class Bossboard_model extends CI_Model {
 				b.writerId,
 				b.writerNickname,
 				b.killDateTime,
-				b.bossName,
+				b.bossId,
+                bs.name AS bossName,
 				b.etc,
 				b.createdDateTime,
 				b.updatedDateTime,
                 (SELECT COUNT(bp.id) FROM bossBoardParticipant bp WHERE bp.bossBoardId = b.id) AS participantCount,
                 (SELECT SUM(bp.dividend) FROM bossBoardParticipant bp WHERE bossBoardId = b.id AND isFinish = 'N') AS dividend
+
 			FROM
 				bossBoard b
+                LEFT JOIN boss bs ON (b.bossId = bs.id)
 			ORDER BY
-				killDateTime DESC
+				b.killDateTime DESC
 		";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();
@@ -47,18 +50,20 @@ class Bossboard_model extends CI_Model {
 	function getDetail($id){
 	    $sql = "
 			SELECT
-				id,
-				writerId,
-				writerNickname,
-				killDateTime,
-				bossName,
-				etc,
-				createdDateTime,
-				updatedDateTime
+				b.id,
+				b.writerId,
+				b.writerNickname,
+				b.killDateTime,
+				b.bossId,
+                bs.name AS bossName,
+				b.etc,
+				b.createdDateTime,
+				b.updatedDateTime
 			FROM
-				bossBoard
+				bossBoard b
+                LEFT JOIN boss bs ON (b.bossId = bs.id)
 			WHERE
-				id = ?
+				b.id = ?
 		";
 	    
 	    $resultQuery = $this->db->query($sql, array($id))->row_array();
@@ -66,7 +71,7 @@ class Bossboard_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
-	function insertBossBoard($writerId, $writerNickname, $killDateTime, $bossName, $etc){
+	function insertBossBoard($writerId, $writerNickname, $killDateTime, $bossId, $etc){
 	    $sql = "
 			INSERT INTO
 				bossBoard
@@ -74,31 +79,31 @@ class Bossboard_model extends CI_Model {
 				writerId = ?,
 				writerNickname = ?,
 				killDateTime = ?,
-				bossName = ?,
+				bossId = ?,
 				etc = ?,
 				createdDateTime = now(),
 				updatedDateTime = now()
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($writerId, $writerNickname, $killDateTime, $bossName, $etc));
+	    $resultQuery = $this->db->query($sql, array($writerId, $writerNickname, $killDateTime, $bossId, $etc));
 	    
 	    return $this->db->insert_id();
 	}
 	
-	function updateBossBoard($killDateTime, $bossName, $etc, $id){
+	function updateBossBoard($killDateTime, $bossId, $etc, $id){
 	    $sql = "
 			UPDATE
 				bossBoard
 			SET
 				killDateTime = ?,
-				bossName = ?,
+				bossId = ?,
 				etc = ?,
 				updatedDateTime = now()
 			WHERE
 				id = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($killDateTime, $bossName, $etc, $id));
+	    $resultQuery = $this->db->query($sql, array($killDateTime, $bossId, $etc, $id));
 	    
 	    return $this->db->affected_rows();
 	}

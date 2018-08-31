@@ -11,18 +11,6 @@
 						<a href="/bossBoard/write">
 							<button type="button" class="btn btn-sm btn-primary btn-flat pull-left">등록</button>
 						</a>
-						
-						<!-- 
-						<div class="box-tools">
-							<div class="input-group input-group-sm" style="width: 200px;">
-								<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-								<div class="input-group-btn">
-									<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-								</div>
-							</div>
-						</div>
-						 -->
 					</div>
             
 					<div class="box-body table-responsive no-padding">
@@ -42,7 +30,11 @@
 								<?php foreach ($bossBoardList as $key => $value) { ?>
 								<tr>
 									<td><?=date("Y-m-d", strtotime($value['killDateTime']))?></td>
-									<td><?=$value['bossName']?></td>
+									<td>
+										<a href="/bossBoard/detail?id=<?=$value['id']?>">
+										<?=$value['bossName']?>
+										</a>
+									</td>
 									<td>
 										<?php foreach ($value['itemList'] as $key1 => $value1) { ?>
 											<?=$value1['itemName']?><br>

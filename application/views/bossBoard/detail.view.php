@@ -11,63 +11,13 @@
 								<div class="input-group-addon">
 									<i class="fa fa-calendar"></i>
 								</div>
-								<input type="text" class="form-control pull-right" id="kill-date-time" value="<?=date("Y-m-d")?>">
+								<input type="text" class="form-control pull-right" value="<?=date("Y-m-d", strtotime($detailBossBoard['killDateTime']))?>" disabled="disabled">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label>보스</label>
-
-                        	<select id="select-boss" class="form-control">
-								<?php foreach ($bossList as $key => $value) { ?>
-									<option value="<?=$value['id']?>"><?=$value['name']?></option>
-								<?php } ?>
-							</select>
-						</div>
-						
-						<div class="form-group" style="margin-bottom: 0px;">
-							<label>드랍 아이템 +입찰자 추가</label>
-							
-							<div class="row">
-								<div class="col-md-8">
-									<div class="form-group">
-										<select id="select-item-list" class="form-control">
-    										<?php foreach ($itemList as $key => $value) { ?>
-    											<option value="<?=$value['id']?>" data-itemprice="<?=$value['price']?>"><?=$value['name']?></option>
-    										<?php } ?>
-    									</select>
-									</div>
-								</div>
-								
-								<div class="col-md-4">
-									<div class="form-group">
-										<input id="item-price" class="form-control" type="number" placeholder="가격" value="<?=$itemList[0]['price']?>">
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="form-group" style="margin-bottom: 0px;">
-							<div class="row">
-								<div class="col-md-8">
-									<div class="form-group">
-    									<select id="select-buyer-group-member" class="form-control">
-											<option value="0">입찰자 없음</option>
-											<?php foreach ($groupMemberList as $key => $value) { ?>
-												<option value="<?=$value['id']?>" data-groupname="<?=$value['groupName']?>"><?=$value['nickname']?></option>
-											<?php } ?>
-										</select>
-									</div>
-								</div>
-								
-								<div class="col-md-4">
-									<div class="form-group">
-										<button type="button" id="btn-add-item" class="btn btn-block btn-default btn-flat">
-											추가 <span class="fa fa-long-arrow-down"></span>
-										</button>
-									</div>
-								</div>
-							</div>
+							<input type="text" class="form-control" value="<?=$detailBossBoard['bossName']?>" disabled="disabled">
 						</div>
 						
 						<div class="form-group">
@@ -79,8 +29,20 @@
 										<th>드랍아이템</th>
 										<th>가격</th>
 										<th>입찰자</th>
-										<th>-</th>
 									</tr>
+									<?php if ($detailBossBoard['item'] != null) { ?>
+    									<?php foreach ($detailBossBoard['item'] as $key => $value) { ?>
+    									<tr>
+    										<td><?=$value['itemName']?></td>
+    										<td><?=$value['itemPrice']?></td>
+    										<td><?=$value['buyerMemberNickname']?></td>
+    									</tr>
+    									<?php } ?>
+									<?php } else { ?>
+    									<tr>
+    										<td colspan="3" align="center">리스트가 없습니다.</td>
+    									</tr>
+									<?php } ?>
 								</tbody>
 							</table>
 						</div>
@@ -89,26 +51,18 @@
 							<label>사진</label>
 							
 							<div class="row">
-								<div class="col-md-6">
-									<label for="attach-file1" style="text-align: center;">
-            							<img id="image-preview1" src="/asset/image/no-image-icon.png" style="width: 60%; height: auto; margin-bottom: 8px;">
-        							</label>
-        							<input type="file" id="attach-file1" />
-								</div>
-								
-								<div class="col-md-6">
-									<label for="attach-file2" style="text-align: center;">
-            							<img id="image-preview2" src="/asset/image/no-image-icon.png" style="width: 60%; height: auto; margin-bottom: 8px;">
-    								</label>
-        							<input type="file" id="attach-file2" />
-								</div>
+								<?php foreach ($detailBossBoard['attachFile'] as $key => $value) { ?>
+    								<div class="col-md-12">
+            							<img src="<?=$value['fileUrl']?>" style="width: 100%;">
+    								</div>
+								<?php } ?>
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label>비고</label>
 
-							<textarea id="etc" class="form-control" rows="3"></textarea>
+							<textarea class="form-control" rows="5" disabled="disabled"><?=$detailBossBoard['etc']?></textarea>
 						</div>
 					</div>
 				</div>
@@ -118,31 +72,7 @@
 				<div class="box">
 					<div class="box-body">
 						<div class="form-group">
-							<label>참여인원 추가</label>
-
-							<div class="row">
-								<div class="col-md-8">
-									<div class="form-group">
-    									<select id="select-group-member" class="form-control" multiple="">
-											<?php foreach ($groupMemberList as $key => $value) { ?>
-											<option value="<?=$value['id']?>" data-groupname="<?=$value['groupName']?>"><?=$value['nickname']?></option>
-											<?php } ?>
-										</select>
-									</div>
-								</div>
-								
-								<div class="col-md-4">
-									<div class="form-group">
-										<button type="button" id="btn-add-member" class="btn btn-block btn-default btn-flat">
-											추가 <span class="fa fa-long-arrow-down"></span>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>참여인원 <span id="count-participant">0</span>명</label>
+							<label>참여인원 <span id="count-participant"><?=COUNT($detailBossBoard['participant'])?></span>명</label>
 							
 							<table class="table table-bordered table-striped">
 								<tbody id="participant-list">
@@ -150,8 +80,29 @@
 										<th>혈맹</th>
 										<th>혈맹원</th>
 										<th>분배금</th>
-										<th>-</th>
+										<th>정산</th>
 									</tr>
+									<?php if ($detailBossBoard['participant'] != null) { ?>
+    									<?php foreach ($detailBossBoard['participant'] as $key => $value) { ?>
+    									<tr>
+    										<td><?=$value['groupName']?></td>
+    										<td><?=$value['memberNickname']?></td>
+    										<td><?=$value['dividend']?></td>
+    										<td>
+												<?php if ($value['isFinish'] == "Y") { ?>
+												완료
+												<?php } else { ?>
+												미완료
+												<?php } ?>
+											</td>
+    									</tr>
+    									<?php } ?>
+									<?php } else { ?>
+    									<tr>
+    										<td colspan="4" align="center">리스트가 없습니다.</td>
+    									</tr>
+									<?php } ?>
+									
 								</tbody>
 							</table>
 						</div>
@@ -163,7 +114,7 @@
 		<div class="row">
 			<div class="col-md-12" style="text-align: center;">
 				<button type="button" id="btn-write-boss-board" class="btn btn-primary btn-flat" style="width: 100px;">
-					등록
+					삭제
 				</button>
 				
 				<a href="/bossBoard">
@@ -206,11 +157,13 @@ $("#btn-write-boss-board").on("click", function() {
 	var bossItemObj;
 	$(".boss-item").each(function(i, v) {
 		var memberId = $(this).data("id");
+		var nickname = $(this).data("nickname");
 		var itemId = $(this).data("itemid");
 		var price = $(this).data("price");
 
 		bossItemObj = {};
 		bossItemObj.memberId = memberId;
+		bossItemObj.nickname = nickname;
 		bossItemObj.itemId = itemId;
 		bossItemObj.price = price;
 

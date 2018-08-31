@@ -1,6 +1,4 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
 
 class BossBoard extends CI_Controller {
 	
@@ -15,6 +13,8 @@ class BossBoard extends CI_Controller {
 		$this->load->model('bossboarditem_model');
 		$this->load->model('itemlist_model');
 		$this->load->model('group_model');
+		
+		$this->load->library('upload');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -36,14 +36,25 @@ class BossBoard extends CI_Controller {
 	
 	public function detail() {
 		common_header();
-	
-		$bossBoardList = $this->bossboard_model->getList();
-	
+
+		$id = $this->input->get("id");
+        
+		$transResult = array();
+		$resultBossBoard = $this->bossboard_model->getDetail($id);
+		$transResult = $resultBossBoard;
+		
+		$resultBossBoardItem = $this->bossboarditem_model->getBossItemListbyBossBoardId($id);
+		$transResult['item'] = $resultBossBoardItem;
+		$resultBossBoardParticipant = $this->bossboardparticipant_model->getBoardParticipantByBossBoardId($id);
+		$transResult['participant'] = $resultBossBoardParticipant;
+		$resultBossBoardAttachFile = $this->bossboardattachfile_model->getDetailListByBossBoardId($id);
+		$transResult['attachFile'] = $resultBossBoardAttachFile;
+		
 		$data = array(
-			"bossBoardList" => $bossBoardList,
+		    "detailBossBoard" => $transResult,
 		);
 	
-		$this->load->view("bossBoard/list.view.php", $data);
+		$this->load->view("bossBoard/detail.view.php", $data);
 	
 		common_footer();
 	}
@@ -69,7 +80,7 @@ class BossBoard extends CI_Controller {
 		$writerId = LOGIN_ID;
 		$writerNickname = LOGIN_NICKNAME;
 		$killDateTime = $this->input->post("killDateTime");
-		$bossName = $this->input->post("bossName");
+		$bossId = $this->input->post("bossId");
 		$bossManageName = $this->input->post("bossManageName");
 		$etc = $this->input->post("etc");
 		$participantList = $this->input->post("participantList");
@@ -77,58 +88,66 @@ class BossBoard extends CI_Controller {
 		$attachFile1 = $_FILES['attachFile1'];
 		$attachFile2 = $_FILES['attachFile2'];
 		
-		$resultInsertBossBoardId = $this->bossboard_model->insertBossBoard($writerId, $writerNickname, $killDateTime, $bossName, $etc, $bossManageName);
+		$resultInsertBossBoardId = $this->bossboard_model->insertBossBoard($writerId, $writerNickname, $killDateTime, $bossId, $etc, $bossManageName);
 		if ($resultInsertBossBoardId > 0) {
 			//INSERT PARTICIPANT
 			$decodeParticipantList = json_decode($participantList, true);
 			foreach ($decodeParticipantList as $key => $value) {
 				$bossBoardId = $resultInsertBossBoardId;
 				$memberId = $value['memberId'];
-				$memberNickname = $value['nickname'];
 				$dividend = $value['dividend'];
 				
-				$this->bossboardparticipant_model->insertBossParticipant($bossBoardId, $memberId, $memberNickname, $dividend);
+				$this->bossboardparticipant_model->insertBossParticipant($bossBoardId, $memberId, $dividend);
 			}
 			
 			$decodeBossItemList = json_decode($bossItemList, true);
 			foreach ($decodeBossItemList as $key => $value) {
 				$bossBoardId = $resultInsertBossBoardId;
 				$memberId = $value['memberId'];
-				$memberNickname = $value['nickname'];
 				$itemId = $value['itemId'];
 				$itemPrice = $value['price'];
 			
-				$this->bossboarditem_model->insertBossBoardItem($bossBoardId, $itemId, $itemPrice, $memberId, $memberNickname);
+				$this->bossboarditem_model->insertBossBoardItem($bossBoardId, $itemId, $itemPrice, $memberId);
 			}
 			
 			//INSERT ATTACHFILE
 			if ($attachFile1['size'] > 0) {
+			    $bossBoardId = $resultInsertBossBoardId;
+			    
 				$uploadConfig['upload_path'] = './uploads';
 				$uploadConfig['allowed_types'] = 'gif|jpg|png|bmp';
 				$uploadConfig['max_size'] = 10240;
-				$uploadConfig['file_name'] = time() + mt_rand(1, 100);
-				$this->load->library('upload', $uploadConfig);
+				$uploadConfig['file_name'] = $this->uuidgen();
+				$this->upload->initialize($uploadConfig);
 				
 				if (!$this->upload->do_upload('attachFile1')) {
 					echo $this->upload->display_errors(); exit;
 				} else {
 					$fileInfo = $this->upload->data();
-					$fileFullPath = $fileInfo['full_path'];
+					$originFileName = $fileInfo['client_name'];
+					$saveFileName = $fileInfo['file_name'];
+					$fileUrl = "http://localhost/uploads/" . $saveFileName;
+					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 				}
 			}
 			
 			if ($attachFile2['size'] > 0) {
+			    $bossBoardId = $resultInsertBossBoardId;
+			    
 				$uploadConfig['upload_path'] = './uploads';
 				$uploadConfig['allowed_types'] = 'gif|jpg|png|bmp';
 				$uploadConfig['max_size'] = 10240;
-				$uploadConfig['file_name'] = time() + mt_rand(1, 100);
-				$this->load->library('upload', $uploadConfig);
+				$uploadConfig['file_name'] = $this->uuidgen();
+				$this->upload->initialize($uploadConfig);
 			
 				if (!$this->upload->do_upload('attachFile2')) {
 					echo $this->upload->display_errors(); exit;
 				} else {
-					$fileInfo = $this->upload->data();
-					$fileFullPath = $fileInfo['full_path'];
+				    $fileInfo = $this->upload->data();
+				    $originFileName = $fileInfo['client_name'];
+				    $saveFileName = $fileInfo['file_name'];
+				    $fileUrl = "http://localhost/uploads/" . $saveFileName;
+				    $this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 				}
 			}
 			
@@ -152,19 +171,11 @@ class BossBoard extends CI_Controller {
 		echo json_encode($groupMemberList);
 	}
 	
-	private function makeDirectories($sPath) {
-		$aPath = explode('/', $sPath);
-		$sTemp = '';
-	
-		foreach ($aPath as $sVal) {
-			if(trim($sVal) == '') {
-				continue;
-			}
-	
-			$sTemp .= '/' . $sVal;
-			if (!file_exists($sTemp)) {
-				mkdir($sTemp);
-			}
-		}
+	private function uuidgen() {
+        return sprintf('%08x-%04x-%04x-%04x-%04x%08x',
+            mt_rand(0, 0xffffffff),
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff), mt_rand(0, 0xffffffff)
+        );
 	}
 }

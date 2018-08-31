@@ -74,15 +74,15 @@ class Bossboardattachfile_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function deleteBossAttachFile($id){
+	function deleteBossAttachFileByBossBoardId($BossBoardId){
 	    $sql = "
 			DELETE FROM
 				bossBoardAttachFile
 			WHERE
-				id = ?
+				bossBoardId = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($id));
+	    $resultQuery = $this->db->query($sql, array($BossBoardId));
 	    
 	    return $this->db->affected_rows();
 	}

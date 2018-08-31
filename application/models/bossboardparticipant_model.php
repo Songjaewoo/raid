@@ -9,14 +9,15 @@ class Bossboardparticipant_model extends CI_Model {
 	function getList(){
 	    $sql = "
 			SELECT
-				id,
-				bossBoardId,
-				memberId,
-				memberNickname,
-				dividend,
-				isFinish
+				bp.id,
+				bp.bossBoardId,
+				bp.memberId,
+				m.nickname AS memberNickname,
+				bp.dividend,
+				bp.isFinish
 			FROM
-				bossBoardParticipant
+				bossBoardParticipant bp
+                INNER JOIN member m ON (m.id = bp.memberId)
 		";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();
@@ -27,16 +28,19 @@ class Bossboardparticipant_model extends CI_Model {
 	function getBoardParticipantByBossBoardId($bossBoardId){
 	    $sql = "
 			SELECT
-				id,
-				bossBoardId,
-				memberId,
-				memberNickname,
-				dividend,
-				isFinish
+				bp.id,
+				bp.bossBoardId,
+				bp.memberId,
+				m.nickname AS memberNickname,
+                gn.name AS groupName,
+				bp.dividend,
+				bp.isFinish
 			FROM
-				bossBoardParticipant
+				bossBoardParticipant bp
+                INNER JOIN member m ON (m.id = bp.memberId)
+                INNER JOIN groupName gn ON (gn.id = m.groupNameId)
 			WHERE
-				bossBoardId = ?
+				bp.bossBoardId = ?
 		";
 	    
 	    $resultQuery = $this->db->query($sql, array($bossBoardId))->result_array();
@@ -60,19 +64,18 @@ class Bossboardparticipant_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
-	function insertBossParticipant($bossBoardId, $memberId, $memberNickname, $dividend, $isFinish = "N"){
+	function insertBossParticipant($bossBoardId, $memberId, $dividend, $isFinish = "N"){
 	    $sql = "
 			INSERT INTO
 				bossBoardParticipant
 			SET
 				bossBoardId = ?,
 				memberId = ?,
-				memberNickname = ?,
 				dividend = ?,
 				isFinish = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($bossBoardId, $memberId, $memberNickname, $dividend, $isFinish));
+	    $resultQuery = $this->db->query($sql, array($bossBoardId, $memberId, $dividend, $isFinish));
 	    
 	    return $this->db->insert_id();
 	}

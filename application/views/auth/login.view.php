@@ -48,7 +48,7 @@
 <!-- 				</div> -->
 				
 				<div class="form-group has-feedback">
-					<button type="button" id="btn-login" class="btn btn-danger btn-block btn-flat">로그인</button>
+					<button type="submit" id="btn-login" class="btn btn-danger btn-block btn-flat">로그인</button>
 				</div>
 				
 				<div class="form-group has-feedback">
