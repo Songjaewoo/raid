@@ -1,0 +1,98 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Boss extends CI_Controller {
+	
+	function __construct(){
+		parent::__construct();
+	
+		$this->load->model('boss_model');
+		$this->load->model('tax_model');
+		
+		$this->load->helper('header_footer_helper');
+		$this->load->helper('alert_helper');
+		$this->load->helper('location_helper');
+	}
+	
+	public function index() {
+		common_header();
+		
+		$this->load->view("boss/boss.view.php");
+		
+		common_footer();
+	}
+	
+	public function getBossList_ajax() {
+		$currentDateTime = date("Y-m-d H:i");
+		$bossList = $this->boss_model->getList();
+		$taxPercent = $this->tax_model->getTax();
+
+		$data = array(
+			"currentDateTime" => $currentDateTime,
+			"bossList" => $bossList,
+		    "taxPercent" => $taxPercent,
+		);
+		
+		$this->load->view("boss/list.view.php", $data);
+	}
+	
+	public function updateKillDateTime_ajax() {
+		$id = $this->input->post("id");
+		$result = $this->boss_model->updateKillDateTime($id);
+	
+		if ($result > 0) {
+			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $result;
+		} else {
+			$jsonResult['status'] = 404;
+			$jsonResult['data'] = $result;
+		}
+		
+		echo json_encode($jsonResult);
+	}
+	
+	public function updateKillPass_ajax() {
+		$id = $this->input->post("id");
+		$result = $this->boss_model->updateKillPass($id);
+	
+		if ($result > 0) {
+			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $result;
+		} else {
+			$jsonResult['status'] = 404;
+			$jsonResult['data'] = $result;
+		}
+	
+		echo json_encode($jsonResult);
+	}
+	
+	public function updateDirectDateTime_ajax() {
+		$id = $this->input->post("id");
+		$updateTime = $this->input->post("updateTime");
+		$result = $this->boss_model->updateDirectDateTime($id, $updateTime);
+	
+		if ($result > 0) {
+			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $result;
+		} else {
+			$jsonResult['status'] = 404;
+			$jsonResult['data'] = $result;
+		}
+	
+		echo json_encode($jsonResult);
+	}
+	
+	public function updateTaxPercent_ajax() {
+	    $taxPercent = $this->input->post("taxPercent");
+	    $result = $this->tax_model->updateTax($taxPercent);
+	    
+	    if ($result > 0) {
+	        $jsonResult['status'] = 200;
+	        $jsonResult['data'] = $result;
+	    } else {
+	        $jsonResult['status'] = 404;
+	        $jsonResult['data'] = $result;
+	    }
+	    
+	    echo json_encode($jsonResult);
+	}
+}
