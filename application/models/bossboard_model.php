@@ -39,7 +39,7 @@ class Bossboard_model extends CI_Model {
 				bossBoard b
                 LEFT JOIN boss bs ON (b.bossId = bs.id)
 			ORDER BY
-				b.killDateTime DESC
+				b.killDateTime DESC, b.id DESC
 		";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();

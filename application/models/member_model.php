@@ -31,6 +31,31 @@ class Member_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
+	function getMemberDetailById($id) {
+	    $sql = "
+			SELECT
+				m.id,
+				m.memberId,
+				m.nickname,
+				m.password,
+				m.createdDateTime,
+				m.updatedDateTime,
+				m.level,
+				m.approval,
+				m.groupNameId,
+				g.name AS groupName
+			FROM
+				member m
+				INNER JOIN groupName g ON (m.groupNameId = g.id)
+			WHERE
+				m.id = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($id))->row_array();
+	    
+	    return $resultQuery;
+	}
+	
 	function isExistMemberId($memberId) {
 		$sql = "
 			SELECT

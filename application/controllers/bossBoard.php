@@ -51,6 +51,7 @@ class BossBoard extends CI_Controller {
 		$transResult['attachFile'] = $resultBossBoardAttachFile;
 		
 		$data = array(
+		    "bossBoardId" => $id,
 		    "detailBossBoard" => $transResult,
 		);
 	
@@ -152,8 +153,10 @@ class BossBoard extends CI_Controller {
 			}
 			
 			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $resultInsertBossBoardId;
 		} else {
 			$jsonResult['status'] = 400;
+			$jsonResult['data'] = null;
 		}
 		
 		echo json_encode($jsonResult);
@@ -169,6 +172,24 @@ class BossBoard extends CI_Controller {
 		$groupMemberList = $this->member_model->getMemberListByGroup($groupId);
 		
 		echo json_encode($groupMemberList);
+	}
+	
+	public function delete_ajax() {
+	    $bossBoardId = $this->input->post("bossBoardId");
+	    
+	    $resultDeleteBossBoard = $this->bossboard_model->deleteBossBoard($bossBoardId);
+	    
+	    if ($resultDeleteBossBoard > 0) {
+    	    $this->bossboardattachfile_model->deleteBossAttachFileByBossBoardId($bossBoardId);
+    	    $this->bossboarditem_model->deleteBossBoardItemByBossBoardId($bossBoardId);
+    	    $this->bossboardparticipant_model->deleteBossParticipantByBossBoardId($bossBoardId);
+    	    
+    	    $jsonResult['status'] = 200;
+	    } else {
+	        $jsonResult['status'] = 400;
+	    }
+	    
+	    echo json_encode($jsonResult);
 	}
 	
 	private function uuidgen() {

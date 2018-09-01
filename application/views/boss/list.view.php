@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-8">
-			<div class="box">
+			<div class="box box-danger">
 				<div class="box-header with-border">
 					<h3 class="box-title">
 						보스 젠 시간
@@ -52,11 +52,11 @@
 		</div>
 		
 		<div class="col-md-4">
-			<div class="box">
+			<div class="box box-danger">
 				<div class="box-header with-border">
 					<h3 class="box-title">계산기</h3>
 					
-					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".bs-example-modal-sm">
+					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".tax-modal">
 						세율수정
 					</button>
 				</div>
@@ -99,7 +99,7 @@
 	</div>
 </section>
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<div class="modal fade tax-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-body">

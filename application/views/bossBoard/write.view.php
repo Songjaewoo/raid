@@ -2,7 +2,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="box">
+				<div class="box box-danger">
 					<div class="box-body">
 						<div class="form-group">
 							<label>날짜</label>
@@ -115,7 +115,7 @@
 			</div>
 			
 			<div class="col-md-6">
-				<div class="box">
+				<div class="box box-danger">
 					<div class="box-body">
 						<div class="form-group">
 							<label>참여인원 추가</label>
@@ -167,8 +167,8 @@
 				</button>
 				
 				<a href="/bossBoard">
-					<button type="button" class="btn btn-danger btn-flat" style="width: 100px;">
-						목록
+					<button type="button" class="btn btn-default btn-flat" style="width: 100px;">
+						취소
 					</button>
 				</a>
 			</div>
@@ -216,7 +216,7 @@ $("#btn-write-boss-board").on("click", function() {
 
 		bossItemList.push(bossItemObj);
 	});
-	
+
 	formData.append("killDateTime", killDateTime);
 	formData.append("bossId", bossId);
 	formData.append("etc", etc);
@@ -226,31 +226,39 @@ $("#btn-write-boss-board").on("click", function() {
 	formData.append("bossItemList", JSON.stringify(bossItemList));
 
 	if (killDateTime == "") {
-		alert("잡은 날짜를 입력해 주세요.");
+		alert("날짜를 입력해 주세요.");
 		return;
 	}
-	
-	$.ajax({
-		type : "POST",
-		data : formData,
-		dataType : "json",
-		processData: false,
-		contentType: false,
-		url : "/bossBoard/write_submit_ajax",
-		success : function(result) {
-			console.log(result);
-			if (result.status == 200) {
-				alert("등록 하였습니다.");
-			} else {
-				alert("오류");
-			}
-		},
-		error : function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+
+	if (bossItemList.length == 0) {
+		alert("아이템을 추가해 주세요.");
+		return;
+	}
+
+	if (confirm("등록 하시겠습니까?")) {
+    	$.ajax({
+    		type : "POST",
+    		data : formData,
+    		dataType : "json",
+    		processData: false,
+    		contentType: false,
+    		url : "/bossBoard/write_submit_ajax",
+    		success : function(result) {
+    			if (result.status == 200) {
+        			var resultId = result.data;
+    				alert("등록 하였습니다.");
+    				location.href = "/bossBoard/detail?id=" + resultId;
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error : function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
 });
 
 $('#is-check-buyer').change(function() {
@@ -350,13 +358,13 @@ $("#btn-add-member").on("click", function() {
 		var memberId = $(this).val();
 		var nickname = $(this).text();
 		var groupName = $(this).data("groupname");
-		var dividend = 1;
+		var dividend = 1; //TODO CALC
 		
 		html += "<tr class='participant-member' data-id='" + memberId + "' data-nickname='" + nickname + "' data-dividend='" + dividend + "'>";
 		html += "	<td>" + groupName + "</td>";
 		html += "	<td>" + nickname + "</td>";
 		html += "	<td>" + dividend + "</td>";
-		html += "	<td><button type='button' class='btn-del-participant btn btn-danger btn-flat btn-xs'>삭제</button></td>";
+		html += "	<td><button type='button' class='btn-del-participant btn btn-danger btn-flat btn-sm'>삭제</button></td>";
 		html += "</tr>";
 	});
 
@@ -384,7 +392,7 @@ $("#btn-add-item").on("click", function() {
 	html += "	<td>" + itemName + "</td>";
 	html += "	<td>" + price + "</td>";
 	html += "	<td>" + nickname + "</td>";
-	html += "	<td><button type='button' class='btn-del-boss-item btn btn-danger btn-flat btn-xs'>삭제</button></td>";
+	html += "	<td><button type='button' class='btn-del-boss-item btn btn-danger btn-flat btn-sm'>삭제</button></td>";
 	html += "</tr>";
 
 	$("#boss-item-list").append(html);

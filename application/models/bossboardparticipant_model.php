@@ -80,6 +80,37 @@ class Bossboardparticipant_model extends CI_Model {
 	    return $this->db->insert_id();
 	}
 	
+	function updateDividendFinish($id, $isFinish) {
+	    $sql = "
+			UPDATE
+				bossBoardParticipant
+			SET
+				isFinish = 'Y'
+			WHERE
+				id = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($id, $isFinish));
+	    
+	    return $this->db->affected_rows();
+	}
+	
+	function updateDividendFinishInClause($implodeId, $isFinish) {
+	    $a = "($implodeId)";
+	    $sql = "
+			UPDATE
+				bossBoardParticipant
+			SET
+				isFinish = 'Y'
+			WHERE
+				id IN ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($a, $isFinish));
+	    
+	    return $this->db->affected_rows();
+	}
+	
 	function deleteBossParticipantByBossBoardId($bossBoardId){
 	    $sql = "
 			DELETE FROM
@@ -91,5 +122,76 @@ class Bossboardparticipant_model extends CI_Model {
 	    $resultQuery = $this->db->query($sql, array($bossBoardId));
 	    
 	    return $this->db->affected_rows();
+	}
+	
+	function getDividendListWithMember($s = null) {
+	    $paramArray = array();
+	    $whereClause = "";
+	    if ($s != null) {
+	        $whereClause = "AND m.nickname LIKE ?";
+	        $paramArray[] = "%$s%";
+	    }
+	    
+	    $sql = "
+			SELECT 
+            	bp.id,
+                bp.memberId,
+                m.level AS level,
+                (CASE 
+            		WHEN level = 1 THEN '일반'
+            		WHEN level = 2 THEN '보스관리자'
+                    WHEN level = 3 THEN '수호'
+                    WHEN level = 99 THEN '시스템관리자'
+                END) AS levelName,
+                gn.name AS groupName,
+                m.className AS className,
+                m.nickname AS nickname,
+                SUM(bp.dividend) AS dividend,
+                bp.isFinish
+            FROM 
+            	bossBoardParticipant bp
+                INNER JOIN member m ON (m.id = bp.memberId)
+                INNER JOIN groupName gn ON (gn.id = m.groupNameId)
+            WHERE
+            	bp.isFinish = 'N'
+                $whereClause
+            GROUP BY
+            	bp.memberId
+            ORDER BY
+            	m.nickname ASC
+		";
+	    
+        $resultQuery = $this->db->query($sql, $paramArray)->result_array();
+	    
+	    return $resultQuery;
+	}
+	
+	function getDividendDetailWithMember($memberId) {
+	    $sql = "
+			SELECT 
+            	bp.id,
+                bp.bossBoardId,
+                bp.memberId,
+                bp.dividend,
+                bp.isFinish,
+                bb.writerNickName,
+                bb.killDateTime,
+                bb.bossId,
+                b.name AS bossName,
+                bb.etc    
+            FROM 
+            	bossBoardParticipant bp
+                INNER JOIN bossBoard bb ON (bb.id = bp.bossBoardId)
+                INNER JOIN boss b ON (b.id = bb.bossId)
+            WHERE
+            	bp.isFinish = 'N'
+                AND bp.memberId = ?
+            ORDER BY
+                bb.killDateTime DESC, bb.id DESC
+        ";
+                
+	    $resultQuery = $this->db->query($sql, array($memberId))->result_array();
+        
+        return $resultQuery;
 	}
 }

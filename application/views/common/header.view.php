@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	<link rel="stylesheet" href="/asset/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="/asset/bower_components/select2/dist/css/select2.min.css">
+	<link rel="stylesheet" href="/asset/plugins/iCheck/all.css">
 	<link rel="stylesheet" href="/asset/dist/css/AdminLTE.min.css">
 	
 	<script src="/asset/bower_components/jquery/dist/jquery.min.js"></script>
@@ -23,6 +24,7 @@
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
 	<script src="/asset/plugins/jquery.validate.js"></script>
+	<script src="/asset/plugins/iCheck/icheck.min.js"></script>
 	<script src="/asset/dist/js/adminlte.min.js"></script>
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -68,12 +70,22 @@
 					<li class="header">Menu</li>
 					<li>
 						<a href="/boss">
-							<i class="fa fa-calendar"></i> <span>보스 시간표</span>
+							<i class="fa fa-clock-o"></i> <span>보스 시간표</span>
 						</a>
 					</li>
 					<li>
 						<a href="/bossBoard">
 							<i class="fa fa-list-ul"></i> <span>보스탐 참여</span>
+						</a>
+					</li>
+					<li>
+						<a href="/item">
+							<i class="fa fa-book"></i> <span>아이템 혈원가</span>
+						</a>
+					</li>
+					<li>
+						<a href="/dividend">
+							<i class="fa fa-credit-card"></i> <span>정산 관리</span>
 						</a>
 					</li>
 				</ul>

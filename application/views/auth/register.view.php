@@ -74,12 +74,12 @@
 				</div>
 				
 				<div class="form-group has-feedback">
-					<button type="button" id="btn-register" class="btn btn-danger btn-block btn-flat">회원가입</button>
+					<button type="button" id="btn-register" class="btn btn-primary btn-block btn-flat">회원가입</button>
 				</div>
 				
 				<div class="form-group has-feedback">
 					<a href="/auth/login">
-						<button type="button" class="btn btn-primary btn-block btn-flat">로그인</button>
+						<button type="button" class="btn btn-default btn-block btn-flat">로그인</button>
 					</a>
 				</div>
 			</form>

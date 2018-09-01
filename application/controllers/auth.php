@@ -10,7 +10,6 @@ class Auth extends CI_Controller {
 		
 		$this->load->helper('alert_helper');
 		$this->load->helper('location_helper');
-		$this->load->helper('cookie');
 	}
 	
 	public function register() {
