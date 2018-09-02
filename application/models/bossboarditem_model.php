@@ -36,7 +36,14 @@ class Bossboarditem_model extends CI_Model {
 				bi.itemPrice,
 				bi.buyerMemberId,
 				m.nickname AS buyerMemberNickname,
-                il.name AS itemName
+                il.name AS itemName,
+                il.level AS itemLevel,
+                (CASE 
+            		WHEN il.level = 1 THEN '#000000'
+            		WHEN il.level = 2 THEN '#1783b1'
+                    WHEN il.level = 3 THEN '#e60000'
+                    WHEN il.level = 4 THEN '#c841d9'
+                END) AS itemLevelColor
 			FROM
 				bossBoardItem bi
                 INNER JOIN itemList il ON (bi.itemId = il.id)

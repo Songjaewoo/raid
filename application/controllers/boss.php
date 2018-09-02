@@ -35,6 +35,29 @@ class Boss extends CI_Controller {
 		$this->load->view("boss/list.view.php", $data);
 	}
 	
+	public function addBoss_ajax() {
+	    $bossName = $this->input->post("bossName");
+	    $genTime = $this->input->post("genTime");
+	    
+	    if ($bossName != "" && $genTime != "") {
+	        $genTime = $genTime . ":00:00";
+    	    $result = $this->boss_model->insertBoss($bossName, $genTime);
+    	    
+    	    if ($result > 0) {
+    	        $jsonResult['status'] = 200;
+    	        $jsonResult['data'] = $result;
+    	    } else {
+    	        $jsonResult['status'] = 404;
+    	        $jsonResult['data'] = $result;
+    	    }
+	    } else {
+	        $jsonResult['status'] = 404;
+	        $jsonResult['data'] = $result;
+	    }
+	    
+	    echo json_encode($jsonResult);
+	}
+	
 	public function updateKillDateTime_ajax() {
 		$id = $this->input->post("id");
 		$result = $this->boss_model->updateKillDateTime($id);

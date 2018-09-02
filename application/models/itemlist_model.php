@@ -43,4 +43,51 @@ class Itemlist_model extends CI_Model {
 		
 		return $resultQuery;
 	}
+	
+	function getItemDetailById($id) {
+	    $sql = "
+			SELECT
+				id,
+				name,
+				price,
+				level,
+                (CASE
+            		WHEN level = 1 THEN '기타'
+            		WHEN level = 2 THEN '희귀'
+                    WHEN level = 3 THEN '영웅'
+                    WHEN level = 4 THEN '전설'
+                END) AS levelName,
+                (CASE
+            		WHEN level = 1 THEN '#000000'
+            		WHEN level = 2 THEN '#1783b1'
+                    WHEN level = 3 THEN '#e60000'
+                    WHEN level = 4 THEN '#c841d9'
+                END) AS levelColor
+			FROM
+				itemList
+            WHERE
+                id = ?
+		";
+                
+        $resultQuery = $this->db->query($sql, array($id))->row_array();
+        
+        return $resultQuery;
+	}
+	
+	function updateItem($name, $price, $level, $id){
+	    $sql = "
+		UPDATE
+			itemList
+		SET
+			name = ?,
+			price = ?,
+			level = ?
+		WHERE
+			id = ?
+	";
+	    
+	    $resultQuery = $this->db->query($sql, array($name, $price, $level, $id));
+	    
+	    return $this->db->affected_rows();
+	}
 }

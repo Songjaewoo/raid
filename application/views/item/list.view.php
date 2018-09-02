@@ -24,7 +24,7 @@
 									<td><?=$value['name']?></td>
 									<td><?=number_format($value['price'])?></td>
 									<td>
-										<button type="button" id="btn-update-item" data-id="<?=$value['id']?>" class="btn btn-sm btn-primary btn-flat">
+										<button type="button" data-id="<?=$value['id']?>" class="btn-update-item-modal btn btn-sm btn-primary btn-flat">
                         					수정
                         				</button>
 									</td>
@@ -38,3 +38,26 @@
 		</div>
 	</section>
 </div>
+
+<div id="update-item-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+</div>
+
+<script>
+$(".btn-update-item-modal").on("click", function() {
+	var itemId = $(this).data("id");
+	$.ajax({
+		type: "GET",
+		data: {"itemId": itemId},
+		url: "/item/updateItemModal_ajax",
+		success: function(result) {
+			$("#update-item-modal").html(result);
+			$('#update-item-modal').modal('show');
+		},
+		error: function(xhr, status, error) {
+			console.log(xhr);
+			console.log(status);
+			console.log(error);
+		}
+	});
+});
+</script>

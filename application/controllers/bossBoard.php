@@ -63,7 +63,7 @@ class BossBoard extends CI_Controller {
 	public function write() {
 		common_header();
 		$bossList = $this->boss_model->getBossNameList();
-		$groupMemberList = $this->member_model->getMemberListByGroup();
+		$groupMemberList = $this->member_model->getMemberList();
 		$itemList = $this->itemlist_model->getList();
 		
 		$data = array(
@@ -86,17 +86,22 @@ class BossBoard extends CI_Controller {
 		$etc = $this->input->post("etc");
 		$participantList = $this->input->post("participantList");
 		$bossItemList = $this->input->post("bossItemList");
+		$totalItemPrice = $this->input->post("totalItemPrice");
+		$totalParticipantMember = $this->input->post("totalParticipantMember");
 		$attachFile1 = $_FILES['attachFile1'];
 		$attachFile2 = $_FILES['attachFile2'];
 		
 		$resultInsertBossBoardId = $this->bossboard_model->insertBossBoard($writerId, $writerNickname, $killDateTime, $bossId, $etc, $bossManageName);
 		if ($resultInsertBossBoardId > 0) {
+		    if ($totalParticipantMember > 0) {
+    		    $dividend = floor(($totalItemPrice * 0.92) / $totalParticipantMember);
+		    }
+		    
 			//INSERT PARTICIPANT
 			$decodeParticipantList = json_decode($participantList, true);
 			foreach ($decodeParticipantList as $key => $value) {
 				$bossBoardId = $resultInsertBossBoardId;
 				$memberId = $value['memberId'];
-				$dividend = $value['dividend'];
 				
 				$this->bossboardparticipant_model->insertBossParticipant($bossBoardId, $memberId, $dividend);
 			}
@@ -127,7 +132,7 @@ class BossBoard extends CI_Controller {
 					$fileInfo = $this->upload->data();
 					$originFileName = $fileInfo['client_name'];
 					$saveFileName = $fileInfo['file_name'];
-					$fileUrl = "http://localhost/uploads/" . $saveFileName;
+					$fileUrl = SERVER_DOMAIN . "/uploads/" . $saveFileName;
 					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 				}
 			}
@@ -147,7 +152,7 @@ class BossBoard extends CI_Controller {
 				    $fileInfo = $this->upload->data();
 				    $originFileName = $fileInfo['client_name'];
 				    $saveFileName = $fileInfo['file_name'];
-				    $fileUrl = "http://localhost/uploads/" . $saveFileName;
+				    $fileUrl = SERVER_DOMAIN . "/uploads/" . $saveFileName;
 				    $this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 				}
 			}
@@ -160,18 +165,6 @@ class BossBoard extends CI_Controller {
 		}
 		
 		echo json_encode($jsonResult);
-	}
-	
-	public function groupMemberList_ajax() {
-		$groupId = $this->input->get("groupId");
-		
-		if ($groupId == 0) {
-			$groupId = null;
-		}
-		
-		$groupMemberList = $this->member_model->getMemberListByGroup($groupId);
-		
-		echo json_encode($groupMemberList);
 	}
 	
 	public function delete_ajax() {

@@ -41,6 +41,14 @@ class Member_model extends CI_Model {
 				m.createdDateTime,
 				m.updatedDateTime,
 				m.level,
+                (CASE 
+            		WHEN m.level = 1 THEN '일반'
+            		WHEN m.level = 2 THEN '보탐'
+            		WHEN m.level = 3 THEN '수호'
+            		WHEN m.level = 4 THEN '군주'
+            		WHEN m.level = 99 THEN '관리자'
+            	END) AS levelName,
+                m.className,
 				m.approval,
 				m.groupNameId,
 				g.name AS groupName
@@ -110,38 +118,70 @@ class Member_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
-	function getMemberListByGroup($groupNameId = null) {
+	function getMemberList($groupNameId = null, $level = null, 
+                           $className = null, $approval = null,
+                           $nickname = null) {
+	    
 	    $paramArray = array();
 	    $whereClause = "";
 	    if ($groupNameId != null) {
-	        $whereClause = "AND groupNameId = ?";
+	        $whereClause .= "AND m.groupNameId = ?";
 	        $paramArray[] = $groupNameId;
+	    }
+	    
+	    if ($level != null) {
+	        $whereClause .= "AND m.level = ?";
+	        $paramArray[] = $level;
+	    }
+	    
+	    if ($className != null) {
+	        $whereClause .= "AND m.className = ?";
+	        $paramArray[] = $className;
+	    }
+	    
+	    if ($approval != "") {
+	        $whereClause .= "AND m.approval = ?";
+	        $paramArray[] = $approval;
+	    }
+	    
+	    if ($nickname != null) {
+	        $whereClause .= "AND m.nickname = ?";
+	        $paramArray[] = "%$nickname%";
 	    }
 	    
 	    $sql = "
 			SELECT
-				m.id,
-				m.memberId,
-				m.nickname,
-				m.createdDateTime,
-				m.updatedDateTime,
-				m.level,
-				m.approval,
-				m.groupNameId,
-				g.name AS groupName
-			FROM
-				member m
-				INNER JOIN groupName g ON (m.groupNameId = g.id)
+            	m.id,
+            	m.memberId,
+            	m.nickname,
+            	m.password,
+            	m.createdDateTime,
+            	m.updatedDateTime,
+            	m.level,
+                (CASE 
+            		WHEN m.level = 1 THEN '일반'
+            		WHEN m.level = 2 THEN '보탐'
+            		WHEN m.level = 3 THEN '수호'
+            		WHEN m.level = 4 THEN '군주'
+            		WHEN m.level = 99 THEN '관리자'
+            	END) AS levelName,
+                m.className,
+            	m.approval,
+            	m.groupNameId,
+            	g.name AS groupName
+            FROM
+            	member m
+            	INNER JOIN groupName g ON (m.groupNameId = g.id)
 			WHERE
 				1=1
 				$whereClause
 			ORDER BY
-				nickname ASC
+				g.id ASC, m.nickname ASC
 	   ";
-				
-				$resultQuery = $this->db->query($sql, $paramArray)->result_array();
-				
-				return $resultQuery;
+
+		$resultQuery = $this->db->query($sql, $paramArray)->result_array();
+		
+		return $resultQuery;
 	}
 	
 	function insertMember($memberId, $nickname, $className, $password, $groupNameId) {
@@ -183,19 +223,21 @@ class Member_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function updateMemberBaseInfo($nickname, $groupNameId, $id) {
+	function updateMemberBaseInfo($nickname, $className, $level, $groupNameId, $id) {
 	    $sql = "
 			UPDATE
 				member
 			SET
 				nickname = ?,
-				updatedDateTime = now(),
-				groupNameId = ?
+                className = ?,
+                level = ?,
+				groupNameId = ?,
+				updatedDateTime = now()
 			WHERE
 				id = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($nickname, $groupNameId, id));
+	    $resultQuery = $this->db->query($sql, array($nickname, $className, $level, $groupNameId, $id));
 	    
 	    return $this->db->affected_rows();
 	}

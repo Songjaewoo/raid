@@ -7,6 +7,8 @@
 						보스 젠 시간
 						<i id="btn-refresh" class="fa fa-fw fa-refresh" style="cursor: pointer;"></i>
 					</h3>
+					
+					<button type="button" class="btn btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-boss-modal">추가</button>
 				</div>
             
 				<div class="box-body table-responsive no-padding">
@@ -102,6 +104,11 @@
 <div class="modal fade tax-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
+			<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    			<span aria-hidden="true">×</span></button>
+    			<h4 class="modal-title">세율 수정</h4>
+    		</div>
 			<div class="modal-body">
 				<input type="number" id="tax-percent" class="form-control input-sm" value="<?=$taxPercent?>">
 			</div>
@@ -112,11 +119,57 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade add-boss-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    			<span aria-hidden="true">×</span></button>
+    			<h4 class="modal-title">보스 추가</h4>
+    		</div>
+			<div class="modal-body">
+				<input type="text" id="boss-name" class="form-control input-sm" placeholder="보스명">
+				<br>
+				<input type="number" id="gen-time" class="form-control input-sm" placeholder="젠 시간">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" id="btn-add-boss" class="btn btn-flat btn-primary">추가</button>
+			</div>
+		</div>
+	</div>
+</div>
 					
 <script>
 $(".dateTimeMask").mask('0000-00-00 00:00', {
 	placeholder: "0000-00-00 00:00"
 });
+
+$("#btn-add-boss").on("click", function() {
+	var bossName = $("#boss-name").val();
+	var genTime = $("#gen-time").val();
+	
+	$.ajax({
+		type: "POST",
+		data: {"bossName": bossName, "genTime": genTime},
+		url: "/boss/addBoss_ajax",
+		dataType: "json",
+		success: function(result) {
+			if (result.status == 200) {
+				alert("추가 완료");
+				location.reload();
+			} else {
+				alert("오류");
+			}
+		},
+		error: function(xhr, status, error) {
+			console.log(xhr);
+			console.log(status);
+			console.log(error);
+		}
+	});
+})
 
 $("#btn-update-tax-percent").on("click", function() {
 	var taxPercent = $("#tax-percent").val();

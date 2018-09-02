@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="/asset/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 	<link rel="stylesheet" href="/asset/bower_components/select2/dist/css/select2.min.css">
 	<link rel="stylesheet" href="/asset/plugins/iCheck/all.css">
+	<link rel="stylesheet" href="/asset/bower_components/Ionicons/css/ionicons.min.css">
 	<link rel="stylesheet" href="/asset/dist/css/AdminLTE.min.css">
 	
 	<script src="/asset/bower_components/jquery/dist/jquery.min.js"></script>
@@ -66,26 +67,54 @@
 		
 		<aside class="main-sidebar">
 			<section class="sidebar">
+				<div class="user-panel">
+					<div class="pull-left image">
+						<img src="/asset/dist/img/avatar.png" class="img-circle" alt="User Image">
+					</div>
+					<div class="pull-left info">
+						<p><?=LOGIN_NICKNAME?></p>
+						<p href="javascript:void(0);"><i class="fa fa-dollar"></i> 
+							<?=number_format($myDividend)?>
+						</p>
+					</div>
+				</div>
+      
 				<ul class="sidebar-menu" data-widget="tree">
 					<li class="header">Menu</li>
 					<li>
+						<a href="/">
+							<i class="fa fa-home"></i>
+							<span>HOME</span>
+						</a>
+					</li>
+					<li>
 						<a href="/boss">
-							<i class="fa fa-clock-o"></i> <span>보스 시간표</span>
+							<i class="fa fa-clock-o"></i>
+							<span>보스 시간표</span>
 						</a>
 					</li>
 					<li>
 						<a href="/bossBoard">
-							<i class="fa fa-list-ul"></i> <span>보스탐 참여</span>
+							<i class="fa fa-list-ul"></i>
+							<span>보스탐 참여</span>
 						</a>
 					</li>
 					<li>
 						<a href="/item">
-							<i class="fa fa-book"></i> <span>아이템 혈원가</span>
+							<i class="fa fa-book"></i>
+							<span>아이템 혈원가</span>
 						</a>
 					</li>
 					<li>
 						<a href="/dividend">
-							<i class="fa fa-credit-card"></i> <span>정산 관리</span>
+							<i class="fa fa-dollar"></i>
+							<span>정산 관리</span>
+						</a>
+					</li>
+					<li>
+						<a href="/member">
+							<i class="fa fa-user"></i>
+							<span>회원 관리</span>
 						</a>
 					</li>
 				</ul>

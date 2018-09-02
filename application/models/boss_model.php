@@ -16,6 +16,8 @@ class Boss_model extends CI_Model {
 				ADDTIME(killDateTime, genTime) as nextTime
 			FROM
 				boss
+            WHERE
+                isDisplay = 'Y'
 			ORDER BY
 				nextTime ASC
 		";
@@ -39,6 +41,20 @@ class Boss_model extends CI_Model {
 	    $resultQuery = $this->db->query($sql)->result_array();
 	    
 	    return $resultQuery;
+	}
+	
+	function insertBoss($name, $genTime){
+	    $sql = "
+			INSERT INTO
+				boss
+			SET
+				name = ?,
+				genTime = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($name, $genTime));
+	    
+	    return $this->db->insert_id();
 	}
 	
 	function updateKillDateTime($id){

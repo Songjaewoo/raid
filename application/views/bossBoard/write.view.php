@@ -149,7 +149,6 @@
 									<tr>
 										<th>혈맹</th>
 										<th>혈맹원</th>
-										<th>분배금</th>
 										<th>-</th>
 									</tr>
 								</tbody>
@@ -192,18 +191,17 @@ $("#btn-write-boss-board").on("click", function() {
 	$(".participant-member").each(function(i, v) {
 		var memberId = $(this).data("id");
 		var nickname = $(this).data("nickname");
-		var dividend = $(this).data("dividend");
 
 		participantObj = {};
 		participantObj.memberId = memberId;
 		participantObj.nickname = nickname;
-		participantObj.dividend = dividend;
 
 		participantList.push(participantObj);
 	});
 
 	var bossItemList = [];
 	var bossItemObj;
+	var totalItemPrice = 0;
 	$(".boss-item").each(function(i, v) {
 		var memberId = $(this).data("id");
 		var itemId = $(this).data("itemid");
@@ -215,6 +213,8 @@ $("#btn-write-boss-board").on("click", function() {
 		bossItemObj.price = price;
 
 		bossItemList.push(bossItemObj);
+
+		totalItemPrice += price;
 	});
 
 	formData.append("killDateTime", killDateTime);
@@ -224,7 +224,9 @@ $("#btn-write-boss-board").on("click", function() {
 	formData.append("attachFile2", attachFile2);
 	formData.append("participantList", JSON.stringify(participantList));
 	formData.append("bossItemList", JSON.stringify(bossItemList));
-
+	formData.append("totalItemPrice", totalItemPrice);
+	formData.append("totalParticipantMember", $(".participant-member").length);
+	
 	if (killDateTime == "") {
 		alert("날짜를 입력해 주세요.");
 		return;
@@ -261,16 +263,6 @@ $("#btn-write-boss-board").on("click", function() {
 	}
 });
 
-$('#is-check-buyer').change(function() {
-	if ($(this).is(":checked")) {
-		$("#select-buyer-group").attr("disabled", false);
-		$("#select-buyer-group-member").attr("disabled", false);
-	} else {
-		$("#select-buyer-group").attr("disabled", true);
-		$("#select-buyer-group-member").attr("disabled", true);
-	}
-});
-    
 $("#attach-file1").change(function() {
 	readURL1(this);
 });
@@ -298,72 +290,16 @@ $("#select-item-list").change(function() {
 	$("#item-price").val(itemPrice);
 })
 
-$("#select-group").change(function() {
-	var groupId = $(this).val();
-	
-	$.ajax({
-		type: "GET",
-		data: {"groupId": groupId},
-		url: "/bossBoard/groupMemberList_ajax",
-		dataType: "json",
-		success: function(result) {
-			var html = "";
-			$(result).each(function(i, v) {
-				var id = v.id;
-				var nickname = v.nickname;
-				var groupName = v.groupName;
-				html += "<option value='" + id + "' data-groupname='" + groupName + "'>" + nickname + "</option>";
-			});
-
-			$("#select-group-member").html(html);
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
-})
-
-$("#select-buyer-group").change(function() {
-	var groupId = $(this).val();
-	
-	$.ajax({
-		type: "GET",
-		data: {"groupId": groupId},
-		url: "/bossBoard/groupMemberList_ajax",
-		dataType: "json",
-		success: function(result) {
-			var html = "";
-			$(result).each(function(i, v) {
-				var id = v.id;
-				var nickname = v.nickname;
-				var groupName = v.groupName;
-				html += "<option value='" + id + "' data-groupname='" + groupName + "'>" + nickname + "</option>";
-			});
-
-			$("#select-buyer-group-member").html(html);
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
-})
-
 $("#btn-add-member").on("click", function() {
 	var html = "";
 	$("#select-group-member :selected").each(function(i, v){ 
 		var memberId = $(this).val();
 		var nickname = $(this).text();
 		var groupName = $(this).data("groupname");
-		var dividend = 1; //TODO CALC
 		
-		html += "<tr class='participant-member' data-id='" + memberId + "' data-nickname='" + nickname + "' data-dividend='" + dividend + "'>";
+		html += "<tr class='participant-member' data-id='" + memberId + "' data-nickname='" + nickname + "'>";
 		html += "	<td>" + groupName + "</td>";
 		html += "	<td>" + nickname + "</td>";
-		html += "	<td>" + dividend + "</td>";
 		html += "	<td><button type='button' class='btn-del-participant btn btn-danger btn-flat btn-sm'>삭제</button></td>";
 		html += "</tr>";
 	});

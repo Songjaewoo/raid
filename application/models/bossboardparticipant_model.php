@@ -61,7 +61,37 @@ class Bossboardparticipant_model extends CI_Model {
 	    
 	    $resultQuery = $this->db->query($sql, array($memberId, $isFinish))->row_array();
 	    
-	    return $resultQuery;
+	    return $resultQuery['dividend'];
+	}
+	
+	function countMemberDiviend($isFinish = "N") {
+	    $sql = "
+			SELECT
+            	COUNT(DISTINCT memberId) AS count
+            FROM
+            	bossBoardParticipant
+            WHERE
+            	isFinish = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($isFinish))->row_array();
+	    
+	    return $resultQuery['count'];
+	}
+	
+	function getAllDiviend($isFinish = "N") {
+	    $sql = "
+			SELECT
+				SUM(dividend) AS dividend
+			FROM
+				bossBoardParticipant
+			WHERE
+				isFinish = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($isFinish))->row_array();
+	    
+	    return $resultQuery['dividend'];
 	}
 	
 	function insertBossParticipant($bossBoardId, $memberId, $dividend, $isFinish = "N"){
@@ -139,9 +169,10 @@ class Bossboardparticipant_model extends CI_Model {
                 m.level AS level,
                 (CASE 
             		WHEN level = 1 THEN '일반'
-            		WHEN level = 2 THEN '보스관리자'
+            		WHEN level = 2 THEN '보탐'
                     WHEN level = 3 THEN '수호'
-                    WHEN level = 99 THEN '시스템관리자'
+                    WHEN level = 4 THEN '군주'
+                    WHEN level = 99 THEN '관리자'
                 END) AS levelName,
                 gn.name AS groupName,
                 m.className AS className,

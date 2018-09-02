@@ -25,4 +25,39 @@ class Item extends CI_Controller {
 	    
 	    common_footer();
 	}
+	
+	public function updateItemModal_ajax() {
+        $itemId = $this->input->get("itemId");
+        
+        $itemDetail = $this->itemlist_model->getItemDetailById($itemId);
+	    $data = array(
+	        "itemDetail" => $itemDetail,
+	    );
+	    
+	    $this->load->view("item/modal/update.modal.view.php", $data);
+	}
+	
+	public function updateItem_ajax() {
+	    $itemId = $this->input->post("itemId");
+	    $itemName = $this->input->post("itemName");
+	    $itemLevel = $this->input->post("itemLevel");
+	    $itemPrice = $this->input->post("itemPrice");
+	    
+	    $resultUpdate = $this->itemlist_model->updateItem($itemName, $itemPrice, $itemLevel, $itemId);
+	    
+	    if ($resultUpdate > 0) {
+	        if ($resultUpdate > 0) {
+	            $jsonResult['status'] = 200;
+	            $jsonResult['data'] = $resultUpdate;
+	        } else {
+	            $jsonResult['status'] = 404;
+	            $jsonResult['data'] = $resultUpdate;
+	        }
+	    } else {
+	        $jsonResult['status'] = 404;
+	        $jsonResult['data'] = $result;
+	    }
+	    
+	    echo json_encode($jsonResult);
+	}
 }

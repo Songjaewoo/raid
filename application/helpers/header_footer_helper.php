@@ -2,8 +2,14 @@
 
 function common_header($headerParam = null) {
 	$CI =& get_instance();
+	$CI->load->model('bossboardparticipant_model');
 	
-	$CI->load->view('common/header.view.php');
+	$myDividend = $CI->bossboardparticipant_model->getMyDiviend(LOGIN_ID, "N");
+	$data = array(
+	    "myDividend" => $myDividend,
+	);
+	
+	$CI->load->view('common/header.view.php', $data);
 }
 
 function common_footer($footerParam = null) {
