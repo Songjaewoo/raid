@@ -111,6 +111,23 @@
 							<span>정산 관리</span>
 						</a>
 					</li>
+					<li class="treeview">
+						<a href="#">
+							<i class="fa fa-dollar"></i> 
+							<span>혈비 관리</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+                            <li><a href="/fund/use">
+                            	<i class="fa fa-credit-card"></i> 혈비 사용</a>
+                            </li>
+                            <li><a href="/fund/back">
+                            	<i class="fa fa-credit-card"></i> 혈비 상납</a>
+                            </li>
+						</ul>
+					</li>
 					<li>
 						<a href="/member">
 							<i class="fa fa-user"></i>

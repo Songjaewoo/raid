@@ -8,7 +8,7 @@
 						<i id="btn-refresh" class="fa fa-fw fa-refresh" style="cursor: pointer;"></i>
 					</h3>
 					
-					<button type="button" class="btn btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-boss-modal">추가</button>
+					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-boss-modal">추가</button>
 				</div>
             
 				<div class="box-body table-responsive no-padding">

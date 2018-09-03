@@ -8,14 +8,14 @@ class Group_model extends CI_Model {
 	
 	function getList(){
 	    $sql = "
-		SELECT
-			id,
-			name
-		FROM
-			groupName
-        ORDER BY
-            id ASC
-	";
+    		SELECT
+    			id,
+    			name
+    		FROM
+    			groupName
+            ORDER BY
+                id ASC
+    	";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();
 	    
@@ -24,11 +24,11 @@ class Group_model extends CI_Model {
 	
 	function insertGroup($name){
 	    $sql = "
-		INSERT INTO
-			groupName
-		SET
-			name = ?
-	";
+    		INSERT INTO
+    			groupName
+    		SET
+    			name = ?
+    	";
 	    
 	    $resultQuery = $this->db->query($sql, array($name));
 	    
@@ -37,13 +37,13 @@ class Group_model extends CI_Model {
 	
 	function updateGroup($id, $name){
 	    $sql = "
-		UPDATE
-			groupName
-		SET
-			name = ?
-		WHERE
-			id = ?
-	";
+    		UPDATE
+    			groupName
+    		SET
+    			name = ?
+    		WHERE
+    			id = ?
+    	";
 	    
 	    $resultQuery = $this->db->query($sql, array($name, $id));
 	    
@@ -52,11 +52,11 @@ class Group_model extends CI_Model {
 	
 	function deleteGroup($id){
 	    $sql = "
-		DELETE FROM
-			groupName
-		WHERE
-			id = ?
-	";
+    		DELETE FROM
+    			groupName
+    		WHERE
+    			id = ?
+    	";
 	    
 	    $resultQuery = $this->db->query($sql, array($id));
 	    

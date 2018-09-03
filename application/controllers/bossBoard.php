@@ -49,7 +49,7 @@ class BossBoard extends CI_Controller {
 		$transResult['participant'] = $resultBossBoardParticipant;
 		$resultBossBoardAttachFile = $this->bossboardattachfile_model->getDetailListByBossBoardId($id);
 		$transResult['attachFile'] = $resultBossBoardAttachFile;
-		
+
 		$data = array(
 		    "bossBoardId" => $id,
 		    "detailBossBoard" => $transResult,

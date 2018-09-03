@@ -76,15 +76,15 @@ class Itemlist_model extends CI_Model {
 	
 	function updateItem($name, $price, $level, $id){
 	    $sql = "
-		UPDATE
-			itemList
-		SET
-			name = ?,
-			price = ?,
-			level = ?
-		WHERE
-			id = ?
-	";
+    		UPDATE
+    			itemList
+    		SET
+    			name = ?,
+    			price = ?,
+    			level = ?
+    		WHERE
+    			id = ?
+    	";
 	    
 	    $resultQuery = $this->db->query($sql, array($name, $price, $level, $id));
 	    

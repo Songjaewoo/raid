@@ -33,7 +33,7 @@
 									<?php if ($detailBossBoard['item'] != null) { ?>
     									<?php foreach ($detailBossBoard['item'] as $key => $value) { ?>
     									<tr>
-    										<td><?=$value['itemName']?></td>
+    										<td><span style="color: <?=$value['itemLevelColor']?>;"><?=$value['itemName']?></span></td>
     										<td><?=$value['itemPrice']?></td>
     										<td><?=$value['buyerMemberNickname']?></td>
     									</tr>
