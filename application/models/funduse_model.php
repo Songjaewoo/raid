@@ -50,23 +50,9 @@ class Funduse_model extends CI_Model {
 	function getCurrentGroupFund() {
 	    $sql = "
 			SELECT 
-            	(SELECT
-            		SUM(bi.itemPrice) as groupMoney
-            	FROM
-            		bossBoardItem bi
-            	WHERE
-            		(SELECT
-            			COUNT(bp.id)
-            		FROM
-            			bossBoardParticipant bp
-            		WHERE bp.bossBoardId = bi.bossBoardId) = 0)
-
-            	+
-
-                (SELECT 
-            		SUM(money) as useMoney 
-            	FROM 
-            		fundUse) AS remainFund
+            	IFNULL(SUM(money), 0) AS remainFund 
+            FROM 
+            	fundUse
 		";
 	    
 	    $resultQuery = $this->db->query($sql)->row_array();

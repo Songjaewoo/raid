@@ -120,7 +120,7 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-                            <li><a href="/fund/use">
+                            <li><a href="/fund/useList">
                             	<i class="fa fa-credit-card"></i> 혈비 사용</a>
                             </li>
                             <li><a href="/fund/back">

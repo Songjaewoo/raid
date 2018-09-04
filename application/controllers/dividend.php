@@ -7,6 +7,7 @@ class Dividend extends CI_Controller {
 	
 		$this->load->model('member_model');
 		$this->load->model('bossboardparticipant_model');
+		$this->load->model('funduse_model');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -52,6 +53,18 @@ class Dividend extends CI_Controller {
 	    $resultUpdate = $this->bossboardparticipant_model->updateDividendFinish($id, "Y");
 	    
 	    if ($resultUpdate > 0) {
+	    	$resultDetail = $this->bossboardparticipant_model->getDetailDiviend($id);
+	    	if ($resultDetail != null) {
+	    		$dividend = $resultDetail['dividend'];
+	    		$bossBoardId = $resultDetail['bossBoardId'];
+	    		$memberNickname = $resultDetail['memberNickname'];
+	    		$memo = "게시번호: $bossBoardId, ";
+	    		$memo .= "캐릭터명: $memberNickname, ";
+	    		$memo .= "분배금: $dividend ";
+	    		$memo .= "정산완료";
+	    		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo);
+	    	}
+	    	
 	        $jsonResult['status'] = 200;
 	    } else {
 	        $jsonResult['status'] = 400;
@@ -65,6 +78,20 @@ class Dividend extends CI_Controller {
 	    if ($checkIdArray != null) {
 	        foreach ($checkIdArray as $key => $value) {
 	            $resultUpdate = $this->bossboardparticipant_model->updateDividendFinish($value, "Y");
+	            
+	            if ($resultUpdate > 0) {
+	            	$resultDetail = $this->bossboardparticipant_model->getDetailDiviend($value);
+	            	if ($resultDetail != null) {
+	            		$dividend = $resultDetail['dividend'];
+	            		$bossBoardId = $resultDetail['bossBoardId'];
+	            		$memberNickname = $resultDetail['memberNickname'];
+	            		$memo = "게시번호: $bossBoardId, ";
+	            		$memo .= "캐릭터명: $memberNickname, ";
+	            		$memo .= "분배금: $dividend ";
+	            		$memo .= "정산완료";
+	            		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo);
+	            	}
+	            }
 	        }
     	    
     	    if ($resultUpdate > 0) {

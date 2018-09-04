@@ -12,7 +12,7 @@ class Fund extends CI_Controller {
 		$this->load->helper('location_helper');
 	}
 	
-	public function use() {
+	public function useList() {
 		common_header();
 		
 		$fundUseList = $this->funduse_model->getList();
@@ -34,7 +34,6 @@ class Fund extends CI_Controller {
 	    $memo = $this->input->post("memo");
 	    
 	    if ($writerId != "" && $useMoney != "") {
-	        $useMoney = $useMoney * -1;
 	        $result = $this->funduse_model->insertFundUse($writerId, $useMoney, $memo);
     	    
     	    if ($result > 0) {

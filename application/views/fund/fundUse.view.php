@@ -29,7 +29,13 @@
     								<tr>
     									<td><?=$value['useDate']?></td>
     									<td><?=$value['memo']?></td>
-    									<td><?=$value['money']?></td>
+    									<td>
+    										<?php if ($value['money'] > 0) { ?>
+    											+<?=$value['money']?>
+    										<?php } else { ?>
+	    										<?=$value['money']?>
+    										<?php } ?>
+    									</td>
     									<td>[<?=$value['groupName']?>] <?=$value['memberNickname']?></td>
     								</tr>
     								<?php } ?>
@@ -68,6 +74,16 @@
 				<div class="form-group" style="margin-bottom: 8px;">
 					<label>사용</label>
 					
+					<div class="radio">
+						<label>
+							<input type="radio" name="useType" value="1" checked="checked">차감
+						</label>
+						
+						<label>
+							<input type="radio" name="useType" value="2">누적
+						</label>
+					</div>
+                  
 					<div class="row">
 						<div class="col-md-8">
 							<input type="text" id="useMoney" class="form-control">
@@ -110,8 +126,16 @@ $("#useMoney").keyup(function(){
 });
 
 function cal(){
+	var useType = $(":input:radio[name=useType]:checked").val();
 	var groupFund = Number($("#groupFund").val());
-	var useMoney = Number($("#useMoney").val()) * -1;
+	var useMoney = Number($("#useMoney").val());
+
+	if (useType == 1) {
+		useMoney = useMoney * -1;
+	} else {
+		useMoney = useMoney * +1;
+	}
+	
 	$("#remainFund").val(groupFund+useMoney);
 }
 

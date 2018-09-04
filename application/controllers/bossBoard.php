@@ -13,6 +13,8 @@ class BossBoard extends CI_Controller {
 		$this->load->model('bossboarditem_model');
 		$this->load->model('itemlist_model');
 		$this->load->model('group_model');
+		$this->load->model('tax_model');
+		$this->load->model('payment_model');
 		
 		$this->load->library('upload');
 		
@@ -93,19 +95,39 @@ class BossBoard extends CI_Controller {
 		
 		$resultInsertBossBoardId = $this->bossboard_model->insertBossBoard($writerId, $writerNickname, $killDateTime, $bossId, $etc, $bossManageName);
 		if ($resultInsertBossBoardId > 0) {
-		    if ($totalParticipantMember > 0) {
-    		    $dividend = floor(($totalItemPrice * 0.92) / $totalParticipantMember);
+			$itemTaxPercent = $this->tax_model->getTax(1);
+			$groupTaxPercent = $this->tax_model->getTax(2);
+			$totalTaxPercent = $itemTaxPercent + $groupTaxPercent;
+			
+		    if ($totalParticipantMember > 0 && $totalItemPrice > 0) {
+    		    $dividend = floor(($totalItemPrice * ((100 - $totalTaxPercent) / 100)) / $totalParticipantMember);
+    		    
+				//INSERT PARTICIPANT
+				$decodeParticipantList = json_decode($participantList, true);
+				foreach ($decodeParticipantList as $key => $value) {
+					$bossBoardId = $resultInsertBossBoardId;
+					$memberId = $value['memberId'];
+					
+					$this->bossboardparticipant_model->insertBossParticipant($bossBoardId, $memberId, $dividend);
+				}
 		    }
 		    
-			//INSERT PARTICIPANT
-			$decodeParticipantList = json_decode($participantList, true);
-			foreach ($decodeParticipantList as $key => $value) {
-				$bossBoardId = $resultInsertBossBoardId;
-				$memberId = $value['memberId'];
-				
-				$this->bossboardparticipant_model->insertBossParticipant($bossBoardId, $memberId, $dividend);
-			}
+		    //INSERT PAYMENT
+		    if ($totalItemPrice > 0) {
+		    	$memberId = LOGIN_ID;
+		    	$pay = floor($totalItemPrice * ((100 - $groupTaxPercent) / 100));
+		    	
+		    	$isExistPayment = $this->payment_model->isExistPaymentByMemberId($memberId);
+		    	
+		    	if ($isExistPayment != null) {
+		    		$this->payment_model->updatePayment($pay, $memberId);
+		    	} else {
+		    		$this->payment_model->insertPayment($memberId, $pay);
+		    	}
+		    }
+		    
 			
+			//INSERT BOSS ITEM LIST
 			$decodeBossItemList = json_decode($bossItemList, true);
 			foreach ($decodeBossItemList as $key => $value) {
 				$bossBoardId = $resultInsertBossBoardId;
@@ -173,6 +195,11 @@ class BossBoard extends CI_Controller {
 	    $resultDeleteBossBoard = $this->bossboard_model->deleteBossBoard($bossBoardId);
 	    
 	    if ($resultDeleteBossBoard > 0) {
+	    	$resultItemPrice = $this->bossboarditem_model->getBossBoardItemSumByBossBoardId($bossBoardId);
+	    	$groupTaxPercent = $this->tax_model->getTax(2);
+	    	$pay = floor($resultItemPrice * ((100 - $groupTaxPercent) / 100)) * -1;
+	    	$this->payment_model->updatePayment($pay, LOGIN_ID);
+	    	
     	    $this->bossboardattachfile_model->deleteBossAttachFileByBossBoardId($bossBoardId);
     	    $this->bossboarditem_model->deleteBossBoardItemByBossBoardId($bossBoardId);
     	    $this->bossboardparticipant_model->deleteBossParticipantByBossBoardId($bossBoardId);

@@ -24,7 +24,7 @@ class Boss extends CI_Controller {
 	public function getBossList_ajax() {
 		$currentDateTime = date("Y-m-d H:i");
 		$bossList = $this->boss_model->getList();
-		$taxPercent = $this->tax_model->getTax();
+		$taxPercent = $this->tax_model->getTax(1);
 
 		$data = array(
 			"currentDateTime" => $currentDateTime,
@@ -106,7 +106,7 @@ class Boss extends CI_Controller {
 	
 	public function updateTaxPercent_ajax() {
 	    $taxPercent = $this->input->post("taxPercent");
-	    $result = $this->tax_model->updateTax($taxPercent);
+	    $result = $this->tax_model->updateTax($taxPercent, 1);
 	    
 	    if ($result > 0) {
 	        $jsonResult['status'] = 200;

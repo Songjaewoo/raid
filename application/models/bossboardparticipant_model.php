@@ -48,6 +48,27 @@ class Bossboardparticipant_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
+	function getDetailDiviend($id) {
+		$sql = "
+			SELECT
+				bp.id,
+				bp.bossBoardId,
+				bp.memberId,
+				m.nickname AS memberNickname,
+				bp.dividend,
+				bp.isFinish
+			FROM
+				bossBoardParticipant bp
+                INNER JOIN member m ON (m.id = bp.memberId)
+			WHERE
+				bp.id = ?
+		";
+		 
+		$resultQuery = $this->db->query($sql, array($id))->row_array();
+		 
+		return $resultQuery;
+	}
+	
 	function getMyDiviend($memberId, $isFinish = "N") {
 	    $sql = "
 			SELECT
@@ -121,22 +142,6 @@ class Bossboardparticipant_model extends CI_Model {
 		";
 	    
 	    $resultQuery = $this->db->query($sql, array($id, $isFinish));
-	    
-	    return $this->db->affected_rows();
-	}
-	
-	function updateDividendFinishInClause($implodeId, $isFinish) {
-	    $a = "($implodeId)";
-	    $sql = "
-			UPDATE
-				bossBoardParticipant
-			SET
-				isFinish = 'Y'
-			WHERE
-				id IN ?
-		";
-	    
-	    $resultQuery = $this->db->query($sql, array($a, $isFinish));
 	    
 	    return $this->db->affected_rows();
 	}

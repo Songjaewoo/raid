@@ -102,4 +102,21 @@ class Bossboarditem_model extends CI_Model {
 	    
 	    return $this->db->affected_rows();
 	}
+	
+	function getBossBoardItemSumByBossBoardId($bossBoardId) {
+		$sql = "
+    		SELECT
+				IFNULL(SUM(itemPrice), 0) AS itemPrice
+			FROM
+				bossBoardItem
+			WHERE
+				bossBoardId = ?
+    	";
+			
+		$resultQuery = $this->db->query($sql, array($bossBoardId))->row_array();
+			
+		return $resultQuery['itemPrice'];
+	}
+	
+	
 }
