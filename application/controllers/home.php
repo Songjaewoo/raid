@@ -7,6 +7,7 @@ class Home extends CI_Controller {
 	
 		$this->load->model('bossboardparticipant_model');
 		$this->load->model('funduse_model');
+		$this->load->model('payment_model');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -16,13 +17,14 @@ class Home extends CI_Controller {
 	public function index() {
 		common_header();
 		
+		$allPayment = $this->payment_model->getAllPayment();
 		$currentGroupFund = $this->funduse_model->getCurrentGroupFund();
 		$expectGroupFund = floor($currentGroupFund * ((100-3) / 100));
-		
 		$allNotFinishDividend = $this->bossboardparticipant_model->getAllDiviend("N");
 		$countNotFinishDividendMember = $this->bossboardparticipant_model->countMemberDiviend("N");
 		
 		$data = array(
+		    "allPayment" => $allPayment,
 		    "currentGroupFund" => $currentGroupFund,
 		    "expectGroupFund" => $expectGroupFund,
 		    "allNotFinishDividend" => $allNotFinishDividend,

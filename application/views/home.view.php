@@ -4,14 +4,14 @@
 			<div class="col-lg-3 col-xs-6">
 				<div class="small-box bg-aqua">
 					<div class="inner">
-						<h3>?</h3>
+						<h3><?=number_format($allPayment)?></h3>
 
 						<p>미상납금</p>
 					</div>
     				<div class="icon">
     					<i class="ion ion-calculator"></i>
     				</div>
-					<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					<a href="/fund/back" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
 			
@@ -25,7 +25,7 @@
     				<div class="icon">
     					<i class="ion ion-calculator"></i>
     				</div>
-					<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					<a href="fund/useList" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 				</div>
 			</div>
 			

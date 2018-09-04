@@ -8,7 +8,7 @@
     				</div>
     				
     				<div class="box-header">
-    					<h3 class="box-title" style="font-size: 16px;">현재 예상 혈비: <strong><?=number_format($currentGroupFund)?></strong></h3>
+    					<h3 class="box-title" style="font-size: 16px;">현재 혈비: <strong><?=number_format($currentGroupFund)?></strong></h3>
     					
     					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-fund-use-modal">추가</button>
     				</div>
@@ -21,6 +21,7 @@
 									<th>내용</th>
 									<th>금액</th>
 									<th>작성자</th>
+									<th>-</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -31,17 +32,20 @@
     									<td><?=$value['memo']?></td>
     									<td>
     										<?php if ($value['money'] > 0) { ?>
-    											+<?=$value['money']?>
+    											+<?=number_format($value['money'])?>
     										<?php } else { ?>
-	    										<?=$value['money']?>
+	    										<?=number_format($value['money'])?>
     										<?php } ?>
     									</td>
     									<td>[<?=$value['groupName']?>] <?=$value['memberNickname']?></td>
+    									<td>
+    										<button type="button" data-id="<?=$value['id']?>" class="btn-del-fund-use btn btn-sm btn-danger btn-flat">삭제</button>	
+    									</td>
     								</tr>
     								<?php } ?>
 								<?php } else { ?>
 									<tr align="center">
-										<td colspan="4">
+										<td colspan="5">
 											리스트가 없습니다.
 										</td>
 									</tr>
@@ -139,29 +143,56 @@ function cal(){
 	$("#remainFund").val(groupFund+useMoney);
 }
 
+$(".btn-del-fund-use").on("click", function() {
+	var id = $(this).data("id");
+
+	if (confirm("삭제 하시겠습니까")) {
+    	$.ajax({
+    		type: "POST",
+    		data: {"id": id},
+    		url: "/fund/deleteFundUse_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				alert("삭제 완료");
+    				location.reload();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
+})
 
 $("#btn-add-fund-use").on("click", function() {
 	var useMoney = $("#useMoney").val();
 	var memo = $("#memo").val();
-	
-	$.ajax({
-		type: "POST",
-		data: {"useMoney": useMoney, "memo": memo},
-		url: "/fund/addFundUse_ajax",
-		dataType: "json",
-		success: function(result) {
-			if (result.status == 200) {
-				alert("추가 완료");
-				location.reload();
-			} else {
-				alert("오류");
-			}
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+
+	if (confirm("추가 하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: {"useMoney": useMoney, "memo": memo},
+    		url: "/fund/addFundUse_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				alert("추가 완료");
+    				location.reload();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
 })
 </script>

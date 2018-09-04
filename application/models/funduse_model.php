@@ -59,4 +59,17 @@ class Funduse_model extends CI_Model {
 	    
 	    return $resultQuery['remainFund'];
 	}
+	
+	function deleteFundUse($id){
+	    $sql = "
+    		DELETE FROM
+    			fundUse
+    		WHERE
+    			id = ?
+    	";
+	    
+	    $resultQuery = $this->db->query($sql, array($id));
+	    
+	    return $this->db->affected_rows();
+	}
 }

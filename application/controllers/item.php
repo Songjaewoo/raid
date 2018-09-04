@@ -46,16 +46,11 @@ class Item extends CI_Controller {
 	    $resultUpdate = $this->itemlist_model->updateItem($itemName, $itemPrice, $itemLevel, $itemId);
 	    
 	    if ($resultUpdate > 0) {
-	        if ($resultUpdate > 0) {
-	            $jsonResult['status'] = 200;
-	            $jsonResult['data'] = $resultUpdate;
-	        } else {
-	            $jsonResult['status'] = 404;
-	            $jsonResult['data'] = $resultUpdate;
-	        }
+	        $jsonResult['status'] = 200;
+	        $jsonResult['data'] = $resultUpdate;
 	    } else {
 	        $jsonResult['status'] = 404;
-	        $jsonResult['data'] = $result;
+	        $jsonResult['data'] = $resultUpdate;
 	    }
 	    
 	    echo json_encode($jsonResult);

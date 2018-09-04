@@ -67,15 +67,20 @@
 		
 		<aside class="main-sidebar">
 			<section class="sidebar">
-				<div class="user-panel">
+				<div class="user-panel" style="height: 85px;">
 					<div class="pull-left image">
 						<img src="/asset/dist/img/avatar.png" class="img-circle" alt="User Image">
 					</div>
 					<div class="pull-left info">
 						<p><?=LOGIN_NICKNAME?></p>
 						<p href="javascript:void(0);"><i class="fa fa-dollar"></i> 
-							<?=number_format($myDividend)?>
+							분배금: <?=number_format($myDividend)?>
 						</p>
+						<?php if ($myPayment != null) { ?>
+						<p href="javascript:void(0);"><i class="fa fa-dollar"></i> 
+							상납금: <?=number_format($myPayment)?>
+						</p>
+						<?php } ?>
 					</div>
 				</div>
       
