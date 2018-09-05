@@ -237,6 +237,37 @@ $("#btn-write-boss-board").on("click", function() {
 		return;
 	}
 
+	if ($("#attach-file1").val() != "") {
+		var ext1 = $("#attach-file1").val().split(".").pop().toLowerCase();
+		var fileSize1 = attachFile1.size;
+		var maxSize1 = (1024 * 1024) * 12; //12MB
+		if ($.inArray(ext1, ["gif","jpg","jpeg","png","bmp"]) == -1) {
+			alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
+			return;
+	    }
+
+		
+	    if (fileSize1 > maxSize1) {
+	        alert("첫번째 파일용량이 12M를 초과하였습니다.");
+	        return;
+	    }
+	}
+
+	if ($("#attach-file2").val() != "") {
+		var ext2 = $("#attach-file2").val().split(".").pop().toLowerCase();
+		var fileSize2 = attachFile2.size;
+		var maxSize2 = (1024 * 1024) * 12; //12MB
+		if ($.inArray(ext2, ["gif","jpg","jpeg","png","bmp"]) == -1) {
+			alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
+			return;
+	    }
+
+		if (fileSize2 > maxSize2) {
+			alert("두번째 파일용량이 12M를 초과하였습니다.");
+			return;
+		}
+	}
+    
 	if (confirm("등록 하시겠습니까?")) {
     	$.ajax({
     		type : "POST",

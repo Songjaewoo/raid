@@ -8,8 +8,8 @@ class Bossboard_model extends CI_Model {
 		$this->load->model('bossboarditem_model');
 	}
 	
-	function getBossBoardList() {
-	    $resultBossBoardList = $this->getList();
+	function getBossBoardList($offset, $limit) {
+	    $resultBossBoardList = $this->getList($offset, $limit);
 	    
 	    foreach ($resultBossBoardList as $key => $value) {
 	        $id = $value['id'];
@@ -20,7 +20,7 @@ class Bossboard_model extends CI_Model {
 	    return $resultBossBoardList;
 	}
 	
-	function getList() {
+	function getList($offset, $limit) {
 	    $sql = "
 			SELECT
 				b.id,
@@ -40,11 +40,27 @@ class Bossboard_model extends CI_Model {
                 LEFT JOIN boss bs ON (b.bossId = bs.id)
 			ORDER BY
 				b.killDateTime DESC, b.id DESC
+	    	LIMIT 
+	    		?, ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql)->result_array();
+	    $resultQuery = $this->db->query($sql, array($offset, $limit))->result_array();
 	    
 	    return $resultQuery;
+	}
+	
+	function countBossBoardList() {
+		$sql = "
+			SELECT
+				COUNT(b.id) as count
+			FROM
+				bossBoard b
+                LEFT JOIN boss bs ON (b.bossId = bs.id)
+		";
+		 
+		$resultQuery = $this->db->query($sql)->row_array();
+		 
+		return $resultQuery['count'];
 	}
 	
 	function getDetail($id){

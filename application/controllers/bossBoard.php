@@ -17,6 +17,7 @@ class BossBoard extends CI_Controller {
 		$this->load->model('payment_model');
 		
 		$this->load->library('upload');
+		$this->load->library('paging_info');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -26,9 +27,17 @@ class BossBoard extends CI_Controller {
 	public function index() {
 		common_header();
 		
-		$bossBoardList = $this->bossboard_model->getBossBoardList();
+		$pageNum = $this->input->get('pageNum') == null ? 1 : $this->input->get('pageNum');
+		$limit = $this->input->get('limit') == null ? 10 : $this->input->get('limit');
+		$offset = ($pageNum - 1) * $limit;
+		
+		$bossBoardList = $this->bossboard_model->getBossBoardList($offset, $limit);
+		$countBossBoardList = $this->bossboard_model->countBossBoardList();
+		$pagination = $this->paging_info->getPagingInfo($pageNum, $countBossBoardList, $limit, 10);
+		
 		$data = array(
 			"bossBoardList" => $bossBoardList,
+			"pagination" => $pagination,
 		);
 		
 		$this->load->view("bossBoard/list.view.php", $data);
@@ -143,8 +152,8 @@ class BossBoard extends CI_Controller {
 			    $bossBoardId = $resultInsertBossBoardId;
 			    
 				$uploadConfig['upload_path'] = './uploads';
-				$uploadConfig['allowed_types'] = 'gif|jpg|png|bmp';
-				$uploadConfig['max_size'] = 10240;
+				$uploadConfig['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
+				$uploadConfig['max_size'] = 1024 * 12;
 				$uploadConfig['file_name'] = $this->uuidgen();
 				$this->upload->initialize($uploadConfig);
 				
@@ -163,8 +172,8 @@ class BossBoard extends CI_Controller {
 			    $bossBoardId = $resultInsertBossBoardId;
 			    
 				$uploadConfig['upload_path'] = './uploads';
-				$uploadConfig['allowed_types'] = 'gif|jpg|png|bmp';
-				$uploadConfig['max_size'] = 10240;
+				$uploadConfig['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
+				$uploadConfig['max_size'] = 1024 * 12;
 				$uploadConfig['file_name'] = $this->uuidgen();
 				$this->upload->initialize($uploadConfig);
 			

@@ -54,9 +54,35 @@
 						</table>
 					</div>
 					
-					<div class="box-footer">
-					
-					</div>
+					<div class="box-footer clearfix text-center">
+						<ul class="pagination pagination-sm no-margin" id="pagination">
+							<ul class="pagination bootpag">
+								<?php if ($pagination['prevPage'] > 0) { ?>
+									<li data-lp="<?=$pagination['prevPage']?>" class="prev">
+										<a href="/bossBoard?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['prevPage']?>">«</a>
+									</li>
+								<?php } ?>
+								
+								<?php for ($i = $pagination['startPage']; $i <= $pagination['endPage']; $i++) { ?>
+									<?php if ($i == $pagination['curPage']) { ?>
+										<li data-lp="1" class="active">
+											<a href="javascript:void(0);"><?=$i?></a>
+										</li>
+									<?php } else { ?>
+										<li data-lp="<?=$i?>">
+											<a href="/bossBoard?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$i?>"><?=$i?></a>
+										</li>
+									<?php } ?>
+								<?php } ?>
+								
+								<?php if ($pagination['nextPage'] > 0) { ?>
+									<li data-lp="<?=$pagination['nextPage']?>" class="next">
+										<a href="/bossBoard?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['nextPage']?>">»</a>
+									</li>
+								<?php } ?>
+							</ul>
+						</ul>
+		            </div>
 				</div>
 			</div>
 		</div>

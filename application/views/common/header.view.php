@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>LINEAGE M</title>
+<!-- 	<title>LINEAGE M</title> -->
 	
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,8 +39,8 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<a href="/" class="logo">
-				<span class="logo-mini">Lin <b>M</b></span>
-				<span class="logo-lg">Lineage M</span>
+<!-- 				<span class="logo-mini">Lin <b>M</b></span> -->
+<!-- 				<span class="logo-lg">Lineage M</span> -->
 			</a>
 			<nav class="navbar navbar-static-top">
 				<!-- Sidebar toggle button-->

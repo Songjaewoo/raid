@@ -4,8 +4,6 @@ class init_define extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		
-		$this->load->library('user_agent');
-		
 		$this->load->helper('security');
 		$this->load->helper('alert_helper');
 		$this->load->helper('url');
@@ -29,7 +27,6 @@ class init_define extends CI_Controller {
 		}
 		
 		define('LOGIN_IP', $this->input->ip_address());
-		define('REFERRER_URL', $this->security->xss_clean($this->agent->referrer()));
 		define('CURRENT_URL', $this->security->xss_clean($this->currentFullUrl()));
 	}
 	

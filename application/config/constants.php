@@ -37,6 +37,5 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 define('SERVER_DOMAIN',                         "http://" . $_SERVER['SERVER_NAME']);
-define('GROUP_FUND_RATE',						3);
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
