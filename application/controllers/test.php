@@ -13,6 +13,8 @@ class Test extends CI_Controller {
 		$this->load->model('bossboarditem_model');
 		$this->load->model('itemlist_model');
 		$this->load->model('group_model');
+		
+		$this->load->library('s3');
 	}
 	
 	public function delete() {

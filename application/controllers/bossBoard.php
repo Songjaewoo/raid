@@ -18,6 +18,7 @@ class BossBoard extends CI_Controller {
 		
 		$this->load->library('upload');
 		$this->load->library('paging_info');
+		$this->load->library('s3');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -163,8 +164,13 @@ class BossBoard extends CI_Controller {
 					$fileInfo = $this->upload->data();
 					$originFileName = $fileInfo['client_name'];
 					$saveFileName = $fileInfo['file_name'];
-					$fileUrl = SERVER_DOMAIN . "/uploads/" . $saveFileName;
+					
+					$filepath = "/var/www/html/uploads/" . $saveFileName;
+					$fileUrl = $this->s3->s3Upload($filepath, $saveFileName);
+					
 					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
+					
+					unlink($filepath);
 				}
 			}
 			
@@ -183,8 +189,13 @@ class BossBoard extends CI_Controller {
 				    $fileInfo = $this->upload->data();
 				    $originFileName = $fileInfo['client_name'];
 				    $saveFileName = $fileInfo['file_name'];
-				    $fileUrl = SERVER_DOMAIN . "/uploads/" . $saveFileName;
-				    $this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
+				    
+				    $filepath = "/var/www/html/uploads/" . $saveFileName;
+					$fileUrl = $this->s3->s3Upload($filepath, $saveFileName);
+					
+					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
+					
+					unlink($filepath);
 				}
 			}
 			
