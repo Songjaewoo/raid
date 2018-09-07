@@ -245,7 +245,6 @@ $("#btn-write-boss-board").on("click", function() {
 			alert("gif, jpg, jpeg, png, bmp 파일만 업로드 해주세요.");
 			return;
 	    }
-
 		
 	    if (fileSize1 > maxSize1) {
 	        alert("첫번째 파일용량이 12M를 초과하였습니다.");

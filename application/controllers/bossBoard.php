@@ -125,7 +125,8 @@ class BossBoard extends CI_Controller {
 		    //INSERT PAYMENT
 		    if ($totalItemPrice > 0) {
 		    	$memberId = LOGIN_ID;
-		    	$pay = floor($totalItemPrice * ((100 - $groupTaxPercent) / 100));
+		    	$pay = $totalItemPrice;
+// 		    	$pay = floor($totalItemPrice * ((100 - $groupTaxPercent) / 100));
 		    	
 		    	$isExistPayment = $this->payment_model->isExistPaymentByMemberId($memberId);
 		    	
@@ -147,56 +148,47 @@ class BossBoard extends CI_Controller {
 			
 				$this->bossboarditem_model->insertBossBoardItem($bossBoardId, $itemId, $itemPrice, $memberId);
 			}
-			
+
 			//INSERT ATTACHFILE
+			$allowFileExtArray  = ["gif", "jpg", "jpeg", "png", "bmp"];
 			if ($attachFile1['size'] > 0) {
 			    $bossBoardId = $resultInsertBossBoardId;
 			    
-				$uploadConfig['upload_path'] = './uploads';
-				$uploadConfig['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
-				$uploadConfig['max_size'] = 1024 * 12;
-				$uploadConfig['file_name'] = $this->uuidgen();
-				$this->upload->initialize($uploadConfig);
-				
-				if (!$this->upload->do_upload('attachFile1')) {
-					echo $this->upload->display_errors(); exit;
-				} else {
-					$fileInfo = $this->upload->data();
-					$originFileName = $fileInfo['client_name'];
-					$saveFileName = $fileInfo['file_name'];
-					
-					$filepath = "/var/www/html/uploads/" . $saveFileName;
-					$fileUrl = $this->s3->s3Upload($filepath, $saveFileName);
-					
-					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
-					
-					unlink($filepath);
+			    $filepath = $attachFile1['tmp_name'];
+			    $mime = $attachFile1['type'];
+			    $originFileName = $attachFile1['name'];
+			    $ext = strtolower(end(explode('.', $originFileName))); 
+			    $saveFileName = $this->uuidgen() . "." . $ext;
+			    
+				if (!in_array($ext, $allowFileExtArray)) {
+					$jsonResult['status'] = 400;
+					$jsonResult['data'] = null;
+					echo json_encode($jsonResult); 
+					exit;
 				}
+				
+				$fileUrl = $this->s3->s3Upload($filepath, $saveFileName, $mime);
+				$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 			}
 			
 			if ($attachFile2['size'] > 0) {
 			    $bossBoardId = $resultInsertBossBoardId;
 			    
-				$uploadConfig['upload_path'] = './uploads';
-				$uploadConfig['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
-				$uploadConfig['max_size'] = 1024 * 12;
-				$uploadConfig['file_name'] = $this->uuidgen();
-				$this->upload->initialize($uploadConfig);
-			
-				if (!$this->upload->do_upload('attachFile2')) {
-					echo $this->upload->display_errors(); exit;
-				} else {
-				    $fileInfo = $this->upload->data();
-				    $originFileName = $fileInfo['client_name'];
-				    $saveFileName = $fileInfo['file_name'];
-				    
-				    $filepath = "/var/www/html/uploads/" . $saveFileName;
-					$fileUrl = $this->s3->s3Upload($filepath, $saveFileName);
-					
-					$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
-					
-					unlink($filepath);
+			    $filepath = $attachFile2['tmp_name'];
+			    $mime = $attachFile2['type'];
+			    $originFileName = $attachFile2['name'];
+			    $ext = strtolower(end(explode('.', $originFileName))); 
+			    $saveFileName = $this->uuidgen() . "." . $ext;
+			    
+				if (!in_array($ext, $allowFileExtArray)) {
+					$jsonResult['status'] = 400;
+					$jsonResult['data'] = null;
+					echo json_encode($jsonResult); 
+					exit;
 				}
+				
+				$fileUrl = $this->s3->s3Upload($filepath, $saveFileName, $mime);
+				$this->bossboardattachfile_model->insertBossAttachFile($bossBoardId, $originFileName, $fileUrl);
 			}
 			
 			$jsonResult['status'] = 200;

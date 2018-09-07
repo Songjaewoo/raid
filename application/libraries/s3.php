@@ -3,13 +3,9 @@ require FCPATH.'vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 
-DEFINE('S3_KEY', 'AKIAJV5OE5NUKBM7GG4A');
-DEFINE('S3_SECRET_KEY', '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');
-DEFINE('BUCKET', 'thdwodn');
-
 class S3 {
 	
-	public function s3Upload($filepath, $saveFilename) {
+	public function s3Upload($filepath, $saveFilename, $mime) {
 		$s3 = new S3Client([
 			'version' => 'latest',
 			'region'  => 'ap-northeast-2',
@@ -23,6 +19,7 @@ class S3 {
 			$result = $s3->putObject([
 				'Bucket' => BUCKET,
 				'Key' => $saveFilename,
+				'ContentType'  => $mime,
 				'SourceFile' => $filepath,
 				'ACL' => 'public-read',
 			]);
