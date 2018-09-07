@@ -5,6 +5,10 @@
 				<div class="box box-danger">
 					<div class="box-header with-border">
     					<h3 class="box-title">혈비 사용 관리</h3>
+    					
+    					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".tax-modal">
+							혈비 세율 수정
+						</button>
     				</div>
     				
     				<div class="box-header">
@@ -119,6 +123,25 @@
 	</div>
 </div>
 
+<div class="modal fade tax-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    			<span aria-hidden="true">×</span></button>
+    			<h4 class="modal-title">혈비 세율 수정</h4>
+    		</div>
+			<div class="modal-body">
+				<input type="number" id="tax-percent" class="form-control input-sm" value="<?=$taxPercent?>">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" id="btn-update-tax-percent" class="btn btn-flat btn-primary">수정</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 $("#allUse").on("click", function() {
 	$("#useMoney").val($("#groupFund").val());
@@ -193,6 +216,32 @@ $("#btn-add-fund-use").on("click", function() {
     			console.log(error);
     		}
     	});
+	}
+})
+
+$("#btn-update-tax-percent").on("click", function() {
+	var taxPercent = $("#tax-percent").val();
+
+	if (confirm("세율을 수정하시겠습니까?")) {
+		$.ajax({
+			type: "POST",
+			data: {"taxPercent": taxPercent},
+			url: "/fund/updateTaxPercent_ajax",
+			dataType: "json",
+			success: function(result) {
+				if (result.status == 200) {
+					alert("수정 완료");
+					location.reload();
+				} else {
+					alert("오류");
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
+			}
+		});
 	}
 })
 </script>

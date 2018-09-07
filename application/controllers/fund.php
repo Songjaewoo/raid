@@ -7,6 +7,7 @@ class Fund extends CI_Controller {
 	
 		$this->load->model('funduse_model');
 		$this->load->model('payment_model');
+		$this->load->model('tax_model');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -18,10 +19,12 @@ class Fund extends CI_Controller {
 		
 		$fundUseList = $this->funduse_model->getList();
 		$currentGroupFund = $this->funduse_model->getCurrentGroupFund();
+		$taxPercent = $this->tax_model->getTax(2);
 		
 		$data = array(
 		    "fundUseList" => $fundUseList,
 		    "currentGroupFund" => $currentGroupFund,
+			"taxPercent" => $taxPercent,
 		);
 		
 		$this->load->view("fund/fundUse.view.php", $data);
@@ -116,5 +119,20 @@ class Fund extends CI_Controller {
         }
 	    
 	    echo json_encode($jsonResult);
+	}
+	
+	public function updateTaxPercent_ajax() {
+		$taxPercent = $this->input->post("taxPercent");
+		$result = $this->tax_model->updateTax($taxPercent, 2);
+		 
+		if ($result > 0) {
+			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $result;
+		} else {
+			$jsonResult['status'] = 404;
+			$jsonResult['data'] = $result;
+		}
+		 
+		echo json_encode($jsonResult);
 	}
 }

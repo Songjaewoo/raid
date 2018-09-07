@@ -209,7 +209,8 @@ class BossBoard extends CI_Controller {
 	    if ($resultDeleteBossBoard > 0) {
 	    	$resultItemPrice = $this->bossboarditem_model->getBossBoardItemSumByBossBoardId($bossBoardId);
 	    	$groupTaxPercent = $this->tax_model->getTax(2);
-	    	$pay = floor($resultItemPrice * ((100 - $groupTaxPercent) / 100)) * -1;
+	    	$pay = $resultItemPrice * -1;
+// 	    	$pay = floor($resultItemPrice * ((100 - $groupTaxPercent) / 100)) * -1;
 	    	$this->payment_model->updatePayment($pay, LOGIN_ID);
 	    	
     	    $this->bossboardattachfile_model->deleteBossAttachFileByBossBoardId($bossBoardId);

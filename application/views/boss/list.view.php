@@ -173,26 +173,28 @@ $("#btn-add-boss").on("click", function() {
 
 $("#btn-update-tax-percent").on("click", function() {
 	var taxPercent = $("#tax-percent").val();
-	
-	$.ajax({
-		type: "POST",
-		data: {"taxPercent": taxPercent},
-		url: "/boss/updateTaxPercent_ajax",
-		dataType: "json",
-		success: function(result) {
-			if (result.status == 200) {
-				alert("수정 완료");
-				location.reload();
-			} else {
-				alert("오류");
+
+	if (confirm("세율을 수정하시겠습니까?")) {
+		$.ajax({
+			type: "POST",
+			data: {"taxPercent": taxPercent},
+			url: "/boss/updateTaxPercent_ajax",
+			dataType: "json",
+			success: function(result) {
+				if (result.status == 200) {
+					alert("수정 완료");
+					location.reload();
+				} else {
+					alert("오류");
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
 			}
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+		});
+	}
 })
 
 $("#btn-refresh").on("click", function() {

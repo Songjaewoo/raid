@@ -34,6 +34,35 @@
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	
+	<script>
+		$(document).ready(function() {
+			var uriSegment1 = "<?=$uriSegment1?>";
+			var uriSegment2 = "<?=$uriSegment2?>";
+			
+			if (uriSegment1 == "") {
+				$("#nav-home").addClass("active");
+			} else if (uriSegment1 == "boss") {
+				$("#nav-boss").addClass("active");
+			} else if (uriSegment1 == "bossBoard") {
+				$("#nav-boss-board").addClass("active");
+			} else if (uriSegment1 == "item") {
+				$("#nav-item").addClass("active");
+			} else if (uriSegment1 == "dividend") {
+				$("#nav-dividend").addClass("active");
+			} else if (uriSegment1 == "fund") {
+				$("#nav-fund").addClass("active").addClass("menu-open");
+
+				if (uriSegment2 == "useList") {
+					$("#nav-fund-use").addClass("active")
+				} else if (uriSegment2 == "back") {
+					$("#nav-fund-back").addClass("active")
+				}
+			} else if (uriSegment1 == "member") {
+				$("#nav-member").addClass("active");
+			}
+		});
+	</script>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 	<div class="wrapper">
@@ -86,37 +115,37 @@
       
 				<ul class="sidebar-menu" data-widget="tree">
 					<li class="header">Menu</li>
-					<li>
+					<li id="nav-home">
 						<a href="/">
 							<i class="fa fa-home"></i>
 							<span>HOME</span>
 						</a>
 					</li>
-					<li>
+					<li id="nav-boss">
 						<a href="/boss">
 							<i class="fa fa-clock-o"></i>
 							<span>보스 시간표</span>
 						</a>
 					</li>
-					<li>
+					<li id="nav-boss-board">
 						<a href="/bossBoard">
 							<i class="fa fa-list-ul"></i>
 							<span>보스탐 참여</span>
 						</a>
 					</li>
-					<li>
+					<li id="nav-item">
 						<a href="/item">
 							<i class="fa fa-book"></i>
 							<span>아이템 혈원가</span>
 						</a>
 					</li>
-					<li>
+					<li id="nav-dividend">
 						<a href="/dividend">
 							<i class="fa fa-dollar"></i>
 							<span>정산 관리</span>
 						</a>
 					</li>
-					<li class="treeview">
+					<li id="nav-fund" class="treeview">
 						<a href="#">
 							<i class="fa fa-dollar"></i> 
 							<span>혈비 관리</span>
@@ -125,15 +154,17 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-                            <li><a href="/fund/useList">
+                            <li id="nav-fund-use">
+                            	<a href="/fund/useList">
                             	<i class="fa fa-credit-card"></i> 혈비 사용</a>
                             </li>
-                            <li><a href="/fund/back">
+                            <li id="nav-fund-back"> 
+                            	<a href="/fund/back">
                             	<i class="fa fa-credit-card"></i> 혈비 상납</a>
                             </li>
 						</ul>
 					</li>
-					<li>
+					<li id="nav-member">
 						<a href="/member">
 							<i class="fa fa-user"></i>
 							<span>회원 관리</span>
