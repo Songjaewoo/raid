@@ -65,9 +65,11 @@ class Fund extends CI_Controller {
 	    $resultUpdate = $this->payment_model->updatePayment(($useMoney * -1), LOGIN_ID);
 	    
 	    if ($resultUpdate > 0) {
-	        $memo = "$nickname 상납금  $useMoney 정산완료";
+	        $autoMemo = "$nickname 상납금  $useMoney 정산완료";
 	        if ($memo != "") {
-	            $memo .= " [$memo]";
+	        	$memo = $memo . " [$autoMemo]";
+	        } else {
+	        	$memo = $autoMemo;
 	        }
 	        
 	        $this->funduse_model->insertFundUse(LOGIN_ID, $useMoney, $memo);
