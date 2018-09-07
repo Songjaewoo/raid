@@ -77,6 +77,59 @@ class Member extends CI_Controller {
 	    $this->load->view("member/modal/update.modal.view.php", $data);
 	}
 	
+	public function headerMemberUpdateModal_ajax() {
+		 
+		$memberDetail = $this->member_model->getMemberDetailById(LOGIN_ID);
+		$groupList = $this->group_model->getList();
+
+		$data = array(
+			"memberDetail" => $memberDetail,
+			"groupList" => $groupList,
+		);
+		 
+		$this->load->view("common/modal/update.modal.view.php", $data);
+	}
+	
+	public function headerMemberPasswordUpdateModal_ajax() {
+		 
+		$this->load->view("common/modal/updatePassword.modal.view.php");
+	}
+	
+	public function headerUpdateMemberPassword_ajax() {
+		$currentPassword = $this->input->post("currentPassword");
+		$password = $this->input->post("password");
+		$passwordConfirm = $this->input->post("passwordConfirm");
+		
+		$result = $this->member_model->getMemberDetailByMemberId(LOGIN_MEMBER_ID);
+		$hashedPassword = $result['password'];
+		
+		if ($this->verify($password, $hashedPassword)) {
+			if ($password != $passwordConfirm) {
+				$jsonResult['status'] = 401;
+				$jsonResult['data'] = "변경할 비밀번호가 일치하지 않습니다.";
+				echo json_encode($jsonResult);
+				exit;
+			}
+			
+			$resultUpdate = $this->member_model->updateMemberPassword($password, LOGIN_ID);
+			
+			if ($resultUpdate > 0) {
+				$jsonResult['status'] = 200;
+				$jsonResult['data'] = "비밀번호가 변경되었습니다.";
+			} else {
+				$jsonResult['status'] = 404;
+				$jsonResult['data'] = "오류";
+			}
+		} else {
+			$jsonResult['status'] = 401;
+			$jsonResult['data'] = "현재 비밀번호를 다시 확인해주세요.";
+			echo json_encode($jsonResult);
+			exit;
+		}
+		 
+		echo json_encode($jsonResult);
+	}
+	
 	public function memberPasswordUpdateModal_ajax() {
 	    $memberId = $this->input->get("memberId");
 	    
@@ -94,7 +147,7 @@ class Member extends CI_Controller {
 	    $level = $this->input->post("level");
 	    $groupId = $this->input->post("groupId");
 	    
-	    if ($memberId != "" && $nickname != "" && $className != "" && $level != "" && $groupId) {
+	    if ($memberId != "" && $nickname != "" && $className != "" && $level != "" && $groupId != "") {
 	        $resultUpdate = $this->member_model->updateMemberBaseInfo($nickname, $className, $level, $groupId, $memberId);
 	        
 	        if ($resultUpdate > 0) {
@@ -107,6 +160,29 @@ class Member extends CI_Controller {
 	    }
 	    
 	    echo json_encode($jsonResult);
+	}
+	
+	public function headerMemberUpdate_submit_ajax() {
+		$nickname = $this->input->post("nickname");
+		$className = $this->input->post("className");
+		$groupId = $this->input->post("groupId");
+		
+		$memberDetail = $this->member_model->getMemberDetailById(LOGIN_ID);
+		
+		if ($memberDetail != null && $nickname != "" && $className != "" && $groupId != "") {
+			$level = $memberDetail['level'];
+			$resultUpdate = $this->member_model->updateMemberBaseInfo($nickname, $className, $level, $groupId, LOGIN_ID);
+			 
+			if ($resultUpdate > 0) {
+				$jsonResult['status'] = 200;
+			} else {
+				$jsonResult['status'] = 404;
+			}
+		} else {
+			$jsonResult['status'] = 404;
+		}
+		 
+		echo json_encode($jsonResult);
 	}
 	
 	public function updateMemberPassword_ajax() {
@@ -145,5 +221,9 @@ class Member extends CI_Controller {
 	    }
 	    
 	    echo json_encode($jsonResult);
+	}
+	
+	private function verify($password , $hashedPassword) {
+		return password_verify($password, $hashedPassword);
 	}
 }

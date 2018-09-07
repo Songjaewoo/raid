@@ -61,6 +61,38 @@
 			} else if (uriSegment1 == "member") {
 				$("#nav-member").addClass("active");
 			}
+
+			$("#btn-header-update-member-modal").on("click", function() {
+				$.ajax({
+					type: "GET",
+					url: "/member/headerMemberUpdateModal_ajax",
+					success: function(result) {
+						$("#header-member-update-modal").html(result);
+						$('#header-member-update-modal').modal('show');
+					},
+					error: function(xhr, status, error) {
+						console.log(xhr);
+						console.log(status);
+						console.log(error);
+					}
+				});
+			});
+
+			$("#btn-header-update-password-modal").on("click", function() {
+				$.ajax({
+					type: "GET",
+					url: "/member/headerMemberPasswordUpdateModal_ajax",
+					success: function(result) {
+						$("#header-member-password-update-modal").html(result);
+						$('#header-member-password-update-modal').modal('show');
+					},
+					error: function(xhr, status, error) {
+						console.log(xhr);
+						console.log(status);
+						console.log(error);
+					}
+				});
+			});
 		});
 	</script>
 </head>
@@ -80,13 +112,30 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li class="dropdown user user-menu">
-							<a href="javascript:voie(0);">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<img src="/asset/dist/img/avatar.png" class="user-image" alt="User Image">
 								<span class="hidden-xs">[<?=LOGIN_GROUP_NAME?>] <?=LOGIN_NICKNAME?></span>
 							</a>
-						</li>
-						
-						<li>
-							<a href="/auth/logout"><i class="glyphicon glyphicon-log-out"></i></a>
+							
+							<ul class="dropdown-menu">
+								<li class="user-header">
+									<img src="/asset/dist/img/avatar.png" class="img-circle" alt="User Image">
+									<p>[<?=LOGIN_GROUP_NAME?>] <?=LOGIN_NICKNAME?></p>
+								</li>
+								<li class="user-body">
+									<div class="row">
+										<div id="btn-header-update-member-modal" class="col-xs-4 text-center">
+											<a href="#">프로필</a>
+										</div>
+										<div id="btn-header-update-password-modal" class="col-xs-4 text-center">
+											<a href="#">비밀번호</a>
+										</div>
+										<div class="col-xs-4 text-center">
+											<a href="/auth/logout">로그아웃</a>
+										</div>
+									</div>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>
@@ -173,3 +222,12 @@
 				</ul>
 			</section>
 		</aside>
+
+		<div id="header-member-update-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+			<!-- AJAX MODAL -->
+		</div>
+		
+		<div id="header-member-password-update-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+			<!-- AJAX MODAL -->
+		</div>
+	

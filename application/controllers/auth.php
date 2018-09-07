@@ -97,6 +97,6 @@ class Auth extends CI_Controller {
 	}
 	
 	private function verify($password , $hashedPassword) {
-		return crypt($password, $hashedPassword) == $hashedPassword;
+		return password_verify($password, $hashedPassword);
 	}
 }

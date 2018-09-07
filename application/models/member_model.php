@@ -185,8 +185,7 @@ class Member_model extends CI_Model {
 	}
 	
 	function insertMember($memberId, $nickname, $className, $password, $groupNameId) {
-	    $salt = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
-	    $encryptPassword = crypt($password, $salt);
+	    $encryptPassword = password_hash($password, PASSWORD_BCRYPT);
 	    
 	    $sql = "
 			INSERT INTO
@@ -243,8 +242,7 @@ class Member_model extends CI_Model {
 	}
 	
 	function updateMemberPassword($password, $id) {
-	    $salt = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
-	    $encryptPassword = crypt($password, $salt);
+	    $encryptPassword = password_hash($password, PASSWORD_BCRYPT);
 	    
 	    $sql = "
 			UPDATE
@@ -262,9 +260,6 @@ class Member_model extends CI_Model {
 	}
 	
 	function updateMemberLevel($level, $id) {
-	    $salt = '$2a$07$R.gJb2U2N.FmZ4hPp1y2CN$';
-	    $encryptPassword = crypt($password, $salt);
-	    
 	    $sql = "
 			UPDATE
 				member

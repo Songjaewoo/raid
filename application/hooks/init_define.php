@@ -16,7 +16,7 @@ class init_define extends CI_Controller {
 		$isLogin = $this->session->userdata('isLogin');
 		if ($isLogin) {
 			define('LOGIN_ID', $this->session->userdata('id'));
-			define('LOGIN_MEMEBR_ID', $this->session->userdata('memberId'));
+			define('LOGIN_MEMBER_ID', $this->session->userdata('memberId'));
 			define('LOGIN_NICKNAME', $this->session->userdata('nickname'));
 			define('LOGIN_GROUP_NAME', $this->session->userdata('groupName'));
 			define('LOGIN_LEVEL', $this->session->userdata('level'));

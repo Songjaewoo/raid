@@ -8,7 +8,12 @@
               
 		<div class="modal-body">
 			<div class="form-group has-feedback">
-				<select id="groupId" name="groupId" class="form-control">
+				<input type="text" class="form-control" value="<?=$memberDetail['memberId']?>" readonly="readonly"> 
+				<span class="glyphicon glyphicon-user form-control-feedback"></span>
+			</div>
+			
+			<div class="form-group has-feedback">
+				<select id="header-groupId" name="groupId" class="form-control">
 					<?php foreach ($groupList as $key => $value) { ?>
 					<option value="<?=$value['id']?>" <?php if ($memberDetail['groupNameId'] == $value['id']) echo "selected";?>><?=$value['name']?></option>
 					<?php } ?>
@@ -16,16 +21,7 @@
 			</div>
 			
 			<div class="form-group has-feedback">
-				<select id="level" name="level" class="form-control">
-					<option value="1" <?php if ($memberDetail['level'] == 1) echo "selected";?>>일반</option>
-					<option value="2" <?php if ($memberDetail['level'] == 2) echo "selected";?>>보탐</option>
-					<option value="3" <?php if ($memberDetail['level'] == 3) echo "selected";?>>수호</option>
-					<option value="4" <?php if ($memberDetail['level'] == 4) echo "selected";?>>군주</option>
-				</select>
-			</div>
-			
-			<div class="form-group has-feedback">
-				<select id="className" name="className" class="form-control">
+				<select id="header-className" name="className" class="form-control">
 					<option value="기사" <?php if ($memberDetail['className'] == "기사") echo "selected";?>>기사</option>
 					<option value="요정" <?php if ($memberDetail['className'] == "요정") echo "selected";?>>요정</option>
 					<option value="마법사" <?php if ($memberDetail['className'] == "마법사") echo "selected";?>>마법사</option>
@@ -36,46 +32,40 @@
 			</div>
 			
 			<div class="form-group has-feedback">
-				<input type="text" id="nickname" name="nickname" class="form-control" placeholder="캐릭터명" value="<?=$memberDetail['nickname']?>"> 
+				<input type="text" id="header-nickname" name="nickname" class="form-control" placeholder="캐릭터명" value="<?=$memberDetail['nickname']?>"> 
 				<span class="glyphicon glyphicon-user form-control-feedback"></span>
 			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-flat btn-default" data-dismiss="modal">닫기</button>
-			<button type="button" id="btn-update-member" class="btn btn-flat btn-primary">수정</button>
+			<button type="button" id="btn-header-update-member" class="btn btn-flat btn-primary">수정</button>
 		</div>
 	</div>
 </div>
 
-<input type="hidden" id="memberId" name="memberId" value="<?=$memberDetail['id']?>">
-
 <script>
-	$("#btn-update-member").on("click", function() {
-		var memberId = $("#memberId").val();
-		var nickname = $("#nickname").val();
-		var className = $("#className option:selected").val();
-		var level = $("#level option:selected").val();
-		var groupId = $("#groupId option:selected").val();
+	$("#btn-header-update-member").on("click", function() {
+		var nickname = $("#header-nickname").val();
+		var className = $("#header-className option:selected").val();
+		var groupId = $("#header-groupId option:selected").val();
 		
 		var data = {
-			"memberId": memberId,
 			"nickname": nickname,
 			"className": className,
-			"level": level,
 			"groupId": groupId,
 		};
 
-		if (confirm("회원 정보를 수정하시겠습니까?")) {
+		if (confirm("프로필 정보를 수정하시겠습니까?")) {
     		$.ajax({
     			type: "POST",
     			data: data,
     			dataType: "json",
-    			url: "/member/memberUpdate_submit_ajax",
+    			url: "/member/headerMemberUpdate_submit_ajax",
     			dataType: "json",
     			success: function(result) {
     				if (result.status == 200) {
-    					alert("수정 완료");
-    					location.reload();
+    					alert("수정 완료. 재로그인이 필요합니다.");
+    					location.href = "/auth/login";
     				} else {
     					alert("오류");
     				}
