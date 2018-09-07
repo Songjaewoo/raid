@@ -35,6 +35,31 @@
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	
+	<style>
+		#custom-page-overlay {
+			background: rgba(0,0,0,0.3);
+			position: fixed;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    left: 0;
+		    z-index: 1050;
+		    overflow: hidden;
+		    outline: 0;
+		    opacity: 1;
+		}
+		
+		#custom-page-overlay i {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -15px;
+			margin-top: -15px;
+			color: #000;
+			font-size: 30px;
+		}
+	</style>
+	
 	<script>
 		$(document).ready(function() {
 			var uriSegment1 = "<?=$uriSegment1?>";
@@ -92,6 +117,12 @@
 						console.log(error);
 					}
 				});
+			});
+
+			$(document).ajaxStart(function(){
+				$("#custom-page-overlay").css("display", "block");
+			}).ajaxStop(function() {
+				$("#custom-page-overlay").css("display", "none");
 			});
 		});
 	</script>

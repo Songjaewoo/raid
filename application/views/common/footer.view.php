@@ -1,4 +1,7 @@
-		<div class="control-sidebar-bg"></div>
+	</div>
+	
+	<div id="custom-page-overlay" style="display: none;">
+		<i class="fa fa-refresh fa-spin"></i>
 	</div>
 </body>
 </html>
