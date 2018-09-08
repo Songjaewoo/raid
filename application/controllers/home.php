@@ -8,6 +8,7 @@ class Home extends CI_Controller {
 		$this->load->model('bossboardparticipant_model');
 		$this->load->model('funduse_model');
 		$this->load->model('payment_model');
+		$this->load->model('tax_model');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -19,9 +20,12 @@ class Home extends CI_Controller {
 		
 		$allPayment = $this->payment_model->getAllPayment();
 		$currentGroupFund = $this->funduse_model->getCurrentGroupFund();
-		$expectGroupFund = floor($currentGroupFund * ((100-3) / 100));
 		$allNotFinishDividend = $this->bossboardparticipant_model->getAllDiviend("N");
 		$countNotFinishDividendMember = $this->bossboardparticipant_model->countMemberDiviend("N");
+		
+		$itemTaxPercent = $this->tax_model->getTax(1);
+		$allPayment = $this->payment_model->getAllPayment();
+		$expectGroupFund = floor($allPayment * ((100 - $itemTaxPercent) / 100)) + $currentGroupFund;
 		
 		$data = array(
 		    "allPayment" => $allPayment,

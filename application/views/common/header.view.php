@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 	<title>LINEAGE M</title> -->
+	<title>불사</title>
 	
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	
+	<link rel="icon" type="image/png" sizes="21x21" href="/asset/image/favicon.png">
 	
 	<link rel="stylesheet" href="/asset/bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/asset/bower_components/font-awesome/css/font-awesome.min.css">
@@ -131,8 +133,8 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<a href="/" class="logo">
-<!-- 				<span class="logo-mini">Lin <b>M</b></span> -->
-<!-- 				<span class="logo-lg">Lineage M</span> -->
+				<span class="logo-mini">Lin <b>M</b></span>
+				<span class="logo-lg">Lineage M</span>
 			</a>
 			<nav class="navbar navbar-static-top">
 				<!-- Sidebar toggle button-->
@@ -228,7 +230,7 @@
 					<li id="nav-fund" class="treeview">
 						<a href="#">
 							<i class="fa fa-dollar"></i> 
-							<span>혈비 관리</span>
+							<span>분배금 관리</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
@@ -236,11 +238,11 @@
 						<ul class="treeview-menu">
                             <li id="nav-fund-use">
                             	<a href="/fund/useList">
-                            	<i class="fa fa-credit-card"></i> 혈비 사용</a>
+                            	<i class="fa fa-credit-card"></i> 분배금 사용 관리</a>
                             </li>
                             <li id="nav-fund-back"> 
                             	<a href="/fund/back">
-                            	<i class="fa fa-credit-card"></i> 혈비 상납</a>
+                            	<i class="fa fa-credit-card"></i> 분배금 상납</a>
                             </li>
 						</ul>
 					</li>

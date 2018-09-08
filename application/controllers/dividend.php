@@ -60,7 +60,7 @@ class Dividend extends CI_Controller {
 	    		$memberNickname = $resultDetail['memberNickname'];
 	    		$memo = "게시번호: $bossBoardId, ";
 	    		$memo .= "$memberNickname 분배금 $dividend 정산완료";
-	    		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo);
+	    		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo, "N", 2);
 	    	}
 	    	
 	        $jsonResult['status'] = 200;
@@ -85,7 +85,7 @@ class Dividend extends CI_Controller {
 	            		$memberNickname = $resultDetail['memberNickname'];
 	            		$memo = "게시번호: $bossBoardId, ";
 	            		$memo .= "$memberNickname 분배금 $dividend 정산완료";
-	            		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo);
+	            		$this->funduse_model->insertFundUse(LOGIN_ID, ($dividend * -1), $memo, "N", 2);
 	            	}
 	            }
 	        }

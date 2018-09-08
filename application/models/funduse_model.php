@@ -21,6 +21,8 @@ class Funduse_model extends CI_Model {
             	fundUse fu
                 LEFT JOIN member m ON (fu.writerId = m.id)
                 LEFT JOIN groupName gn ON (gn.id = m.groupNameId)
+            WHERE
+                fu.display = 'Y'
             ORDER BY 
             	fu.createdDateTime DESC
 		";
@@ -30,7 +32,7 @@ class Funduse_model extends CI_Model {
 		return $resultQuery;
 	}
 	
-	function insertFundUse($writerId, $money, $memo) {
+	function insertFundUse($writerId, $money, $memo, $display = "Y", $type = 1) {
 	    $sql = "
     		INSERT INTO
     			fundUse
@@ -38,11 +40,13 @@ class Funduse_model extends CI_Model {
                 writerId = ?,
                 money = ?,
                 memo = ?,
+                display = ?,
+                type = ?,
                 useDate = now(),
                 createdDateTime = now()
     	";
 	    
-	    $resultQuery = $this->db->query($sql, array($writerId, $money, $memo));
+	    $resultQuery = $this->db->query($sql, array($writerId, $money, $memo, $display, $type));
 	    
 	    return $this->db->insert_id();
 	}

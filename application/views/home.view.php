@@ -51,7 +51,7 @@
 					<div class="inner">
 						<h3><?=number_format($expectGroupFund)?></h3>
 
-						<p>예상잔액 (혈비 3%)</p>
+						<p>예상 혈비</p>
 					</div>
     				<div class="icon">
     					<i class="ion ion-calculator"></i>

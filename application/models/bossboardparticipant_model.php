@@ -103,7 +103,7 @@ class Bossboardparticipant_model extends CI_Model {
 	function getAllDiviend($isFinish = "N") {
 	    $sql = "
 			SELECT
-				SUM(dividend) AS dividend
+				IFNULL(SUM(dividend), 0) AS dividend
 			FROM
 				bossBoardParticipant
 			WHERE

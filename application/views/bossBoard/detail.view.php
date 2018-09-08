@@ -93,7 +93,8 @@
     										<td><?=$value['dividend']?></td>
     										<td>
 												<?php if ($value['isFinish'] == "Y") { ?>
-												완료
+													<?php $isFinish = true; ?>
+													완료
 												<?php } else { ?>
 												<button type="button" data-id="<?=$value['id']?>" class="btn-dividend-finish btn btn-sm btn-warning btn-flat">
 													미완료
@@ -118,9 +119,11 @@
 		
 		<div class="row">
 			<div class="col-md-12" style="text-align: center;">
+				<?php if ($isFinish != true) { ?>
 				<button type="button" id="btn-del-boss-board" data-id="<?=$bossBoardId?>" class="btn btn-danger btn-flat" style="width: 100px;">
 					삭제
 				</button>
+				<?php } ?>
 				
 				<a href="/bossBoard">
 					<button type="button" class="btn btn-default btn-flat" style="width: 100px;">

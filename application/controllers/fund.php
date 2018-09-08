@@ -19,11 +19,18 @@ class Fund extends CI_Controller {
 		
 		$fundUseList = $this->funduse_model->getList();
 		$currentGroupFund = $this->funduse_model->getCurrentGroupFund();
+		$itemTaxPercent = $this->tax_model->getTax(1);
 		$taxPercent = $this->tax_model->getTax(2);
+		$allNotFinishDividend = $this->bossboardparticipant_model->getAllDiviend("N");
 		
+		$allPayment = $this->payment_model->getAllPayment();
+		$expectGroupFund = floor($allPayment * ((100 - $itemTaxPercent) / 100)) + $currentGroupFund;
+
 		$data = array(
 		    "fundUseList" => $fundUseList,
 		    "currentGroupFund" => $currentGroupFund,
+		    "expectGroupFund" => $expectGroupFund,
+		    "allNotFinishDividend" => $allNotFinishDividend,
 			"taxPercent" => $taxPercent,
 		);
 		
@@ -65,6 +72,9 @@ class Fund extends CI_Controller {
 	    $resultUpdate = $this->payment_model->updatePayment(($useMoney * -1), LOGIN_ID);
 	    
 	    if ($resultUpdate > 0) {
+	        $itemTaxPercent = $this->tax_model->getTax(1);
+	        $useMoney = floor($useMoney * ((100 - $itemTaxPercent) / 100));
+	        
 	        $autoMemo = "$nickname 상납금  $useMoney 정산완료";
 	        if ($memo != "") {
 	        	$memo = $memo . " [$autoMemo]";
@@ -72,7 +82,7 @@ class Fund extends CI_Controller {
 	        	$memo = $autoMemo;
 	        }
 	        
-	        $this->funduse_model->insertFundUse(LOGIN_ID, $useMoney, $memo);
+	        $this->funduse_model->insertFundUse(LOGIN_ID, $useMoney, $memo, "N", 1);
 	        
 	        $jsonResult['status'] = 200;
 	        $jsonResult['data'] = $resultUpdate;
@@ -90,7 +100,7 @@ class Fund extends CI_Controller {
 	    $memo = $this->input->post("memo");
 	    
 	    if ($writerId != "" && $useMoney != "") {
-	        $result = $this->funduse_model->insertFundUse($writerId, $useMoney, $memo);
+	        $result = $this->funduse_model->insertFundUse($writerId, $useMoney, $memo, "Y", 1);
     	    
     	    if ($result > 0) {
     	        $jsonResult['status'] = 200;
