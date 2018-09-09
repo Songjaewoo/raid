@@ -13,7 +13,7 @@
     				
     				<div class="box-header">
     					<h3 class="box-title" style="font-size: 16px;">남은 정산금: <strong><?=number_format($allNotFinishDividend)?></strong></h3><br>
-    					<h3 class="box-title" style="font-size: 16px;">예상 혈비: <strong><?=number_format($expectGroupFund)?></strong></h3>
+    					<h3 class="box-title" style="font-size: 16px;">예상 혈비: <strong><?=number_format($expectGroupFund - $allNotFinishDividend)?></strong></h3>
     					
     					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-fund-use-modal">추가</button>
     				</div>

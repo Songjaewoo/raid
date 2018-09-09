@@ -25,6 +25,7 @@
 	<script src="/asset/bower_components/jquery.countdown/jquery.countdown.min.js"></script>
 	<script src="/asset/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
+	<script src="/asset/bower_components/ckeditor/ckeditor.js"></script>
 	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
 	<script src="/asset/plugins/jquery.validate.js"></script>
 	<script src="/asset/plugins/iCheck/icheck.min.js"></script>
@@ -73,6 +74,14 @@
 				$("#nav-boss").addClass("active");
 			} else if (uriSegment1 == "bossBoard") {
 				$("#nav-boss-board").addClass("active");
+			} else if (uriSegment1 == "board") {
+				$("#nav-board").addClass("active").addClass("menu-open");
+
+				if (uriSegment2 == "notice") {
+					$("#nav-board-notice").addClass("active")
+				} else if (uriSegment2 == "free") {
+					$("#nav-borad-free").addClass("active")
+				}
 			} else if (uriSegment1 == "item") {
 				$("#nav-item").addClass("active");
 			} else if (uriSegment1 == "dividend") {
@@ -214,6 +223,25 @@
 							<i class="fa fa-list-ul"></i>
 							<span>보스탐 참여</span>
 						</a>
+					</li>
+					<li id="nav-board" class="treeview">
+						<a href="#">
+							<i class="fa fa-list-ul"></i> 
+							<span>게시판</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-left pull-right"></i>
+							</span>
+						</a>
+<!-- 						<ul class="treeview-menu"> -->
+<!--                             <li id="nav-board-notice"> -->
+<!--                             	<a href="/board/list?category=1"> -->
+<!--                             	<i class="fa fa-bullhorn"></i> 공지사항</a> -->
+<!--                             </li> -->
+<!--                             <li id="nav-board-free">  -->
+<!--                             	<a href="/board/list?category=2"> -->
+<!--                             	<i class="fa fa-group"></i> 자유게시판</a> -->
+<!--                             </li> -->
+<!-- 						</ul> -->
 					</li>
 					<li id="nav-item">
 						<a href="/item">

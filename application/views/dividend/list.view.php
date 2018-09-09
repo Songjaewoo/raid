@@ -33,19 +33,24 @@
 							</thead>
 							<tbody>
 								<?php foreach ($dividendList as $key => $value) { ?>
-								<tr>
-									<td><?=$value['groupName']?></td>
-									<td><?=$value['levelName']?></td>
-									<td><?=$value['className']?></td>
-									<td><?=$value['nickname']?></td>
-									<td><?=number_format($value['dividend'])?></td>
-									<td>
-										<a href="/dividend/detail?memberId=<?=$value['memberId']?>">
-											<button type="button" class="btn btn-primary btn-sm btn-flat">상세보기</button>
-										</a>
-									</td>
-								</tr>
+    								<tr>
+    									<td><?=$value['groupName']?></td>
+    									<td><?=$value['levelName']?></td>
+    									<td><?=$value['className']?></td>
+    									<td><?=$value['nickname']?></td>
+    									<td><?=number_format($value['dividend'])?></td>
+    									<td>
+    										<a href="/dividend/detail?memberId=<?=$value['memberId']?>">
+    											<button type="button" class="btn btn-primary btn-sm btn-flat">상세보기</button>
+    										</a>
+    									</td>
+    								</tr>
+									<?php $totalDividend += $value['dividend'];?>
 								<?php } ?>
+								<tr>
+									<td colspan="4">합계</td>
+    								<td colspan="2"><?=number_format($totalDividend)?></td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
