@@ -182,8 +182,14 @@
 	$(".btn-update-approval-member").on("click", function() {
 		var memberId = $(this).data("id");
 		var approval = $(this).data("approval");
-
-		if (confirm("수정 하시겠습니까?")) {
+		var confirmMsg = "";
+		if (approval == 1) {
+			confirmMsg = "재승인 하시겠습니까?";
+		} else {
+			confirmMsg = "탈퇴 시키시겠습니까?";
+		}
+		
+		if (confirm(confirmMsg)) {
     		$.ajax({
     			type: "POST",
     			data: {"memberId": memberId, "approval": approval},

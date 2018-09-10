@@ -36,7 +36,7 @@
 									<div class="btn-group" style="width: 200px;">
 										<button type="button" class="btn btn-warning btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">직접입력</button>
 										<div class="dropdown-menu pull-left" role="menu">
-											<input type="text" id="direct-time-<?=$value['id']?>" class="form-control dateTimeMask" value="<?=$currentDateTime?>" 
+											<input type="text" class="form-control dateTimeMask direct-time-<?=$value['id']?>" value="<?=$currentDateTime?>" 
 												style="width: 150px; float: left;">
 												
 											<button type="button" class="btn btn-danger btn-flat btn-update-direct-time" data-id="<?=$value['id']?>" style="float: left;">
@@ -215,7 +215,7 @@ $(".count-down-time").each(function(i) {
 
 $(".btn-update-direct-time").on("click", function() {
 	var id = $(this).data("id");
-	var updateTime = $("#direct-time-" + id).val();
+	var updateTime = $(".direct-time-" + id).val();
 
 	var data = {
 		"id": id,

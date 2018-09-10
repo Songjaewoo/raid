@@ -23,7 +23,7 @@ class Member extends CI_Controller {
 		$groupId = $this->input->get("groupId") != 0 ? $this->input->get("groupId") : null;
 		$level = $this->input->get("level") != 0 ? $this->input->get("level") : null;
 		$className = $this->input->get("className") != "" ? $this->input->get("className") : null;
-		$approval = $this->input->get("approval") != 1 ? $this->input->get("approval") : 1;
+		$approval = $this->input->get("approval") == null ? 1: $this->input->get("approval");
 		$nickname = $this->input->get("nickname") != "" ? $this->input->get("nickname") : null;
 
 		$memberList = $this->member_model->getMemberList($groupId, $level, 
