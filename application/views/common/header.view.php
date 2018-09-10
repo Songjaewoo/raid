@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>불사</title>
+<!-- 	<title>불사</title> -->
 	
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -142,8 +142,8 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<a href="/" class="logo">
-				<span class="logo-mini">Lin <b>M</b></span>
-				<span class="logo-lg">Lineage M</span>
+<!-- 				<span class="logo-mini">Lin <b>M</b></span> -->
+<!-- 				<span class="logo-lg">Lineage M</span> -->
 			</a>
 			<nav class="navbar navbar-static-top">
 				<!-- Sidebar toggle button-->
@@ -232,16 +232,16 @@
 								<i class="fa fa-angle-left pull-right"></i>
 							</span>
 						</a>
-<!-- 						<ul class="treeview-menu"> -->
-<!--                             <li id="nav-board-notice"> -->
-<!--                             	<a href="/board/list?category=1"> -->
-<!--                             	<i class="fa fa-bullhorn"></i> 공지사항</a> -->
-<!--                             </li> -->
-<!--                             <li id="nav-board-free">  -->
-<!--                             	<a href="/board/list?category=2"> -->
-<!--                             	<i class="fa fa-group"></i> 자유게시판</a> -->
-<!--                             </li> -->
-<!-- 						</ul> -->
+						<ul class="treeview-menu">
+                            <li id="nav-board-notice">
+                            	<a href="/board?category=1">
+                            	<i class="fa fa-bullhorn"></i> 공지사항</a>
+                            </li>
+                            <li id="nav-board-free"> 
+                            	<a href="/board?category=2">
+                            	<i class="fa fa-group"></i> 자유게시판</a>
+                            </li>
+						</ul>
 					</li>
 					<li id="nav-item">
 						<a href="/item">

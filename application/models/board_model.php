@@ -25,8 +25,11 @@ class Board_model extends CI_Model {
                 INNER JOIN groupName gn ON (gn.id = m.groupNameId)
             WHERE
                 b.category = ?
+    		ORDER BY
+	    		b.id DESC
             LIMIT 
 	    		?, ?
+	    	
 		";
 	    
 	    $resultQuery = $this->db->query($sql, array($category, $offset, $limit))->result_array();
@@ -51,6 +54,33 @@ class Board_model extends CI_Model {
 	    return $resultQuery['count'];
 	}
 	
+	function getDetail($id){
+		$sql = "
+			SELECT
+                b.id,
+                b.writerId,
+                gn.name AS groupName,
+                m.nickname,
+                b.category,
+                b.title,
+                b.content,
+                b.createdDateTime,
+                b.updatedDateTime,
+                b.count
+            FROM
+                board b
+                INNER JOIN member m ON (m.id = b.writerId)
+                INNER JOIN groupName gn ON (gn.id = m.groupNameId)
+            WHERE
+				b.id = ?
+	
+		";
+		 
+		$resultQuery = $this->db->query($sql, array($id))->row_array();
+		 
+		return $resultQuery;
+	}
+	
 	function insertBoard($writerId, $category, $title, $content){
 	    $sql = "
 			INSERT INTO
@@ -69,7 +99,7 @@ class Board_model extends CI_Model {
 	    return $this->db->insert_id();
 	}
 	
-	function updateBoard($title, $content, $id){
+	function updateBoard($title, $content, $id) {
 	    $sql = "
 			UPDATE
 				board
@@ -86,7 +116,7 @@ class Board_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function updateBoardCount($id){
+	function updateBoardCount($id) {
 	    $sql = "
 			UPDATE
 				board

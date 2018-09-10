@@ -30,6 +30,7 @@
 					<option value="요정" <?php if ($memberDetail['className'] == "요정") echo "selected";?>>요정</option>
 					<option value="마법사" <?php if ($memberDetail['className'] == "마법사") echo "selected";?>>마법사</option>
 					<option value="다크엘프" <?php if ($memberDetail['className'] == "다크엘프") echo "selected";?>>다크엘프</option>
+					<option value="군주" <?php if ($memberDetail['className'] == "군주") echo "selected";?>>군주</option>
 					<option value="총사" <?php if ($memberDetail['className'] == "총사") echo "selected";?>>총사</option>
 					<option value="투사" <?php if ($memberDetail['className'] == "투사") echo "selected";?>>투사</option>
 				</select>

@@ -18,6 +18,49 @@ class Test extends CI_Controller {
 	}
 	
 	public function index() {
-
+		$this->load->view("test.view.php", $data);
+	}
+	
+	public function write_submit() {
+		$text = $this->input->post("ckeditor");
+		
+		echo $text;
+	}
+	
+	public function ckeditorFileUpload() {
+		$fileInfo = $_FILES['upload'];
+		$funcNum = $_GET['CKEditorFuncNum'];
+		
+		$allowFileExtArray  = ["gif", "jpg", "jpeg", "png", "bmp"];
+		if ($fileInfo['size'] > 0) {
+			$filepath = $fileInfo['tmp_name'];
+			$mime = $fileInfo['type'];
+			$originFileName = $fileInfo['name'];
+			$ext = strtolower(end(explode('.', $originFileName)));
+			$saveFileName = $this->uuidgen() . "." . $ext;
+			 
+			if (!in_array($ext, $allowFileExtArray)) {
+				$jsonResult['filename'] = $saveFileName;
+				$jsonResult['uploaded'] = 0;
+				$jsonResult['error']['message'] = "허용 가능 확장자 gif, jpg, jpeg, png, bmp";
+			} else {
+				$fileUrl = $this->s3->s3Upload($filepath, $saveFileName, $mime);
+				
+				$jsonResult['filename'] = $saveFileName;
+				$jsonResult['uploaded'] = 1;
+				$jsonResult['url'] = $fileUrl;
+			}
+		
+			
+			echo json_encode($jsonResult);
+		}
+	}
+	
+	private function uuidgen() {
+		return sprintf('%08x-%04x-%04x-%04x-%04x%08x',
+				mt_rand(0, 0xffffffff),
+				mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+				mt_rand(0, 0xffff), mt_rand(0, 0xffffffff)
+		);
 	}
 }

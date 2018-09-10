@@ -34,7 +34,11 @@
 								<?php foreach ($boardList as $key => $value) { ?>
 								<tr>
 									<td><?=$value['id']?></td>
-									<td><?=$value['title']?></td>
+									<td>
+										<a href="/board/detail?boardId=<?=$value['id']?>">
+											<?=$value['title']?>
+										</a>
+									</td>
 									<td>[<?=$value['groupName']?>] <?=$value['nickname']?></td>
 									<td><?=date("Y-m-d", strtotime($value['createdDateTime']))?></td>
 									<td><?=$value['count']?></td>
@@ -49,7 +53,7 @@
 							<ul class="pagination bootpag">
 								<?php if ($pagination['prevPage'] > 0) { ?>
 									<li data-lp="<?=$pagination['prevPage']?>" class="prev">
-										<a href="/board/list?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['prevPage']?>">«</a>
+										<a href="/board?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['prevPage']?>">«</a>
 									</li>
 								<?php } ?>
 								
@@ -60,14 +64,14 @@
 										</li>
 									<?php } else { ?>
 										<li data-lp="<?=$i?>">
-											<a href="/board/list?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$i?>"><?=$i?></a>
+											<a href="/board?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$i?>"><?=$i?></a>
 										</li>
 									<?php } ?>
 								<?php } ?>
 								
 								<?php if ($pagination['nextPage'] > 0) { ?>
 									<li data-lp="<?=$pagination['nextPage']?>" class="next">
-										<a href="/board/list?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['nextPage']?>">»</a>
+										<a href="/board?<?=$pagination['pageDelQueryString']?>&pageNum=<?=$pagination['nextPage']?>">»</a>
 									</li>
 								<?php } ?>
 							</ul>

@@ -1,178 +1,176 @@
+<style>
+img {
+	max-width: 100%;
+}
+</style>
+
 <div class="content-wrapper">
 	<section class="content">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="box box-danger">
-					<div class="box-body">
-						<div class="form-group">
-							<label>날짜</label>
-
-							<div class="input-group date">
-								<div class="input-group-addon">
-									<i class="fa fa-calendar"></i>
-								</div>
-								<input type="text" class="form-control pull-right" value="<?=date("Y-m-d", strtotime($detailBossBoard['killDateTime']))?>" disabled="disabled">
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>보스</label>
-							<input type="text" class="form-control" value="<?=$detailBossBoard['bossName']?>" disabled="disabled">
-						</div>
-						
-						<div class="form-group">
-							<label>드랍 아이템 +입찰자</label>
-							
-							<table class="table table-bordered table-striped">
-								<tbody id="boss-item-list">
-									<tr>
-										<th>드랍아이템</th>
-										<th>가격</th>
-										<th>입찰자</th>
-									</tr>
-									<?php if ($detailBossBoard['item'] != null) { ?>
-    									<?php foreach ($detailBossBoard['item'] as $key => $value) { ?>
-    									<tr>
-    										<td><span style="color: <?=$value['itemLevelColor']?>;"><?=$value['itemName']?></span></td>
-    										<td><?=$value['itemPrice']?></td>
-    										<td><?=$value['buyerMemberNickname']?></td>
-    									</tr>
-    									<?php } ?>
-									<?php } else { ?>
-    									<tr>
-    										<td colspan="3" align="center">리스트가 없습니다.</td>
-    									</tr>
-									<?php } ?>
-								</tbody>
-							</table>
-						</div>
-						
-						<div class="form-group">
-							<label>사진</label>
-							
-							<div class="row">
-								<div class="col-md-12">
-								<?php foreach ($detailBossBoard['attachFile'] as $key => $value) { ?>
-									<a href="<?=$value['fileUrl']?>" target="_blank">
-        								<img src="<?=$value['fileUrl']?>" style="max-width: 100%;">
-        							</a>
-        							<br><br>
-								<?php } ?>
-								</div>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label>비고</label>
-
-							<textarea class="form-control" rows="5" disabled="disabled"><?=$detailBossBoard['etc']?></textarea>
-						</div>
-					</div>
+		<form action="/board/write_submit" method="post" enctype="multipart/form-data">
+			<div class="box box-danger">
+				<div class="box-header with-border">
+					<h3 class="box-title">
+						<?php if ($category == 1) { ?>
+							공지사항
+						<?php } else if ($category == 2) { ?>
+							자유게시판
+						<?php } ?>
+					</h3>
 				</div>
-			</div>
-			
-			<div class="col-md-6">
-				<div class="box box-danger">
-					<div class="box-body">
-						<div class="form-group">
-							<label>참여인원 <span id="count-participant"><?=COUNT($detailBossBoard['participant'])?></span>명</label>
-							
-							<table class="table table-bordered table-striped">
-								<tbody id="participant-list">
-									<tr>
-										<th>혈맹</th>
-										<th>혈맹원</th>
-										<th>분배금</th>
-										<th>정산</th>
-									</tr>
-									<?php if ($detailBossBoard['participant'] != null) { ?>
-    									<?php foreach ($detailBossBoard['participant'] as $key => $value) { ?>
-    									<tr>
-    										<td><?=$value['groupName']?></td>
-    										<td><?=$value['memberNickname']?></td>
-    										<td><?=$value['dividend']?></td>
-    										<td>
-												<?php if ($value['isFinish'] == "Y") { ?>
-													<?php $isFinish = true; ?>
-													완료
-												<?php } else { ?>
-												<button type="button" data-id="<?=$value['id']?>" class="btn-dividend-finish btn btn-sm btn-warning btn-flat">
-													미완료
-            									</button>
-												<?php } ?>
-											</td>
-    									</tr>
-    									<?php } ?>
-									<?php } else { ?>
-    									<tr>
-    										<td colspan="4" align="center">리스트가 없습니다.</td>
-    									</tr>
-									<?php } ?>
-									
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-md-12" style="text-align: center;">
-				<?php if ($isFinish != true) { ?>
-				<button type="button" id="btn-del-boss-board" data-id="<?=$bossBoardId?>" class="btn btn-danger btn-flat" style="width: 100px;">
-					삭제
-				</button>
-				<?php } ?>
 				
-				<a href="/bossBoard">
-					<button type="button" class="btn btn-default btn-flat" style="width: 100px;">
-						목록
-					</button>
-				</a>
+				<div class="box-body">
+					<table class="table table-bordered">
+						<tr>
+							<th style="width: 70%"><?=htmlspecialchars($boardDetail['title'])?></th>
+						</tr>
+						<tr>
+							<td>
+								<div style="float: right">
+									<span style="margin-right: 8px;"><b style="margin-right: 4px;">작성자</b> [<?=$boardDetail['groupName']?>] <?=$boardDetail['nickname']?></span>
+									<span style="margin-right: 8px;"><b style="margin-right: 4px;">작성일</b> <?=$boardDetail['createdDateTime']?></span>
+									<span style="margin-right: 8px;"><b style="margin-right: 4px;">조회</b> <?=$boardDetail['count']?></span>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td style="padding: 32px 8px;"><?=$boardDetail['content']?></td>
+						</tr>
+						<tr>
+							<th>댓글</th>
+						</tr>
+						<tr>
+							<td>
+								<div class="input-group">
+									<textarea id="comment" class="form-control"></textarea>
+
+									<div class="input-group-btn">
+										<button type="button" id="btn-add-comment" data-id="<?=$boardDetail['id']?>" class="btn btn-success" style="height: 54px;"><i class="fa fa-plus"></i></button>
+									</div>
+								</div>
+				
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="chat" id="chat-box">
+									<?php foreach ($commentList as $key => $value) { ?>
+									<div class="item">
+										<img src="/asset/dist/img/avatar.png" alt="user image" class="online">
+					
+										<p class="message">
+											<a href="javascript:void(0);" class="name">
+												<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> <?=$value['createdDateTime']?></small>
+												<?php if ($value['writerId'] == LOGIN_ID) { ?>
+													<small data-id="<?=$value['id']?>" class="btn-del-comment text-muted pull-right" style="margin-right: 8px;"><i class="fa fa-trash-o"></i> 삭제</small>
+												<?php } ?>
+												
+												[<?=$value['groupName']?>] <?=$value['nickname']?>
+											</a>
+											<?=nl2br(htmlspecialchars($value['content']))?>
+										</p>
+									</div>
+									<?php } ?>
+					            </div>
+							</td>
+						</tr>
+					</table>
+				</div>
+		            
+				<div class="box-footer">
+					<div style="float: left;">
+						<a href="/board?category=<?=$category?>">
+							<button type="button" class="btn btn-default btn-flat" style="width: 100px;">
+								목록
+							</button>
+						</a>
+					</div>
+					
+					<div style="float: right;">
+						<a href="/board/edit?boardId=<?=$boardDetail['id']?>">
+							<button type="button" class="btn btn-primary btn-flat" style="width: 100px;">
+								수정
+							</button>
+						</a>
+						
+						<button type="button" id="btn-del-board" data-id="<?=$boardDetail['id']?>" class="btn btn-danger btn-flat" style="width: 100px;">
+							삭제
+						</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</form>
 	</section>
 </div>
+<input type="hidden" id="category" value="<?=$category?>">
 
 <script>
-$(".btn-dividend-finish").on("click", function() {
-	if (confirm("정산 하시겠습니까?")) {
-		var id = $(this).data("id");
-		$.ajax({
-        	type : "POST",
-        	data : {"id": id},
-        	dataType : "json",
-        	url : "/dividend/updateDividendFinish_ajax",
-        	success : function(result) {
-        		if (result.status == 200) {
-        			alert("정산 완료 하였습니다.");
-        			location.reload();
-        		} else {
-        			alert("오류");
-        		}
-        	},
-        	error : function(xhr, status, error) {
-        		console.log(xhr);
-        		console.log(status);
-        		console.log(error);
-        	}
-        });
-	}	
-})
+$("#btn-add-comment").on("click", function() {
+	var boardId = $(this).data("id");
+	var comment = $("#comment").val();
 
-$("#btn-del-boss-board").on("click", function() {
+	if (confirm("댓글을 등록 하시겠습니까?")) {
+	    $.ajax({
+	    	type : "POST",
+	    	data : {"boardId": boardId, "comment": comment},
+	    	dataType : "json",
+	    	url : "/board/writeComment_ajax",
+	    	success : function(result) {
+	    		if (result.status == 200) {
+	    			alert("댓글을 등록하였습니다.");
+	    			location.reload();
+	    		} else {
+	    			alert("오류");
+	    		}
+	    	},
+	    	error : function(xhr, status, error) {
+	    		console.log(xhr);
+	    		console.log(status);
+	    		console.log(error);
+	    	}
+	    });
+	}
+});
+
+$(".btn-del-comment").on("click", function() {
+	var commentId = $(this).data("id");
+
+	if (confirm("댓글을 삭제 하시겠습니까?")) {
+	    $.ajax({
+	    	type : "POST",
+	    	data : {"commentId": commentId},
+	    	dataType : "json",
+	    	url : "/board/deleteComment_ajax",
+	    	success : function(result) {
+	    		if (result.status == 200) {
+	    			alert("댓글을 삭제하였습니다.");
+	    			location.reload();
+	    		} else {
+	    			alert("오류");
+	    		}
+	    	},
+	    	error : function(xhr, status, error) {
+	    		console.log(xhr);
+	    		console.log(status);
+	    		console.log(error);
+	    	}
+	    });
+	}
+});
+
+$("#btn-del-board").on("click", function() {
 	if (confirm("삭제하시겠습니까?")) {
-		var bossBoardId = $(this).data("id");
+		var boardId = $(this).data("id");
+		var category = $("#category").val();
+		
         $.ajax({
         	type : "POST",
-        	data : {"bossBoardId": bossBoardId},
+        	data : {"boardId": boardId},
         	dataType : "json",
-        	url : "/bossBoard/delete_ajax",
+        	url : "/board/delete_ajax",
         	success : function(result) {
         		if (result.status == 200) {
         			alert("삭제 하였습니다.");
-        			location.href = "/bossBoard";
+        			location.href = "/board?category=" + category;
         		} else {
         			alert("오류");
         		}

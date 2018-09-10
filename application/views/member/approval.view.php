@@ -28,6 +28,7 @@
     								<th>클래스</th>
     								<th>아이디</th>
     								<th>캐릭터명</th>
+    								<th>연락처</th>
     								<th>가입일</th>
     								<th>-</th>
 								</tr>
@@ -40,6 +41,7 @@
         							<td><?=$value['className']?></td>
         							<td><?=$value['memberId']?></td>
         							<td><?=$value['nickname']?></td>
+        							<td><?=$value['phoneNumber']?></td>
         							<td><?=date("Y-m-d", strtotime($value['createdDateTime']))?></td>
         							<td>
                 						<button type="button" data-id="<?=$value['id']?>" data-approval="1" class="btn-update-approval-member btn btn-sm btn-primary btn-flat">

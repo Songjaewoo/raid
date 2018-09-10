@@ -168,6 +168,7 @@ class Member_model extends CI_Model {
                 m.className,
             	m.approval,
             	m.groupNameId,
+            	m.phoneNumber,
             	g.name AS groupName
             FROM
             	member m
@@ -184,7 +185,7 @@ class Member_model extends CI_Model {
 		return $resultQuery;
 	}
 	
-	function insertMember($memberId, $nickname, $className, $password, $groupNameId) {
+	function insertMember($memberId, $nickname, $className, $password, $groupNameId, $phoneNumber) {
 	    $encryptPassword = password_hash($password, PASSWORD_BCRYPT);
 	    
 	    $sql = "
@@ -199,10 +200,11 @@ class Member_model extends CI_Model {
 				updatedDateTime = now(),
 				level = 1,
 				approval = 0,
-				groupNameId = ?
+				groupNameId = ?,
+	    		phoneNumber = ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($memberId, $nickname, $className, $encryptPassword, $groupNameId));
+	    $resultQuery = $this->db->query($sql, array($memberId, $nickname, $className, $encryptPassword, $groupNameId, $phoneNumber));
 	    
 	    return $this->db->insert_id();
 	}

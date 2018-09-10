@@ -15,6 +15,7 @@
 
 	<script src="/asset/bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="/asset/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
 	<script src="/asset/plugins/jquery.validate.js"></script>
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -48,6 +49,7 @@
 						<option value="요정">요정</option>
 						<option value="마법사">마법사</option>
 						<option value="다크엘프">다크엘프</option>
+						<option value="군주">군주</option>
 						<option value="총사">총사</option>
 						<option value="투사">투사</option>
 					</select>
@@ -61,6 +63,11 @@
 				<div class="form-group has-feedback">
 					<input type="text" name="nickname" class="form-control" placeholder="캐릭터명" required="required"> 
 					<span class="glyphicon glyphicon-user form-control-feedback"></span>
+				</div>
+				
+				<div class="form-group has-feedback">
+					<input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="핸드폰 번호" required="required"> 
+					<span class="glyphicon glyphicon-phone form-control-feedback"></span>
 				</div>
 				
 				<div class="form-group has-feedback">
@@ -103,6 +110,8 @@
 		    }
 		});
 	});
+
+	$("#phoneNumber").mask('000-0000-0000');
 	
 	$("#btn-register").on("click", function() {
 		$("#register-form").validate({
@@ -122,6 +131,9 @@
 	            nickname: {
 	                required : true,
 	                rangelength : [1, 10],
+	            },
+	            phoneNumber: {
+	            	required : true,
 	            },
 	            password: {
 	                required : true,
@@ -148,6 +160,9 @@
 	            nickname: {
 	                required : "캐릭터명을 입력해주세요.",
 	                rangelength : "닉네임 입력범위 1자 ~ 10자",
+	            },
+	            phoneNumber: {
+	            	required : "핸드폰 번호를 입력해주세요.",
 	            },
 	            password: {
 	                required : "비밀번호를 입력해주세요.",

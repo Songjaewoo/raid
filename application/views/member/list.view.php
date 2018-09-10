@@ -49,6 +49,7 @@
                 						<option value="요정" <?php if ($className == "요정") { echo "selected"; }?>>요정</option>
                 						<option value="마법사" <?php if ($className == "마법사") { echo "selected"; }?>>마법사</option>
                 						<option value="다크엘프" <?php if ($className == "다크엘프") { echo "selected"; }?>>다크엘프</option>
+                						<option value="군주" <?php if ($className == "군주") { echo "selected"; }?>>군주</option>
                 						<option value="총사" <?php if ($className == "총사") { echo "selected"; }?>>총사</option>
                 						<option value="투사" <?php if ($className == "투사") { echo "selected"; }?>>투사</option>
 									</select>
@@ -78,6 +79,7 @@
     								<th>클래스</th>
     								<th>아이디</th>
     								<th>캐릭터명</th>
+    								<th>연락처</th>
     								<th>가입일</th>
     								<th>-</th>
     								<th>-</th>
@@ -91,6 +93,7 @@
         							<td><?=$value['className']?></td>
         							<td><?=$value['memberId']?></td>
         							<td><?=$value['nickname']?></td>
+        							<td><?=$value['phoneNumber']?></td>
         							<td><?=date("Y-m-d", strtotime($value['createdDateTime']))?></td>
         							<td>
         								<?php if ($value['level'] != 99) { ?>

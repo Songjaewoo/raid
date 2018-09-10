@@ -27,6 +27,8 @@ class Payment_model extends CI_Model {
     			payment p
                 INNER JOIN member m ON (p.memberId = m.id)
                 INNER JOIN groupName gn ON (gn.id = m.groupNameId)
+	    	ORDER BY
+	    		p.pay DESC
     	";
 	    
 	    $resultQuery = $this->db->query($sql)->result_array();

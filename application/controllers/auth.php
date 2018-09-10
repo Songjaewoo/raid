@@ -26,11 +26,12 @@ class Auth extends CI_Controller {
 		$memberId = $this->input->post("memberId");
 		$nickname = $this->input->post("nickname");
 		$className = $this->input->post("className");
+		$phoneNumber = $this->input->post("phoneNumber");
 		$password = $this->input->post("password");
 		$passwordConfirm = $this->input->post("passwordConfirm");
 		$groupNameId = $this->input->post("groupNameId");
 		
-		if ($memberId != "" && $nickname != "" && $className != "" && $password != "" && $passwordConfirm != "" && $groupNameId != "") {
+		if ($memberId != "" && $nickname != "" && $className != "" && $password != "" && $passwordConfirm != "" && $groupNameId != "" && $phoneNumber != "") {
 			$isExistMemberId = $this->member_model->isExistMemberId($memberId);
 			if ($isExistMemberId != null) {
 				alert("이미 존재하는 아이디 입니다.");
@@ -42,7 +43,7 @@ class Auth extends CI_Controller {
 			}
 			
 			if ($password === $passwordConfirm) {
-				$result = $this->member_model->insertMember($memberId, $nickname, $className, $password, $groupNameId);
+				$result = $this->member_model->insertMember($memberId, $nickname, $className, $password, $groupNameId, $phoneNumber);
 				alert("회원가입 완료.", "/auth/login");
 			} else {
 				alert("비밀번호가 일치하지 않습니다.");

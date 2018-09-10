@@ -194,7 +194,7 @@ class Bossboardparticipant_model extends CI_Model {
             GROUP BY
             	bp.memberId
             ORDER BY
-            	m.nickname ASC
+            	dividend DESC
 		";
 	    
         $resultQuery = $this->db->query($sql, $paramArray)->result_array();

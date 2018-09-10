@@ -24,7 +24,6 @@ class Home extends CI_Controller {
 		$countNotFinishDividendMember = $this->bossboardparticipant_model->countMemberDiviend("N");
 		
 		$itemTaxPercent = $this->tax_model->getTax(1);
-		$allPayment = $this->payment_model->getAllPayment();
 		$expectGroupFund = floor($allPayment * ((100 - $itemTaxPercent) / 100)) + $currentGroupFund;
 		
 		$data = array(
