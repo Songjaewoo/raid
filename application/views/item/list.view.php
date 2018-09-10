@@ -24,16 +24,20 @@
 									<td><?=$value['name']?></td>
 									<td><?=number_format($value['price'])?></td>
 									<td>
+										<?php if (LOGIN_LEVEL >= 3) { ?>
 										<button type="button" data-id="<?=$value['id']?>" class="btn-update-item-modal btn btn-sm btn-primary btn-flat">
                         					수정
                         				</button>
+                        				<?php } else { ?>
+                        				-
+                        				<?php } ?>
 									</td>
 								</tr>
 								<?php } ?>
 							</tbody>
 						</table>
 					</div>
-					</div>
+				</div>
 			</div>
 		</div>
 	</section>

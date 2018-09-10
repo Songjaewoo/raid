@@ -7,11 +7,13 @@
     					<h3 class="box-title">보스탐 참여 정보</h3>
     				</div>
     				
+    				<?php if (LOGIN_LEVEL >= 2) { ?>
 					<div class="box-header">
 						<a href="/bossBoard/write">
 							<button type="button" class="btn btn-primary btn-flat pull-left" style="width: 100px;">등록</button>
 						</a>
 					</div>
+					<?php } ?>
             
 					<div class="box-body table-responsive no-padding">
 						<table class="table table-bordered table-hover">

@@ -54,12 +54,17 @@ class Board extends CI_Controller {
 		common_header();
 	
 		$category = $this->input->get('category') == null ? 1 : $this->input->get('category');
-	
-		$data = array(
-			"category" => $category,
-		);
-	
-		$this->load->view("board/write.view.php", $data);
+	    
+		if (($category == 1 && LOGIN_LEVEL >= 3) || $category == 2) {
+    		$data = array(
+    			"category" => $category,
+    		);
+    	
+    		$this->load->view("board/write.view.php", $data);
+		} else {
+            alert("접근 권한이 없습니다."); 
+		}
+		
 	
 		common_footer();
 	}
@@ -119,7 +124,11 @@ class Board extends CI_Controller {
 		if ($boardId > 0) {
 			$boardDetail = $this->board_model->getDetail($boardId);
 			$category = $boardDetail['category'];
-				
+			
+			if ($boardDetail['writerId'] != LOGIN_ID) {
+                alert("접근 권한이 없습니다.");
+			}
+			
 			$data = array(
 				"boardDetail" => $boardDetail,
 				"category" => $category,

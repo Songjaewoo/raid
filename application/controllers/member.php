@@ -14,6 +14,10 @@ class Member extends CI_Controller {
 	}
 	
 	public function index() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
+	    
 		common_header();
 		
 		$groupId = $this->input->get("groupId") != 0 ? $this->input->get("groupId") : null;
@@ -43,6 +47,10 @@ class Member extends CI_Controller {
 	}
 	
 	public function approval() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
+	    
 	    common_header();
 	    
 	    $groupId = null;

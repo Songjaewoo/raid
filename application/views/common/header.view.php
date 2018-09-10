@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 	<title>불사</title> -->
+	<title>불사</title>
 	
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -142,8 +142,8 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<a href="/" class="logo">
-<!-- 				<span class="logo-mini">Lin <b>M</b></span> -->
-<!-- 				<span class="logo-lg">Lineage M</span> -->
+				<span class="logo-mini">Lin <b>M</b></span>
+				<span class="logo-lg">Lineage M</span>
 			</a>
 			<nav class="navbar navbar-static-top">
 				<!-- Sidebar toggle button-->
@@ -212,12 +212,14 @@
 							<span>HOME</span>
 						</a>
 					</li>
+					<?php if (LOGIN_LEVEL >= 2) { ?>
 					<li id="nav-boss">
 						<a href="/boss">
 							<i class="fa fa-clock-o"></i>
 							<span>보스 시간표</span>
 						</a>
 					</li>
+					<?php } ?>
 					<li id="nav-boss-board">
 						<a href="/bossBoard">
 							<i class="fa fa-list-ul"></i>
@@ -249,6 +251,8 @@
 							<span>아이템 혈원가</span>
 						</a>
 					</li>
+					
+					<?php if (LOGIN_LEVEL >= 4) { ?>
 					<li id="nav-dividend">
 						<a href="/dividend">
 							<i class="fa fa-dollar"></i>
@@ -280,6 +284,7 @@
 							<span>회원 관리</span>
 						</a>
 					</li>
+					<?php } ?>
 				</ul>
 			</section>
 		</aside>

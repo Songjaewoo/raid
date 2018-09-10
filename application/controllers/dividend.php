@@ -15,6 +15,10 @@ class Dividend extends CI_Controller {
 	}
 	
 	public function index() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
+	    
 	    common_header();
 	    
 	    $s = $this->input->get("s");
@@ -31,6 +35,10 @@ class Dividend extends CI_Controller {
 	}
 	
 	public function detail() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
+	    
 	    common_header();
 	    
 	    $memberId = $this->input->get("memberId");

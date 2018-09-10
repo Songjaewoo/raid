@@ -18,13 +18,13 @@ class Test extends CI_Controller {
 	}
 	
 	public function index() {
-		$this->load->view("test.view.php", $data);
-	}
-	
-	public function write_submit() {
-		$text = $this->input->post("ckeditor");
-		
-		echo $text;
+	    $filepath = "./uploads/abc.jpg";
+	    $saveFileName = "aaaaa.jpg";
+	    $mime = "image/jpeg";
+	    
+	    $fileUrl = $this->s3->s3Upload($filepath, $saveFileName, $mime);
+	    
+	    echo $fileUrl;
 	}
 	
 	public function ckeditorFileUpload() {

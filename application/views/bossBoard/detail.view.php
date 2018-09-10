@@ -96,9 +96,13 @@
 													<?php $isFinish = true; ?>
 													완료
 												<?php } else { ?>
-												<button type="button" data-id="<?=$value['id']?>" class="btn-dividend-finish btn btn-sm btn-warning btn-flat">
-													미완료
-            									</button>
+													<?php if (LOGIN_LEVEL >= 4) { ?>
+    												<button type="button" data-id="<?=$value['id']?>" class="btn-dividend-finish btn btn-sm btn-warning btn-flat">
+    													미완료
+                									</button>
+                									<?php } else { ?>
+                										미완료
+                									<?php } ?>
 												<?php } ?>
 											</td>
     									</tr>
@@ -119,7 +123,7 @@
 		
 		<div class="row">
 			<div class="col-md-12" style="text-align: center;">
-				<?php if ($isFinish != true) { ?>
+				<?php if ($isFinish != true && LOGIN_LEVEL >= 2) { ?>
 				<button type="button" id="btn-del-boss-board" data-id="<?=$bossBoardId?>" class="btn btn-danger btn-flat" style="width: 100px;">
 					삭제
 				</button>

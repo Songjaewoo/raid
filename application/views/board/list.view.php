@@ -13,12 +13,14 @@
     					</h3>
     				</div>
     				
+    				<?php if (($category == 1 && LOGIN_LEVEL >= 3) || $category == 2) { ?>
 					<div class="box-header">
 						<a href="/board/write?category=<?=$category?>">
 							<button type="button" class="btn btn-primary btn-flat pull-left" style="width: 100px;">등록</button>
 						</a>
 					</div>
-            
+					<?php } ?>
+            		
 					<div class="box-body table-responsive no-padding">
 						<table class="table table-bordered table-hover">
 							<thead>

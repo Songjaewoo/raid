@@ -24,7 +24,7 @@ class Boardcomment_model extends CI_Model {
 	    	WHERE
 	    		bc.boardId = ?
 	    	ORDER BY
-	    		bc.id DESC
+	    		bc.id ASC
 	    	
 		";
 	    

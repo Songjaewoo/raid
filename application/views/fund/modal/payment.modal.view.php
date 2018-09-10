@@ -91,7 +91,7 @@
 	</div>
 </div>
 
-<input type="hidden" id="itemId" value="<?=$itemDetail['id']?>">
+<input type="hidden" id="memberId" value="<?=$payDetail['memberId']?>">
 
 <script>
 $("#allUse").on("click", function() {
@@ -111,6 +111,7 @@ function cal(){
 }
 
 $("#btn-update-pay").on("click", function() {
+	var memberId = $("#memberId").val();
 	var useMoney = $("#useMoney").val();
 	var nickname = $("#nickname").val();
 	var memo = $("#memo").val();
@@ -118,6 +119,7 @@ $("#btn-update-pay").on("click", function() {
 	var data = {
 		"useMoney": useMoney,
 		"nickname": nickname,
+		"memberId": memberId,
 		"memo": memo,
 	};
 

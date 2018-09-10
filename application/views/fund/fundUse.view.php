@@ -13,7 +13,7 @@
     				
     				<div class="box-header">
     					<h3 class="box-title" style="font-size: 16px;">남은 정산금: <strong><?=number_format($allNotFinishDividend)?></strong></h3><br>
-    					<h3 class="box-title" style="font-size: 16px;">예상 혈비: <strong><?=number_format($currentGroupFund - $allNotFinishDividend)?></strong></h3>
+    					<h3 class="box-title" style="font-size: 16px;">예상 혈비: <strong><?=number_format($expectGroupFund)?></strong></h3>
     					
     					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-fund-use-modal">추가</button>
     				</div>
@@ -76,8 +76,8 @@
 				<div class="form-group" style="margin-bottom: 8px;">
 					<label>예상 혈비</label>
 
-					<input type="text" class="form-control" value="<?=number_format($currentGroupFund - $allNotFinishDividend)?>" readonly>
-					<input type="hidden" id="groupFund" value="<?=$currentGroupFund - $allNotFinishDividend?>">
+					<input type="text" class="form-control" value="<?=number_format($expectGroupFund)?>" readonly>
+					<input type="hidden" id="groupFund" value="<?=$expectGroupFund?>">
 				</div>
 				
 				<div class="form-group" style="margin-bottom: 8px;">
@@ -194,9 +194,15 @@ $(".btn-del-fund-use").on("click", function() {
 })
 
 $("#btn-add-fund-use").on("click", function() {
+	var useType = $(":input:radio[name=useType]:checked").val();
 	var useMoney = $("#useMoney").val();
 	var memo = $("#memo").val();
-
+	if (useType == 1) {
+		useMoney = useMoney * -1;
+	} else {
+		useMoney = useMoney * +1;
+	}
+	
 	if (confirm("추가 하시겠습니까?")) {
     	$.ajax({
     		type: "POST",

@@ -15,23 +15,25 @@ class Fund extends CI_Controller {
 	}
 	
 	public function useList() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
 		common_header();
 		
 		$fundUseList = $this->funduse_model->getList();
 		$currentGroupFund = $this->funduse_model->getCurrentGroupFund();
-		$itemTaxPercent = $this->tax_model->getTax(1);
-		$taxPercent = $this->tax_model->getTax(2);
+		$groupTaxPercent = $this->tax_model->getTax(2);
 		$allNotFinishDividend = $this->bossboardparticipant_model->getAllDiviend("N");
 		
 		$allPayment = $this->payment_model->getAllPayment();
-		$expectGroupFund = floor($allPayment * ((100 - $itemTaxPercent) / 100)) + $currentGroupFund;
+		$expectGroupFund = floor(($allPayment * ((100 - $groupTaxPercent) / 100) - $allNotFinishDividend) + $currentGroupFund);
 
 		$data = array(
 		    "fundUseList" => $fundUseList,
 		    "currentGroupFund" => $currentGroupFund,
 		    "expectGroupFund" => $expectGroupFund,
 		    "allNotFinishDividend" => $allNotFinishDividend,
-			"taxPercent" => $taxPercent,
+		    "taxPercent" => $groupTaxPercent,
 		);
 		
 		$this->load->view("fund/fundUse.view.php", $data);
@@ -40,6 +42,10 @@ class Fund extends CI_Controller {
 	}
 	
 	public function back() {
+	    if (LOGIN_LEVEL < 4) {
+	        alert("접근 권한이 없습니다.");
+	    }
+	    
 	    common_header();
 	    
 	    $paymentList = $this->payment_model->getList();
@@ -67,9 +73,10 @@ class Fund extends CI_Controller {
 	public function updatePay_ajax() {
 	    $useMoney = $this->input->post("useMoney");
 	    $nickname = $this->input->post("nickname");
+	    $memberId = $this->input->post("memberId");
 	    $memo = $this->input->post("memo");
 	    
-	    $resultUpdate = $this->payment_model->updatePayment(($useMoney * -1), LOGIN_ID);
+	    $resultUpdate = $this->payment_model->updatePayment(($useMoney * -1), $memberId);
 	    
 	    if ($resultUpdate > 0) {
 	        $itemTaxPercent = $this->tax_model->getTax(1);

@@ -73,6 +73,12 @@ class BossBoard extends CI_Controller {
 	}
 	
 	public function write() {
+        if (LOGIN_LEVEL < 2) {
+	        alert("접근 권한이 없습니다.");
+	        exit;
+	    }
+	    
+	    
 		common_header();
 		$bossList = $this->boss_model->getBossNameList();
 		$groupMemberList = $this->member_model->getMemberList();
@@ -90,6 +96,11 @@ class BossBoard extends CI_Controller {
 	}
 	
 	public function write_submit_ajax() {
+	    if (LOGIN_LEVEL < 2) {
+	        alert("접근 권한이 없습니다.");
+	        exit;
+	    }
+	    
 		$writerId = LOGIN_ID;
 		$writerNickname = LOGIN_NICKNAME;
 		$killDateTime = $this->input->post("killDateTime");
@@ -202,6 +213,11 @@ class BossBoard extends CI_Controller {
 	}
 	
 	public function delete_ajax() {
+	    if (LOGIN_LEVEL < 2) {
+	        alert("접근 권한이 없습니다.");
+	        exit;
+	    }
+	    
 	    $bossBoardId = $this->input->post("bossBoardId");
 	    
 	    $resultDeleteBossBoard = $this->bossboard_model->deleteBossBoard($bossBoardId);

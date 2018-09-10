@@ -85,6 +85,7 @@ img {
 						</a>
 					</div>
 					
+					<?php if ($boardDetail['writerId'] == LOGIN_ID) { ?>
 					<div style="float: right;">
 						<a href="/board/edit?boardId=<?=$boardDetail['id']?>">
 							<button type="button" class="btn btn-primary btn-flat" style="width: 100px;">
@@ -96,6 +97,7 @@ img {
 							삭제
 						</button>
 					</div>
+					<?php } ?>
 				</div>
 			</div>
 		</form>
