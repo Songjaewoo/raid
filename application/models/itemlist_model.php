@@ -90,4 +90,34 @@ class Itemlist_model extends CI_Model {
 	    
 	    return $this->db->affected_rows();
 	}
+	
+	function updateSortItem($sort, $id){
+		$sql = "
+    		UPDATE
+    			itemList
+    		SET
+    			sort = ?
+    		WHERE
+    			id = ?
+    	";
+		 
+		$resultQuery = $this->db->query($sql, array($sort, $id));
+		 
+		return $this->db->affected_rows();
+	}
+	
+	function insertItem($name, $price, $level){
+		$sql = "
+    		INSERT INTO
+    			itemList
+    		SET
+				name = ?,
+				price = ?,
+				level = ?
+    	";
+		 
+		$resultQuery = $this->db->query($sql, array($name, $price, $level));
+		 
+		return $this->db->insert_id();
+	}
 }

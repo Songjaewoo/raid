@@ -26,6 +26,7 @@
 	<script src="/asset/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script src="/asset/bower_components/ckeditor/ckeditor.js"></script>
+	<script src="/asset/bower_components/chart.js/Chart.min.js"></script>
 	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
 	<script src="/asset/plugins/jquery.validate.js"></script>
 	<script src="/asset/plugins/iCheck/icheck.min.js"></script>
@@ -138,7 +139,7 @@
 		});
 	</script>
 </head>
-<body class="hold-transition skin-red sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini">
 	<div class="wrapper">
 		<header class="main-header">
 			<a href="/" class="logo">

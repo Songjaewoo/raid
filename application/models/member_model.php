@@ -289,4 +289,22 @@ class Member_model extends CI_Model {
 	    
 	    return $this->db->affected_rows();
 	}
+	
+	function getClassPieChartInfo() {
+		$sql = "
+			SELECT 
+				count(className) classNameCount, 
+			    className 
+			FROM 
+				member 
+			WHERE 
+				approval = 1 
+			GROUP BY 
+				className
+		";
+		 
+		$resultQuery = $this->db->query($sql)->result_array();
+		 
+		return $resultQuery;
+	}
 }

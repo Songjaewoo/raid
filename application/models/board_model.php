@@ -6,7 +6,7 @@ class Board_model extends CI_Model {
 		parent::__construct ();
 	}
 	
-	function getList($category, $offset, $limit){
+	function getList($category, $offset, $limit) {
 	    $sql = "
 			SELECT 
                 b.id,

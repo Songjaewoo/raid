@@ -15,9 +15,6 @@ class Fund extends CI_Controller {
 	}
 	
 	public function useList() {
-	    if (LOGIN_LEVEL < 4) {
-	        alert("접근 권한이 없습니다.");
-	    }
 		common_header();
 		
 		$fundUseList = $this->funduse_model->getList();

@@ -6,7 +6,7 @@ class Group_model extends CI_Model {
 		parent::__construct ();
 	}
 	
-	function getList(){
+	function getList() {
 	    $sql = "
     		SELECT
     			id,
@@ -22,7 +22,7 @@ class Group_model extends CI_Model {
 	    return $resultQuery;
 	}
 	
-	function insertGroup($name){
+	function insertGroup($name) {
 	    $sql = "
     		INSERT INTO
     			groupName
@@ -35,7 +35,7 @@ class Group_model extends CI_Model {
 	    return $this->db->insert_id();
 	}
 	
-	function updateGroup($id, $name){
+	function updateGroup($id, $name) {
 	    $sql = "
     		UPDATE
     			groupName
@@ -50,7 +50,7 @@ class Group_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function deleteGroup($id){
+	function deleteGroup($id) {
 	    $sql = "
     		DELETE FROM
     			groupName
@@ -61,5 +61,24 @@ class Group_model extends CI_Model {
 	    $resultQuery = $this->db->query($sql, array($id));
 	    
 	    return $this->db->affected_rows();
+	}
+	
+	function getGroupChartInfo() {
+		$sql = "
+    		SELECT 
+				count(m.groupNameId) as groupMemberCount,
+			    gn.name AS groupName
+			FROM 
+				groupName gn
+			    LEFT JOIN  member m ON (gn.id = m.groupNameId)
+			WHERE
+				m.approval = 1
+			GROUP BY 
+				m.groupNameId
+    	";
+		 
+		$resultQuery = $this->db->query($sql)->result_array();
+		 
+		return $resultQuery;
 	}
 }

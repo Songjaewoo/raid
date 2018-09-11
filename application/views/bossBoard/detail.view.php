@@ -123,7 +123,7 @@
 		
 		<div class="row">
 			<div class="col-md-12" style="text-align: center;">
-				<?php if ($isFinish != true && LOGIN_LEVEL >= 2) { ?>
+				<?php if ($isFinish != true && LOGIN_LEVEL >= 2 && $detailBossBoard['writerId'] == LOGIN_ID) { ?>
 				<button type="button" id="btn-del-boss-board" data-id="<?=$bossBoardId?>" class="btn btn-danger btn-flat" style="width: 100px;">
 					삭제
 				</button>

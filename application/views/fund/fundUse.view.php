@@ -6,16 +6,20 @@
 					<div class="box-header with-border">
     					<h3 class="box-title">분배금 사용 관리</h3>
     					
+    					<?php if (LOGIN_LEVEL >= 4) { ?>
     					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".tax-modal">
 							혈비 세율 수정
 						</button>
+						<?php } ?>
     				</div>
     				
     				<div class="box-header">
     					<h3 class="box-title" style="font-size: 16px;">남은 정산금: <strong><?=number_format($allNotFinishDividend)?></strong></h3><br>
     					<h3 class="box-title" style="font-size: 16px;">예상 혈비: <strong><?=number_format($expectGroupFund)?></strong></h3>
     					
+    					<?php if (LOGIN_LEVEL >= 4) { ?>
     					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".add-fund-use-modal">추가</button>
+    					<?php } ?>
     				</div>
             
 					<div class="box-body table-responsive no-padding">
@@ -44,7 +48,11 @@
     									</td>
     									<td>[<?=$value['groupName']?>] <?=$value['memberNickname']?></td>
     									<td>
-    										<button type="button" data-id="<?=$value['id']?>" class="btn-del-fund-use btn btn-sm btn-danger btn-flat">삭제</button>	
+    										<?php if (LOGIN_LEVEL >= 4) { ?>
+    										<button type="button" data-id="<?=$value['id']?>" class="btn-del-fund-use btn btn-sm btn-danger btn-flat">삭제</button>
+    										<?php } else { ?>
+    										-
+    										<?php } ?>	
     									</td>
     								</tr>
     								<?php } ?>
