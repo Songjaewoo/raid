@@ -12,7 +12,7 @@
 				</div>
             
 				<div class="box-body table-responsive no-padding">
-					<table class="table table-bordered table-hover">
+					<table class="table table-bordered table-hover" style="font-size: 17px;">
 						<thead>
 							<tr>
 								<th>보스이름</th>
@@ -25,7 +25,7 @@
 							<?php foreach ($bossList as $key => $value) { ?>
 							<tr>
 								<td><?=$value['name']?></td>
-								<td><?=$value['nextTime']?></td>
+								<td><b><?=$value['nextTime']?></b></td>
 								<td class="count-down-time" data-time="<?=$value['nextTime']?>"></td>
 								<td>
 									<button type="button" class="btn btn-danger btn-flat btn-update-kill-time" 
@@ -33,7 +33,7 @@
 									<button type="button" class="btn btn-danger btn-flat btn-update-kill-pass" 
 											data-id="<?=$value['id']?>">PASS</button>
 									
-									<div class="btn-group" style="width: 200px;">
+									<div class="btn-group">
 										<button type="button" class="btn btn-warning btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">직접입력</button>
 										<div class="dropdown-menu pull-left" role="menu">
 											<input type="text" class="form-control dateTimeMask direct-time-<?=$value['id']?>" value="<?=$currentDateTime?>" 
@@ -221,25 +221,27 @@ $(".btn-update-direct-time").on("click", function() {
 		"id": id,
 		"updateTime": updateTime,
 	};
-	
-	$.ajax({
-		type: "POST",
-		data: data,
-		url: "/boss/updateDirectDateTime_ajax",
-		dataType: "json",
-		success: function(result) {
-			if (result.status == 200) {
-				getBossList();
-			} else {
-				alert("오류");
-			}
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+
+	if (confirm("잡은 시간을 수정하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: data,
+    		url: "/boss/updateDirectDateTime_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				getBossList();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
 });
 
 
@@ -248,25 +250,27 @@ $(".btn-update-kill-time").on("click", function() {
 	var data = {
 		"id": id,
 	};
-	
-	$.ajax({
-		type: "POST",
-		data: data,
-		url: "/boss/updateKillDateTime_ajax",
-		dataType: "json",
-		success: function(result) {
-			if (result.status == 200) {
-				getBossList();
-			} else {
-				alert("오류");
-			}
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+
+	if (confirm("킬 하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: data,
+    		url: "/boss/updateKillDateTime_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				getBossList();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
 });
 
 $(".btn-update-kill-pass").on("click", function() {
@@ -274,25 +278,27 @@ $(".btn-update-kill-pass").on("click", function() {
 	var data = {
 		"id": id,
 	};
-	
-	$.ajax({
-		type: "POST",
-		data: data,
-		url: "/boss/updateKillPass_ajax",
-		dataType: "json",
-		success: function(result) {
-			if (result.status == 200) {
-				getBossList();
-			} else {
-				alert("오류");
-			}
-		},
-		error: function(xhr, status, error) {
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
+
+	if (confirm("멍 처리하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: data,
+    		url: "/boss/updateKillPass_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				getBossList();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
 });
 
 function cal(){
