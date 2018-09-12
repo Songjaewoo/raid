@@ -145,7 +145,7 @@ class Member_model extends CI_Model {
 	    }
 	    
 	    if ($nickname != null) {
-	        $whereClause .= "AND m.nickname = ?";
+	        $whereClause .= "AND m.nickname LIKE ?";
 	        $paramArray[] = "%$nickname%";
 	    }
 	    
