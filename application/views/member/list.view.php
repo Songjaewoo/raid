@@ -16,7 +16,37 @@
           
 				<div class="box box-danger">
 					<div class="box-header with-border">
-    					<h3 class="box-title">회원 관리 (<?=number_format(COUNT($memberList))?> 명)</h3>
+						<h3 class="box-title">회원 인원 현황</h3>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-3">
+								<p class="text-green"><b>가입 승인 회원</b></p>
+								<?php foreach ($groupApprovalList1 as $key => $value) { ?>
+								<p><?=$value['groupName']?>: <?=$value['groupMemberCount']?>명</p>
+								<?php } ?>
+							</div>
+							
+							<div class="col-md-3">
+								<p class="text-yellow"><b>가입 대기 회원</b></p>
+								<?php foreach ($groupApprovalList0 as $key => $value) { ?>
+								<p><?=$value['groupName']?>: <?=$value['groupMemberCount']?>명</p>
+								<?php } ?>
+							</div>
+							
+							<div class="col-md-3">
+								<p class="text-red"><b>탈퇴 회원</b></p>
+								<?php foreach ($groupApprovalList2 as $key => $value) { ?>
+								<p><?=$value['groupName']?>: <?=$value['groupMemberCount']?>명</p>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+        
+				<div class="box box-danger">
+					<div class="box-header with-border">
+    					<h3 class="box-title">회원 관리 <small>(검색결과: <?=number_format(COUNT($memberList))?> 건)</small></h3>
     				</div>
     				
 					<div class="box-header">

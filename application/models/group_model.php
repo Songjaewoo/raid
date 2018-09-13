@@ -63,7 +63,7 @@ class Group_model extends CI_Model {
 	    return $this->db->affected_rows();
 	}
 	
-	function getGroupChartInfo() {
+	function getGroupChartInfo($approval) {
 		$sql = "
     		SELECT 
 				count(m.groupNameId) as groupMemberCount,
@@ -72,12 +72,12 @@ class Group_model extends CI_Model {
 				groupName gn
 			    LEFT JOIN  member m ON (gn.id = m.groupNameId)
 			WHERE
-				m.approval = 1
+				m.approval = ?
 			GROUP BY 
 				m.groupNameId
     	";
 		 
-		$resultQuery = $this->db->query($sql)->result_array();
+		$resultQuery = $this->db->query($sql, array($approval))->result_array();
 		 
 		return $resultQuery;
 	}

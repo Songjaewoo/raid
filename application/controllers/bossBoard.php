@@ -81,7 +81,7 @@ class BossBoard extends CI_Controller {
 	    
 		common_header();
 		$bossList = $this->boss_model->getBossNameList();
-		$groupMemberList = $this->member_model->getMemberList();
+		$groupMemberList = $this->member_model->getMemberList(null, null, null, 1, null);
 		$itemList = $this->itemlist_model->getList();
 		
 		$data = array(

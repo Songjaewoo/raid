@@ -31,6 +31,10 @@ class Member extends CI_Controller {
                                                 		    $nickname);
 		$groupList = $this->group_model->getList();
 		
+		$groupApprovalList0 = $this->group_model->getGroupChartInfo(0); // 미승인
+		$groupApprovalList1 = $this->group_model->getGroupChartInfo(1); // 가입
+		$groupApprovalList2 = $this->group_model->getGroupChartInfo(2); // 탈퇴
+		
 		$data = array(
 		    "memberList" => $memberList,
 		    "groupList" => $groupList,
@@ -39,6 +43,9 @@ class Member extends CI_Controller {
 		    "className" => $className,
 		    "approval" => $approval,
 		    "nickname" => $nickname,
+		    "groupApprovalList0" => $groupApprovalList0,
+		    "groupApprovalList1" => $groupApprovalList1,
+		    "groupApprovalList2" => $groupApprovalList2,
 		);
 		
 		$this->load->view("member/list.view.php", $data);
