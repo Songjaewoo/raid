@@ -56,6 +56,26 @@
 		<div class="col-md-4">
 			<div class="box box-danger">
 				<div class="box-header with-border">
+					<h3 class="box-title">메모사항</h3>
+					
+					<button type="button" id="btn-add-memo" class="btn btn-sm btn-primary btn-flat pull-right">
+						수정
+					</button>
+				</div>
+            
+				<div class="box-body">
+					<textarea id="memo-content" class="form-control" rows="10"><?=$bossMemoList[0]['content']?></textarea>
+				</div>
+				
+				<div class="box-footer">
+					[<?=$bossMemoList[0]['groupName']?>] <?=$bossMemoList[0]['nickname']?> <?=$bossMemoList[0]['createdDateTime']?>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-4">
+			<div class="box box-danger">
+				<div class="box-header with-border">
 					<h3 class="box-title">계산기</h3>
 					
 					<button type="button" class="btn btn-sm btn-primary btn-flat pull-right" data-toggle="modal" data-target=".tax-modal">
@@ -145,6 +165,30 @@
 $(".dateTimeMask").mask('0000-00-00 00:00', {
 	placeholder: "0000-00-00 00:00"
 });
+
+$("#btn-add-memo").on("click", function() {
+	var content = $("#memo-content").val();
+	
+	$.ajax({
+		type: "POST",
+		data: {"content": content},
+		url: "/boss/addBossMemo_ajax",
+		dataType: "json",
+		success: function(result) {
+			if (result.status == 200) {
+				alert("수정 완료");
+				location.reload();
+			} else {
+				alert("오류");
+			}
+		},
+		error: function(xhr, status, error) {
+			console.log(xhr);
+			console.log(status);
+			console.log(error);
+		}
+	});
+})
 
 $("#btn-add-boss").on("click", function() {
 	var bossName = $("#boss-name").val();

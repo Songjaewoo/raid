@@ -6,6 +6,7 @@ class Boss extends CI_Controller {
 		parent::__construct();
 	
 		$this->load->model('boss_model');
+		$this->load->model('bossmemo_model');
 		$this->load->model('tax_model');
 		
 		$this->load->helper('header_footer_helper');
@@ -25,11 +26,13 @@ class Boss extends CI_Controller {
 		$currentDateTime = date("Y-m-d H:i");
 		$bossList = $this->boss_model->getList();
 		$taxPercent = $this->tax_model->getTax(1);
-
+		$bossMemoList = $this->bossmemo_model->getList();
+		
 		$data = array(
 			"currentDateTime" => $currentDateTime,
 			"bossList" => $bossList,
 		    "taxPercent" => $taxPercent,
+			"bossMemoList" => $bossMemoList,
 		);
 		
 		$this->load->view("boss/list.view.php", $data);
@@ -56,6 +59,22 @@ class Boss extends CI_Controller {
 	    }
 	    
 	    echo json_encode($jsonResult);
+	}
+	
+	public function addBossMemo_ajax() {
+		$writerId = LOGIN_ID;
+		$content = $this->input->post("content");
+		 
+		$result = $this->bossmemo_model->insertBossMemo($writerId, $content);
+		if ($result > 0) {
+			$jsonResult['status'] = 200;
+			$jsonResult['data'] = $result;
+		} else {
+			$jsonResult['status'] = 404;
+			$jsonResult['data'] = $result;
+		}
+		 
+		echo json_encode($jsonResult);
 	}
 	
 	public function updateKillDateTime_ajax() {
