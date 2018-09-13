@@ -16,7 +16,7 @@
           
 				<div class="box box-danger">
 					<div class="box-header with-border">
-    					<h3 class="box-title">회원 관리</h3>
+    					<h3 class="box-title">회원 관리 (<?=number_format(COUNT($memberList))?> 명)</h3>
     				</div>
     				
 					<div class="box-header">
