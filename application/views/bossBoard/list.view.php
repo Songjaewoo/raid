@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="box box-danger">
 					<div class="box-header with-border">
-    					<h3 class="box-title">보스탐 참여 정보</h3>
+    					<h3 class="box-title"><a href="/bossBoard">보스탐 참여 정보</a></h3>
     				</div>
     				
     				<?php if (LOGIN_LEVEL >= 2) { ?>
@@ -14,6 +14,26 @@
 						</a>
 					</div>
 					<?php } ?>
+					
+					<div class="box-header">
+						<form action="/bossBoard" method="get">
+							<select class="form-control" id="serach-type" name="serachType" style="width: 170px; float: left; margin-right: 12px;">
+								<option value="1" <?php if ($serachType == 1) { echo 'selected'; }?>>작성자</option>
+								<option value="2" <?php if ($serachType == 2) { echo 'selected'; }?>>보스이름</option>
+								<option value="3" <?php if ($serachType == 3) { echo 'selected'; }?>>드랍아이템</option>
+								<option value="4" <?php if ($serachType == 4) { echo 'selected'; }?>>날짜</option>
+							</select>
+	                  
+							<div class="input-group" style="width: 250px;">
+								<input type="text" name="s" id="search-keyword" class="form-control pull-right" 
+									placeholder="Search" value="<?=htmlspecialchars($s)?>" autocomplete="off">
+	
+								<div class="input-group-btn">
+									<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+								</div>
+							</div>
+						</form>
+					</div>
             
 					<div class="box-body table-responsive no-padding">
 						<table class="table table-bordered table-hover">
@@ -90,3 +110,34 @@
 		</div>
 	</section>
 </div>
+
+<script>
+if ($("#serach-type").val() == 4) {
+	$("#search-keyword").datepicker({
+		format: "yyyy-mm-dd",
+		todayBtn: "linked",
+		language: "ko"
+	})
+} else {
+	$("#search-keyword").datepicker("destroy");
+	$("#search-keyword").val("");
+}
+
+$("#serach-type").on("change", function() {
+	if ($(this).val() == 4) {
+		$("#search-keyword").datepicker({
+			format: "yyyy-mm-dd",
+			todayBtn: "linked",
+			language: "ko"
+		})
+	} else {
+		$("#search-keyword").datepicker("destroy");
+		$("#search-keyword").val("");
+	}
+});
+
+// $("#search-keyword").datepicker({
+// 	format: "yyyy-mm-dd",
+// 	todayBtn: "linked",
+// })
+</script>

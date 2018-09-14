@@ -24,6 +24,7 @@
 	<script src="/asset/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/asset/bower_components/jquery.countdown/jquery.countdown.min.js"></script>
 	<script src="/asset/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script src="/asset/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.ko.js"></script>
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script src="/asset/bower_components/ckeditor/ckeditor.js"></script>
 	<script src="/asset/bower_components/chart.js/Chart.min.js"></script>

@@ -312,7 +312,8 @@ $("#select-group-member").select2({
 $("#kill-date-time").datepicker({
 	autoclose: false,
 	format: "yyyy-mm-dd",
-	todayBtn: "linked"
+	todayBtn: "linked",
+	language: "ko"
 })
 
 $("#select-item-list").change(function() {

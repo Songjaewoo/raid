@@ -8,8 +8,8 @@ class Bossboard_model extends CI_Model {
 		$this->load->model('bossboarditem_model');
 	}
 	
-	function getBossBoardList($offset, $limit) {
-	    $resultBossBoardList = $this->getList($offset, $limit);
+	function getBossBoardList($offset, $limit, $serachType, $s) {
+	    $resultBossBoardList = $this->getList($offset, $limit, $serachType, $s);
 	    
 	    foreach ($resultBossBoardList as $key => $value) {
 	        $id = $value['id'];
@@ -20,12 +20,29 @@ class Bossboard_model extends CI_Model {
 	    return $resultBossBoardList;
 	}
 	
-	function getList($offset, $limit) {
+	function getList($offset, $limit, $serachType, $s) {
+		$paramArray = array();
+		
+		$whereClause = "";
+		if ($serachType == 1 && $s != "") {
+			$whereClause .= "AND m.nickname LIKE ?";
+	        $paramArray[] = "%$s%";
+		} else if ($serachType == 2 && $s != "") {
+			$whereClause .= "AND bs.name LIKE ?";
+			$paramArray[] = "%$s%";
+		} else if ($serachType == 3 && $s != "") {
+			$whereClause .= "AND il.name LIKE ?";
+			$paramArray[] = "%$s%";
+		} else if ($serachType == 4 && $s != "") {
+			$whereClause .= "AND DATE_FORMAT(b.killDateTime, '%Y-%m-%d') = ?";
+			$paramArray[] = $s;
+		}
+		
 	    $sql = "
 			SELECT
 				b.id,
 				b.writerId,
-				b.writerNickname,
+				m.nickname AS writerNickname,
 				b.killDateTime,
 				b.bossId,
                 bs.name AS bossName,
@@ -33,32 +50,63 @@ class Bossboard_model extends CI_Model {
 				b.createdDateTime,
 				b.updatedDateTime,
                 (SELECT COUNT(bp.id) FROM bossBoardParticipant bp WHERE bp.bossBoardId = b.id) AS participantCount,
-                (SELECT SUM(bp.dividend) FROM bossBoardParticipant bp WHERE bossBoardId = b.id AND isFinish = 'N') AS dividend
-
+                (SELECT SUM(bp.dividend) FROM bossBoardParticipant bp WHERE bossBoardId = b.id AND isFinish = 'N') AS dividend,
+                il.name AS itemName
 			FROM
 				bossBoard b
+				LEFT JOIN member m ON (b.writerId = m.id)
                 LEFT JOIN boss bs ON (b.bossId = bs.id)
+                LEFT JOIN bossBoardItem bi ON (bi.bossBoardId = b.id)
+				LEFT JOIN itemList il ON (bi.itemId = il.id)
+    		WHERE
+				1=1
+				$whereClause
 			ORDER BY
 				b.killDateTime DESC, b.id DESC
 	    	LIMIT 
 	    		?, ?
 		";
 	    
-	    $resultQuery = $this->db->query($sql, array($offset, $limit))->result_array();
+	    $paramArray[] = $offset;
+	    $paramArray[] = $limit;
+	    $resultQuery = $this->db->query($sql, $paramArray)->result_array();
 	    
 	    return $resultQuery;
 	}
 	
-	function countBossBoardList() {
+	function countBossBoardList($serachType, $s) {
+		$paramArray = array();
+		
+		$whereClause = "";
+		if ($serachType == 1 && $s != "") {
+			$whereClause .= "AND m.nickname LIKE ?";
+			$paramArray[] = "%$s%";
+		} else if ($serachType == 2 && $s != "") {
+			$whereClause .= "AND bs.name LIKE ?";
+			$paramArray[] = "%$s%";
+		} else if ($serachType == 3 && $s != "") {
+			$whereClause .= "AND il.name LIKE ?";
+			$paramArray[] = "%$s%";
+		} else if ($serachType == 4 && $s != "") {
+			$whereClause .= "AND DATE_FORMAT(b.killDateTime, '%Y-%m-%d') = ?";
+			$paramArray[] = $s;
+		}
+		
 		$sql = "
 			SELECT
 				COUNT(b.id) as count
 			FROM
 				bossBoard b
+				LEFT JOIN member m ON (b.writerId = m.id)
                 LEFT JOIN boss bs ON (b.bossId = bs.id)
+                LEFT JOIN bossBoardItem bi ON (bi.bossBoardId = b.id)
+				LEFT JOIN itemList il ON (bi.itemId = il.id)
+			WHERE
+				1=1
+				$whereClause
 		";
 		 
-		$resultQuery = $this->db->query($sql)->row_array();
+		$resultQuery = $this->db->query($sql, $paramArray)->row_array();
 		 
 		return $resultQuery['count'];
 	}

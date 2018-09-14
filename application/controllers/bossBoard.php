@@ -28,15 +28,19 @@ class BossBoard extends CI_Controller {
 	public function index() {
 		common_header();
 		
+		$serachType = $this->input->get('serachType') == null ? null : $this->input->get('serachType');
+		$s = $this->input->get('s') == null ? null : $this->input->get('s');
 		$pageNum = $this->input->get('pageNum') == null ? 1 : $this->input->get('pageNum');
 		$limit = $this->input->get('limit') == null ? 10 : $this->input->get('limit');
 		$offset = ($pageNum - 1) * $limit;
 		
-		$bossBoardList = $this->bossboard_model->getBossBoardList($offset, $limit);
-		$countBossBoardList = $this->bossboard_model->countBossBoardList();
+		$bossBoardList = $this->bossboard_model->getBossBoardList($offset, $limit, $serachType, $s);
+		$countBossBoardList = $this->bossboard_model->countBossBoardList($serachType, $s);
 		$pagination = $this->paging_info->getPagingInfo($pageNum, $countBossBoardList, $limit, 10);
 		
 		$data = array(
+			"serachType" => $serachType,
+			"s" => $s,
 			"bossBoardList" => $bossBoardList,
 			"pagination" => $pagination,
 		);
