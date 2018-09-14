@@ -153,7 +153,7 @@
 		</div>
 		
 		<div class="row">
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="box box-danger">
 					<div class="box-header with-border">
     					<h3 class="box-title">
@@ -162,14 +162,7 @@
     				</div>
     				            		
 					<div class="box-body">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="chart-responsive">
-									<canvas id="pieChart"></canvas>
-								</div>
-							</div>
-							<div class="col-md-6 chart-legend"></div>
-						</div>
+						<canvas id="pieChart"></canvas>
 					</div>
 				</div>
 			</div>
@@ -180,30 +173,102 @@
 <input type="hidden" id="classPieChartInfo" value="<?=$classPieChartInfo?>">
 
 <script>
-var classPieChartInfo = $("#classPieChartInfo").val();
-var color = ["#f56954", "#00a65a", "#f39c12", "#00c0ef", "#3c8dbc", "#d2d6de", "#dd4b39"];
-var pieDataArray = [];
-$.each(JSON.parse(classPieChartInfo), function(key, value) {
-	var pieDataObj = {};
-	pieDataObj.label = value.className;
-	pieDataObj.value = value.classNameCount;
-	pieDataObj.color = color[key];
-	pieDataObj.highlight = color[key];
-	
-	pieDataArray.push(pieDataObj);
-});
-
-var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-var pieChart       = new Chart(pieChartCanvas);
-var pieData = pieDataArray;
-var pieOptions     = {
-	segmentShowStroke    : true,
-	segmentStrokeColor   : '#fff',
-	segmentStrokeWidth   : 1,
-	responsive           : true,
-	maintainAspectRatio  : false,
-	tooltipTemplate      : '<%=value %> <%=label%>'
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
 };
-pieChart = pieChart.Doughnut(pieData, pieOptions);
-$(".chart-legend").html(pieChart.generateLegend());
+
+// var classPieChartInfo = $("#classPieChartInfo").val();
+// var color = ["rgb(255, 99, 132)", "#00a65a", "#f39c12", "#00c0ef", "#3c8dbc", "#d2d6de", "#dd4b39"];
+// var pieDataArray = [];
+// $.each(JSON.parse(classPieChartInfo), function(key, value) {
+// 	var pieDataObj = {};
+// 	pieDataObj.label = value.className;
+// 	pieDataObj.value = value.classNameCount;
+// 	pieDataObj.color = color[key];
+// 	pieDataObj.highlight = color[key];
+	
+// 	pieDataArray.push(pieDataObj);
+// });
+
+var randomScalingFactor = function() {
+	return Math.round(Math.random() * 100);
+};
+
+var config = {
+	type: 'doughnut',
+	data: {
+		datasets: [{
+			data: [
+				randomScalingFactor(),
+				randomScalingFactor(),
+				randomScalingFactor(),
+				randomScalingFactor(),
+				randomScalingFactor(),
+			],
+			backgroundColor: [
+				window.chartColors.red,
+				window.chartColors.orange,
+				window.chartColors.yellow,
+				window.chartColors.green,
+				window.chartColors.blue,
+			],
+			label: 'Dataset 11111111111'
+		}],
+		labels: [
+			'Red',
+			'Orange',
+			'Yellow',
+			'Green',
+			'Blue'
+		]
+	},
+	options: {
+		responsive: true,
+		legend: {
+			position: 'right',
+		},
+		title: {
+			display: false,
+		},
+		animation: {
+			animateScale: true,
+			animateRotate: true
+		}
+	}
+};
+var ctx = document.getElementById('pieChart').getContext('2d');
+window.myDoughnut = new Chart(ctx, config);
+
+// var classPieChartInfo = $("#classPieChartInfo").val();
+// var color = ["#f56954", "#00a65a", "#f39c12", "#00c0ef", "#3c8dbc", "#d2d6de", "#dd4b39"];
+// var pieDataArray = [];
+// $.each(JSON.parse(classPieChartInfo), function(key, value) {
+// 	var pieDataObj = {};
+// 	pieDataObj.label = value.className;
+// 	pieDataObj.value = value.classNameCount;
+// 	pieDataObj.color = color[key];
+// 	pieDataObj.highlight = color[key];
+	
+// 	pieDataArray.push(pieDataObj);
+// });
+
+// var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
+// var pieChart       = new Chart(pieChartCanvas);
+// var pieData = pieDataArray;
+// var pieOptions     = {
+// 	segmentShowStroke    : true,
+// 	segmentStrokeColor   : '#fff',
+// 	segmentStrokeWidth   : 1,
+// 	responsive           : true,
+// 	maintainAspectRatio  : false,
+// 	tooltipTemplate      : '<%=value %> <%=label%>'
+// };
+// pieChart = pieChart.Doughnut(pieData, pieOptions);
+// $(".chart-legend").html(pieChart.generateLegend());
 </script>

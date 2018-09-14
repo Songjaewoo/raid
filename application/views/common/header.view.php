@@ -27,7 +27,8 @@
 	<script src="/asset/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.ko.js"></script>
 	<script src="/asset/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script src="/asset/bower_components/ckeditor/ckeditor.js"></script>
-	<script src="/asset/bower_components/chart.js/Chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<!-- 	<script src="/asset/bower_components/chart.js/Chart.min.js"></script> -->
 	<script src="/asset/plugins/jQuery-Mask-Plugin-master/jquery.mask.min.js"></script>
 	<script src="/asset/plugins/jquery.validate.js"></script>
 	<script src="/asset/plugins/iCheck/icheck.min.js"></script>
