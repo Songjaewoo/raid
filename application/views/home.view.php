@@ -1,16 +1,3 @@
-<style>
-.chart-legend li {
-    display: block;
-}
-
-.chart-legend li span {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 5px;
-}
-</style>
-
 <div class="content-wrapper">
 	<section class="content">
 		<div class="row">
@@ -173,28 +160,19 @@
 <input type="hidden" id="classPieChartInfo" value="<?=$classPieChartInfo?>">
 
 <script>
-window.chartColors = {
-	red: 'rgb(255, 99, 132)',
-	orange: 'rgb(255, 159, 64)',
-	yellow: 'rgb(255, 205, 86)',
-	green: 'rgb(75, 192, 192)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
-	grey: 'rgb(201, 203, 207)'
-};
-
-// var classPieChartInfo = $("#classPieChartInfo").val();
-// var color = ["rgb(255, 99, 132)", "#00a65a", "#f39c12", "#00c0ef", "#3c8dbc", "#d2d6de", "#dd4b39"];
-// var pieDataArray = [];
-// $.each(JSON.parse(classPieChartInfo), function(key, value) {
-// 	var pieDataObj = {};
-// 	pieDataObj.label = value.className;
-// 	pieDataObj.value = value.classNameCount;
-// 	pieDataObj.color = color[key];
-// 	pieDataObj.highlight = color[key];
+var classPieChartInfo = $("#classPieChartInfo").val();
+var chartColors = ["rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(54, 162, 235)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"];
+var pieDataArray = [];
+var pieBgArray = [];
+var pieLabelArray = [];
+$.each(JSON.parse(classPieChartInfo), function(key, value) {
+	var className = value.className;
+	var count = value.classNameCount;
 	
-// 	pieDataArray.push(pieDataObj);
-// });
+	pieDataArray.push(count);
+	pieBgArray.push(chartColors[key]);
+	pieLabelArray.push(className);
+});
 
 var randomScalingFactor = function() {
 	return Math.round(Math.random() * 100);
@@ -204,29 +182,11 @@ var config = {
 	type: 'doughnut',
 	data: {
 		datasets: [{
-			data: [
-				randomScalingFactor(),
-				randomScalingFactor(),
-				randomScalingFactor(),
-				randomScalingFactor(),
-				randomScalingFactor(),
-			],
-			backgroundColor: [
-				window.chartColors.red,
-				window.chartColors.orange,
-				window.chartColors.yellow,
-				window.chartColors.green,
-				window.chartColors.blue,
-			],
-			label: 'Dataset 11111111111'
+			data: pieDataArray,
+			backgroundColor: pieBgArray,
+			label: 'Dataset'
 		}],
-		labels: [
-			'Red',
-			'Orange',
-			'Yellow',
-			'Green',
-			'Blue'
-		]
+		labels: pieLabelArray
 	},
 	options: {
 		responsive: true,
@@ -244,31 +204,4 @@ var config = {
 };
 var ctx = document.getElementById('pieChart').getContext('2d');
 window.myDoughnut = new Chart(ctx, config);
-
-// var classPieChartInfo = $("#classPieChartInfo").val();
-// var color = ["#f56954", "#00a65a", "#f39c12", "#00c0ef", "#3c8dbc", "#d2d6de", "#dd4b39"];
-// var pieDataArray = [];
-// $.each(JSON.parse(classPieChartInfo), function(key, value) {
-// 	var pieDataObj = {};
-// 	pieDataObj.label = value.className;
-// 	pieDataObj.value = value.classNameCount;
-// 	pieDataObj.color = color[key];
-// 	pieDataObj.highlight = color[key];
-	
-// 	pieDataArray.push(pieDataObj);
-// });
-
-// var pieChartCanvas = $('#pieChart').get(0).getContext('2d');
-// var pieChart       = new Chart(pieChartCanvas);
-// var pieData = pieDataArray;
-// var pieOptions     = {
-// 	segmentShowStroke    : true,
-// 	segmentStrokeColor   : '#fff',
-// 	segmentStrokeWidth   : 1,
-// 	responsive           : true,
-// 	maintainAspectRatio  : false,
-// 	tooltipTemplate      : '<%=value %> <%=label%>'
-// };
-// pieChart = pieChart.Doughnut(pieData, pieOptions);
-// $(".chart-legend").html(pieChart.generateLegend());
 </script>
