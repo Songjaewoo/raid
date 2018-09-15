@@ -139,6 +139,8 @@
 				$("#custom-page-overlay").css("display", "none");
 			});
 		});
+
+		$.ajaxSetup({cache:false});
 	</script>
 </head>
 <body class="hold-transition skin-red sidebar-mini">
