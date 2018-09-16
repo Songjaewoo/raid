@@ -163,12 +163,13 @@ class Member extends CI_Controller {
 	    $groupId = $this->input->post("groupId");
 	    
 	    if ($memberId != "" && $nickname != "" && $className != "" && $level != "" && $groupId != "") {
-	        $isExistMemberNickname = $this->member_model->isExistMemberNickname($nickname);
-	        if ($isExistMemberNickname != null) {
-	            $jsonResult['status'] = 404;
-	            echo json_encode($jsonResult);
-	            exit;
-	        }
+	        
+// 	        $isExistMemberNickname = $this->member_model->isExistMemberNickname($nickname);
+// 	        if ($isExistMemberNickname != null) {
+// 	            $jsonResult['status'] = 404;
+// 	            echo json_encode($jsonResult);
+// 	            exit;
+// 	        }
 	        
 	        $resultUpdate = $this->member_model->updateMemberBaseInfo($nickname, $className, $level, $groupId, $memberId);
 	        
@@ -194,12 +195,12 @@ class Member extends CI_Controller {
 		if ($memberDetail != null && $nickname != "" && $className != "" && $groupId != "") {
 			$level = $memberDetail['level'];
 			
-			$isExistMemberNickname = $this->member_model->isExistMemberNickname($nickname);
-			if ($isExistMemberNickname != null) {
-			    $jsonResult['status'] = 404;
-			    echo json_encode($jsonResult);
-			    exit;
-			}
+// 			$isExistMemberNickname = $this->member_model->isExistMemberNickname($nickname);
+// 			if ($isExistMemberNickname != null) {
+// 			    $jsonResult['status'] = 404;
+// 			    echo json_encode($jsonResult);
+// 			    exit;
+// 			}
 			
 			$resultUpdate = $this->member_model->updateMemberBaseInfo($nickname, $className, $level, $groupId, LOGIN_ID);
 			 
