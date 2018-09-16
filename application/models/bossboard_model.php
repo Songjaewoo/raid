@@ -61,6 +61,8 @@ class Bossboard_model extends CI_Model {
     		WHERE
 				1=1
 				$whereClause
+            GROUP BY
+                b.id
 			ORDER BY
 				b.killDateTime DESC, b.id DESC
 	    	LIMIT 
@@ -94,7 +96,7 @@ class Bossboard_model extends CI_Model {
 		
 		$sql = "
 			SELECT
-				COUNT(b.id) as count
+				COUNT(DISTINCT b.id) as count
 			FROM
 				bossBoard b
 				LEFT JOIN member m ON (b.writerId = m.id)
