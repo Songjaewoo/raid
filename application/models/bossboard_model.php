@@ -64,7 +64,7 @@ class Bossboard_model extends CI_Model {
             GROUP BY
                 b.id
 			ORDER BY
-				b.killDateTime DESC, b.id DESC
+				b.id DESC
 	    	LIMIT 
 	    		?, ?
 		";
