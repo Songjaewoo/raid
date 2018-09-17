@@ -80,7 +80,7 @@
 									<td><?=$value['id']?></td>
 									<td>
 										<a href="/board/detail?boardId=<?=$value['id']?>">
-											<?=$value['title']?>
+											<?=$value['title']?> [<?=$value['commentCount']?>]
 										</a>
 									</td>
 									<td>[<?=$value['groupName']?>] <?=$value['nickname']?></td>
@@ -124,7 +124,7 @@
 									<td><?=$value['id']?></td>
 									<td>
 										<a href="/board/detail?boardId=<?=$value['id']?>">
-											<?=$value['title']?>
+											<?=$value['title']?> [<?=$value['commentCount']?>]
 										</a>
 									</td>
 									<td>[<?=$value['groupName']?>] <?=$value['nickname']?></td>

@@ -4,7 +4,10 @@
 			<div class="col-md-12">
 				<div class="box box-danger">
 					<div class="box-header with-border">
-    					<h3 class="box-title"><a href="/bossBoard">보스탐 참여 정보</a></h3>
+    					<h3 class="box-title">
+    						<a href="/bossBoard">보스탐 참여 정보</a>
+    						<small>(검색결과: <?=number_format($countBossBoardList)?> 건)</small>
+    					</h3>
     				</div>
     				
     				<?php if (LOGIN_LEVEL >= 2) { ?>

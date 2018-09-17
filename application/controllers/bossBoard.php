@@ -42,6 +42,7 @@ class BossBoard extends CI_Controller {
 			"serachType" => $serachType,
 			"s" => $s,
 			"bossBoardList" => $bossBoardList,
+			"countBossBoardList" => $countBossBoardList,
 			"pagination" => $pagination,
 		);
 		

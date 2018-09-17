@@ -36,7 +36,7 @@ img {
 							<td style="padding: 32px 8px;"><?=$boardDetail['content']?></td>
 						</tr>
 						<tr>
-							<th>댓글</th>
+							<th>댓글 [<?=COUNT($commentList)?>]</th>
 						</tr>
 						<tr>
 							<td>

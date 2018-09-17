@@ -18,7 +18,8 @@ class Board_model extends CI_Model {
                 b.content, 
                 b.createdDateTime, 
                 b.updatedDateTime,
-                b.count
+                b.count,
+	    		(SELECT COUNT(id) FROM boardComment WHERE boardId = b.id) as commentCount
             FROM 
                 board b
                 INNER JOIN member m ON (m.id = b.writerId)
