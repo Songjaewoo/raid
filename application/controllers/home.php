@@ -10,6 +10,7 @@ class Home extends CI_Controller {
 		$this->load->model('payment_model');
 		$this->load->model('tax_model');
 		$this->load->model('board_model');
+		$this->load->model('bossboarditem_model');
 		$this->load->model('group_model');
 		$this->load->model('member_model');
 		
@@ -34,6 +35,8 @@ class Home extends CI_Controller {
 		$freeBoardList = $this->board_model->getList(2, 0, 5);
 		
 		$classPieChartInfo = $this->member_model->getClassPieChartInfo();
+		$dropItemChartInfo1 = $this->bossboarditem_model->getDropItemChart(20);
+		$dropItemChartInfo2 = $this->bossboarditem_model->getDropItemChart(53);
 		
 		$data = array(
 		    "allPayment" => $allPayment,
@@ -43,6 +46,8 @@ class Home extends CI_Controller {
 			"noticeBoardList" => $noticeBoardList,
 			"freeBoardList" => $freeBoardList,
 			"classPieChartInfo" => htmlspecialchars(json_encode($classPieChartInfo)), 
+			"dropItemChartInfo1" => htmlspecialchars(json_encode($dropItemChartInfo1)),
+			"dropItemChartInfo2" => htmlspecialchars(json_encode($dropItemChartInfo2)),
 		);
 		
 		$this->load->view("home.view.php", $data);

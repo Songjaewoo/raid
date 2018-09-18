@@ -118,5 +118,25 @@ class Bossboarditem_model extends CI_Model {
 		return $resultQuery['itemPrice'];
 	}
 	
-	
+	function getDropItemChart($itemId) {
+		$sql = "
+			SELECT
+				COUNT(b.id) as count,
+				DATE_FORMAT(b.killDateTime, '%Y-%m-%d') AS killDateTime
+			FROM
+				bossBoardItem bi
+				INNER JOIN itemList il ON (il.id = bi.itemId)
+				INNER JOIN bossBoard b ON (b.id = bi.bossBoardId)
+			WHERE
+				il.id = ?
+			GROUP BY
+				b.killDateTime
+			ORDER BY
+				b.killDateTime ASC
+		";
+			
+		$resultQuery = $this->db->query($sql, array($itemId))->result_array();
+			
+		return $resultQuery;
+	}
 }
