@@ -15,6 +15,10 @@ class Boss extends CI_Controller {
 	}
 	
 	public function index() {
+		if (LOGIN_LEVEL < 2) {
+			alert("접근 권한이 없습니다.");
+		}
+		
 		common_header();
 		
 		$this->load->view("boss/boss.view.php");
