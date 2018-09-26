@@ -16,6 +16,7 @@ class BossBoard extends CI_Controller {
 		$this->load->model('tax_model');
 		$this->load->model('payment_model');
 		
+		$this->load->library('user_agent');
 		$this->load->library('upload');
 		$this->load->library('paging_info');
 		$this->load->library('s3');
@@ -66,10 +67,15 @@ class BossBoard extends CI_Controller {
 		$transResult['participant'] = $resultBossBoardParticipant;
 		$resultBossBoardAttachFile = $this->bossboardattachfile_model->getDetailListByBossBoardId($id);
 		$transResult['attachFile'] = $resultBossBoardAttachFile;
-
+        
+		if(strpos($this->agent->referrer(), "/dividend/my") !== false) {
+            $isMyDividendPage = true;
+		}
+		
 		$data = array(
 		    "bossBoardId" => $id,
 		    "detailBossBoard" => $transResult,
+		    "isMyDividendPage" => $isMyDividendPage,
 		);
 	
 		$this->load->view("bossBoard/detail.view.php", $data);

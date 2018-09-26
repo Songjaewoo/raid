@@ -129,11 +129,19 @@
 				</button>
 				<?php } ?>
 				
+				<?php if ($isMyDividendPage == true) { ?>
+				<a href="/dividend/my">
+					<button type="button" class="btn btn-default btn-flat" style="width: 100px;">
+						목록
+					</button>
+				</a>
+				<?php } else { ?>
 				<a href="/bossBoard">
 					<button type="button" class="btn btn-default btn-flat" style="width: 100px;">
 						목록
 					</button>
 				</a>
+				<?php } ?>
 			</div>
 		</div>
 	</section>

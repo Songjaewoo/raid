@@ -6,8 +6,11 @@ class Dividend extends CI_Controller {
 		parent::__construct();
 	
 		$this->load->model('member_model');
+		$this->load->model('bossboard_model');
 		$this->load->model('bossboardparticipant_model');
 		$this->load->model('funduse_model');
+		
+		$this->load->library('paging_info');
 		
 		$this->load->helper('header_footer_helper');
 		$this->load->helper('alert_helper');
@@ -51,6 +54,28 @@ class Dividend extends CI_Controller {
 	    );
 	    
 	    $this->load->view("dividend/detail.view.php", $data);
+	    
+	    common_footer();
+	}
+	
+	public function my() {
+	    common_header();
+	    
+	    $pageNum = $this->input->get('pageNum') == null ? 1 : $this->input->get('pageNum');
+	    $limit = $this->input->get('limit') == null ? 10 : $this->input->get('limit');
+	    $offset = ($pageNum - 1) * $limit;
+	    
+	    $bossBoardList = $this->bossboard_model->getMyBossBoardList(LOGIN_ID, $offset, $limit);
+	    $countBossBoardList = $this->bossboard_model->countMyBossBoardList(LOGIN_ID);
+	    $pagination = $this->paging_info->getPagingInfo($pageNum, $countBossBoardList, $limit, 10);
+	    
+	    $data = array(
+	        "bossBoardList" => $bossBoardList,
+	        "countBossBoardList" => $countBossBoardList,
+	        "pagination" => $pagination,
+	    );
+	    
+	    $this->load->view("dividend/my.view.php", $data);
 	    
 	    common_footer();
 	}

@@ -20,6 +20,18 @@ class Bossboard_model extends CI_Model {
 	    return $resultBossBoardList;
 	}
 	
+	function getMyBossBoardList($memberId, $offset, $limit) {
+	    $resultBossBoardList = $this->getMyList($memberId, $offset, $limit);
+	    
+	    foreach ($resultBossBoardList as $key => $value) {
+	        $id = $value['id'];
+	        $resultBossItemList = $this->bossboarditem_model->getBossItemListbyBossBoardId($id);
+	        $resultBossBoardList[$key]['itemList'] = $resultBossItemList;
+	    }
+	    
+	    return $resultBossBoardList;
+	}
+	
 	function getList($offset, $limit, $serachType, $s) {
 		$paramArray = array();
 		
@@ -110,6 +122,64 @@ class Bossboard_model extends CI_Model {
 		 
 		$resultQuery = $this->db->query($sql, $paramArray)->row_array();
 		 
+		return $resultQuery['count'];
+	}
+	
+	function getMyList($memberId, $offset, $limit) {
+	    
+	    $sql = "
+			SELECT
+				b.id,
+				b.writerId,
+				m.nickname AS writerNickname,
+				b.killDateTime,
+				b.bossId,
+                bs.name AS bossName,
+				b.etc,
+				b.createdDateTime,
+				b.updatedDateTime,
+                (SELECT COUNT(bp.id) FROM bossBoardParticipant bp WHERE bp.bossBoardId = b.id) AS participantCount,
+                (SELECT SUM(bp.dividend) FROM bossBoardParticipant bp WHERE bossBoardId = b.id AND isFinish = 'N') AS dividend,
+                il.name AS itemName
+			FROM
+				bossBoard b
+				LEFT JOIN member m ON (b.writerId = m.id)
+                LEFT JOIN boss bs ON (b.bossId = bs.id)
+                LEFT JOIN bossBoardItem bi ON (bi.bossBoardId = b.id)
+				LEFT JOIN itemList il ON (bi.itemId = il.id)
+                LEFT JOIN bossBoardParticipant bp ON (bp.bossBoardId = b.id)
+    		WHERE
+				bp.memberId = ?
+            GROUP BY
+                b.id
+			ORDER BY
+				b.id DESC
+	    	LIMIT
+	    		?, ?
+		";
+				
+	    $resultQuery = $this->db->query($sql, array($memberId, $offset, $limit))->result_array();
+		
+		return $resultQuery;
+	}
+	
+	function countMyBossBoardList($memberId) {
+	    $sql = "
+			SELECT
+				COUNT(DISTINCT b.id) as count
+			FROM
+				bossBoard b
+				LEFT JOIN member m ON (b.writerId = m.id)
+                LEFT JOIN boss bs ON (b.bossId = bs.id)
+                LEFT JOIN bossBoardItem bi ON (bi.bossBoardId = b.id)
+				LEFT JOIN itemList il ON (bi.itemId = il.id)
+                LEFT JOIN bossBoardParticipant bp ON (bp.bossBoardId = b.id)
+			WHERE
+				bp.memberId = ?
+		";
+				
+	    $resultQuery = $this->db->query($sql, array($memberId))->row_array();
+		
 		return $resultQuery['count'];
 	}
 	

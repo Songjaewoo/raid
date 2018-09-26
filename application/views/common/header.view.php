@@ -198,11 +198,11 @@
 					</div>
 					<div class="pull-left info">
 						<p><?=LOGIN_NICKNAME?></p>
-						<p href="javascript:void(0);"><i class="fa fa-dollar"></i> 
-							분배금: <?=number_format($myDividend)?>
+						<p><i class="fa fa-dollar"></i> 
+							<a href="/dividend/my" style="color: #fff;">분배금: <?=number_format($myDividend)?></a>
 						</p>
 						<?php if ($myPayment != null) { ?>
-						<p href="javascript:void(0);"><i class="fa fa-dollar"></i> 
+						<p><i class="fa fa-dollar"></i> 
 							상납금: <?=number_format($myPayment)?>
 						</p>
 						<?php } ?>
