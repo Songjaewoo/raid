@@ -19,7 +19,7 @@
 								<tr>
 									<th style="width: 55px;">
 										<label>
-<!-- 											<input type="checkbox" id="btn-all-check" checked> -->
+											<input type="checkbox" id="btn-all-check" checked>
 										</label>
 									</th>
 									<th>날짜</th>
@@ -37,7 +37,7 @@
         								<tr>
         									<td>
         										<label>
-        											<input type="checkbox" class="btn-check" data-id="<?=$value['id']?>" checked>
+        											<input type="checkbox" class="btn-check" data-id="<?=$value['id']?>" data-dividend="<?=$value['dividend']?>" checked>
         										</label>
         									</td>
         									<td><?=date("Y-m-d", strtotime($value['killDateTime']))?></td>
@@ -59,7 +59,7 @@
     								<?php } ?>
     								<tr>
     									<td colspan="4">합계</td>
-        								<td colspan="3"><?=number_format($totalDividend)?></td>
+        								<td colspan="3" id="total-dividend"><?=number_format($totalDividend)?></td>
     								</tr>
 								<?php } else { ?>
 									<tr align="center">
@@ -85,16 +85,25 @@
 
 <script>
 $(document).ready(function(){ 
-    $("#btn-all-check").on("ifChecked", function(d) {
-    	$(".btn-check").iCheck("checked");
+    $("#btn-all-check").on("ifChecked", function() {
+        $(".btn-check").iCheck('check');
     });
     
-    $("#btn-all-check").on("ifUnChecked", function() {
-    	$(".btn-check").iCheck("unchecked");
+    $("#btn-all-check").on("ifUnchecked", function() {
+    	$(".btn-check").iCheck('uncheck');
     });
-	
-});
 
+    $(".btn-check").on("ifChanged", function() {
+        var dividendTotal = 0;
+    	$(".btn-check:checked").each(function(i, v) {
+			dividend = $(this).data("dividend");
+
+			dividendTotal += dividend;
+		});
+
+		$("#total-dividend").text(numberWithCommas(dividendTotal));
+    });
+});
 
 $(".btn-dividend-finish").on("click", function() {
 	if (confirm("정산 하시겠습니까?")) {
@@ -158,4 +167,8 @@ $("#btn-all-check").iCheck({
 $(".btn-check").iCheck({
 	checkboxClass: 'icheckbox_flat-red',
 })
+
+function numberWithCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
