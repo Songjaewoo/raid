@@ -127,6 +127,22 @@ class Boss extends CI_Controller {
 		echo json_encode($jsonResult);
 	}
 	
+	public function updateIsDisplay_ajax() {
+	    $id = $this->input->post("id");
+	    
+	    $result = $this->boss_model->updateIsDisplay("N", $id);
+	    
+	    if ($result > 0) {
+	        $jsonResult['status'] = 200;
+	        $jsonResult['data'] = $result;
+	    } else {
+	        $jsonResult['status'] = 404;
+	        $jsonResult['data'] = $result;
+	    }
+	    
+	    echo json_encode($jsonResult);
+	}
+	
 	public function updateTaxPercent_ajax() {
 	    $taxPercent = $this->input->post("taxPercent");
 	    $result = $this->tax_model->updateTax($taxPercent, 1);

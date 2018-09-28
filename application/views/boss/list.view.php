@@ -24,7 +24,10 @@
 						<tbody>
 							<?php foreach ($bossList as $key => $value) { ?>
 							<tr>
-								<td><?=$value['name']?></td>
+								<td class="mouse-over-out">
+									<?=$value['name']?>
+									<i class="fa fa-trash-o btn-update-display" data-id="<?=$value['id']?>" style="display: none; margin-left: 12px; cursor: pointer;"></i>
+								</td>
 								<td><b><?=$value['nextTime']?></b></td>
 								<td class="count-down-time" data-time="<?=$value['nextTime']?>"></td>
 								<td>
@@ -32,7 +35,7 @@
 											data-id="<?=$value['id']?>">KILL</button>
 									<button type="button" class="btn btn-danger btn-flat btn-update-kill-pass" 
 											data-id="<?=$value['id']?>">PASS</button>
-									
+											
 									<div class="btn-group">
 										<button type="button" class="btn btn-warning btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">직접입력</button>
 										<div class="dropdown-menu pull-left" role="menu">
@@ -162,6 +165,12 @@
 </div>
 					
 <script>
+$(".mouse-over-out").mouseover(function() {
+	$(this).find("i").css("display", "");
+}).mouseout(function() {
+	$(this).find("i").css("display", "none");
+});
+
 $(".dateTimeMask").mask('0000-00-00 00:00', {
 	placeholder: "0000-00-00 00:00"
 });
@@ -331,6 +340,35 @@ $(".btn-update-kill-pass").on("click", function() {
     		dataType: "json",
     		success: function(result) {
     			if (result.status == 200) {
+    				getBossList();
+    			} else {
+    				alert("오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
+});
+
+$(".btn-update-display").on("click", function() {
+	var id = $(this).data("id");
+	var data = {
+		"id": id,
+	};
+
+	if (confirm("삭제 하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: data,
+    		url: "/boss/updateIsDisplay_ajax",
+    		dataType: "json",
+    		success: function(result) {
+    			if (result.status == 200) {
+        			alert("삭제 완료");
     				getBossList();
     			} else {
     				alert("오류");

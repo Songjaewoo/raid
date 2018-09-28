@@ -101,4 +101,19 @@ class Boss_model extends CI_Model {
 	    
 	    return $this->db->affected_rows();
 	}
+	
+	function updateIsDisplay($isDisplay, $id){
+	    $sql = "
+			UPDATE
+				boss
+			SET
+				isDisplay = ?
+			WHERE
+				id = ?
+		";
+	    
+	    $resultQuery = $this->db->query($sql, array($isDisplay, $id));
+	    
+	    return $this->db->affected_rows();
+	}
 }

@@ -35,6 +35,8 @@ class Itemlist_model extends CI_Model {
                 END) AS levelColor
 			FROM
 				itemList
+            WHERE
+                isUse = 'Y'
             ORDER BY
                 $orderby
 		";
@@ -104,6 +106,21 @@ class Itemlist_model extends CI_Model {
 		$resultQuery = $this->db->query($sql, array($sort, $id));
 		 
 		return $this->db->affected_rows();
+	}
+	
+	function updateIsUse($isUse, $id){
+	    $sql = "
+    		UPDATE
+    			itemList
+    		SET
+    			isUse = ?
+    		WHERE
+    			id = ?
+    	";
+	    
+	    $resultQuery = $this->db->query($sql, array($isUse, $id));
+	    
+	    return $this->db->affected_rows();
 	}
 	
 	function insertItem($name, $price, $level){

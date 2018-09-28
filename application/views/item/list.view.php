@@ -41,6 +41,10 @@
 										<button type="button" data-id="<?=$value['id']?>" class="btn-update-item-modal btn btn-sm btn-primary btn-flat">
                         					수정
                         				</button>
+                        				
+                        				<button type="button" data-id="<?=$value['id']?>" class="btn-remove-item btn btn-sm btn-danger btn-flat">
+                        					삭제
+                        				</button>
                         				<?php } else { ?>
                         				-
                         				<?php } ?>
@@ -151,6 +155,31 @@ $("#btn-add-item").on("click", function() {
 		}
 	});
 })
+
+$(".btn-remove-item").on("click", function() {
+	var itemId = $(this).data("id");
+
+	if (confirm("삭제 하시겠습니까?")) {
+    	$.ajax({
+    		type: "POST",
+    		data: {"itemId": itemId},
+    		dataType: "json",
+    		url: "/item/updateIsUse_ajax",
+    		success: function(result) {
+    			if (result.status == 200) {
+    				alert("삭제 완료");
+    			} else {
+    				alert("삭제 오류");
+    			}
+    		},
+    		error: function(xhr, status, error) {
+    			console.log(xhr);
+    			console.log(status);
+    			console.log(error);
+    		}
+    	});
+	}
+});
 
 $(".btn-update-item-modal").on("click", function() {
 	var itemId = $(this).data("id");

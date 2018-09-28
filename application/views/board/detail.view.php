@@ -97,6 +97,12 @@ img {
 							삭제
 						</button>
 					</div>
+					<?php } else if (LOGIN_LEVEL >= 4) { ?>
+					<div style="float: right;">
+						<button type="button" id="btn-del-board" data-id="<?=$boardDetail['id']?>" class="btn btn-danger btn-flat" style="width: 100px;">
+							삭제
+						</button>
+					</div>
 					<?php } ?>
 				</div>
 			</div>

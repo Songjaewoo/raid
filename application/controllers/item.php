@@ -90,4 +90,20 @@ class Item extends CI_Controller {
 	    
 	    echo json_encode($jsonResult);
 	}
+	
+	public function updateIsUse_ajax() {
+	    $itemId = $this->input->post("itemId");
+	    
+	    $resultUpdate = $this->itemlist_model->updateIsUse("N", $itemId);
+	    
+	    if ($resultUpdate > 0) {
+	        $jsonResult['status'] = 200;
+	        $jsonResult['data'] = $resultUpdate;
+	    } else {
+	        $jsonResult['status'] = 404;
+	        $jsonResult['data'] = $resultUpdate;
+	    }
+	    
+	    echo json_encode($jsonResult);
+	}
 }
