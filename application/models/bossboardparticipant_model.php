@@ -223,7 +223,7 @@ class Bossboardparticipant_model extends CI_Model {
             	bp.isFinish = 'N'
                 AND bp.memberId = ?
             ORDER BY
-                bb.killDateTime DESC, bb.id DESC
+               bb.id DESC
         ";
                 
 	    $resultQuery = $this->db->query($sql, array($memberId))->result_array();

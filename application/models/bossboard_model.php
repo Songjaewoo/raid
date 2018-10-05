@@ -150,6 +150,7 @@ class Bossboard_model extends CI_Model {
                 LEFT JOIN bossBoardParticipant bp ON (bp.bossBoardId = b.id)
     		WHERE
 				bp.memberId = ?
+                AND bp.isFinish = 'N'
             GROUP BY
                 b.id
 			ORDER BY
@@ -176,6 +177,7 @@ class Bossboard_model extends CI_Model {
                 LEFT JOIN bossBoardParticipant bp ON (bp.bossBoardId = b.id)
 			WHERE
 				bp.memberId = ?
+                AND bp.isFinish = 'N'
 		";
 				
 	    $resultQuery = $this->db->query($sql, array($memberId))->row_array();
